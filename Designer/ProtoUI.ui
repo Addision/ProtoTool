@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1007</width>
+    <height>788</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>自动化工具</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QTreeWidget" name="MsgTreeWidget">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>60</y>
+      <width>541</width>
+      <height>671</height>
+     </rect>
+    </property>
+    <column>
+     <property name="text">
+      <string>1</string>
+     </property>
+    </column>
+    <item>
+     <property name="text">
+      <string>aaa</string>
+     </property>
+     <property name="flags">
+      <set>ItemIsSelectable|ItemIsEditable|ItemIsDragEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+     </property>
+    </item>
+    <item>
+     <property name="text">
+      <string>bbbb</string>
+     </property>
+    </item>
+   </widget>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>580</x>
+      <y>330</y>
+      <width>411</width>
+      <height>401</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QComboBox" name="CbxValueType">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>150</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>int32</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>int64</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>string</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>float</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>double</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>bytes</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>bool</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>uint32</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>uint64</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QLabel" name="label">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>proto可选类型</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_3">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>210</y>
+       <width>81</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>字段名称</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="BtnField">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>340</y>
+       <width>81</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>确定</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_2">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>110</y>
+       <width>91</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>数据类型</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="LetFieldName">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>240</y>
+       <width>181</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QComboBox" name="CbxProtoType">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>60</y>
+       <width>171</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <item>
+      <property name="text">
+       <string>optional</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>required</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>repeated</string>
+      </property>
+     </item>
+    </widget>
+    <widget class="QPushButton" name="BtnFieldCancel">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>340</y>
+       <width>81</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>取消</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="LbMsgField">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>290</y>
+       <width>361</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Box</enum>
+     </property>
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QRadioButton" name="BtnReq">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>60</y>
+      <width>81</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>请求消息</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="BtnNotice">
+    <property name="geometry">
+     <rect>
+      <x>790</x>
+      <y>70</y>
+      <width>89</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>通知消息</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>600</x>
+      <y>131</y>
+      <width>81</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>消息名称：</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="LetMsgName">
+    <property name="geometry">
+     <rect>
+      <x>670</x>
+      <y>130</y>
+      <width>221</width>
+      <height>31</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="BtnMsg">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>190</y>
+      <width>111</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>确定</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="BtnMsgCancel">
+    <property name="geometry">
+     <rect>
+      <x>760</x>
+      <y>190</y>
+      <width>121</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>取消</string>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1007</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>文件</string>
+    </property>
+    <addaction name="menuOpen"/>
+    <addaction name="menuRecentOen"/>
+    <addaction name="separator"/>
+    <addaction name="menuSave"/>
+    <addaction name="menuSaveAs"/>
+    <addaction name="menuClose"/>
+   </widget>
+   <widget class="QMenu" name="menutool">
+    <property name="title">
+     <string>工具</string>
+    </property>
+    <widget class="QMenu" name="menuProto">
+     <property name="title">
+      <string>导出协议</string>
+     </property>
+     <addaction name="menuProtoServer"/>
+     <addaction name="separator"/>
+     <addaction name="menuProtoClient"/>
+    </widget>
+    <widget class="QMenu" name="menuTable">
+     <property name="title">
+      <string>导出数据表</string>
+     </property>
+     <addaction name="menuTableServer"/>
+     <addaction name="separator"/>
+     <addaction name="menuTableClient"/>
+    </widget>
+    <addaction name="menuProto"/>
+    <addaction name="menuTable"/>
+    <addaction name="separator"/>
+    <addaction name="menu_setting"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menutool"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionopen">
+   <property name="text">
+    <string>open</string>
+   </property>
+  </action>
+  <action name="menuOpen">
+   <property name="text">
+    <string>打开</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="menuRecentOen">
+   <property name="text">
+    <string>最近打开</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+O</string>
+   </property>
+  </action>
+  <action name="menuSave">
+   <property name="text">
+    <string>保存</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
+  </action>
+  <action name="menuClose">
+   <property name="text">
+    <string>关闭</string>
+   </property>
+  </action>
+  <action name="menuSaveAs">
+   <property name="text">
+    <string>另存为...</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
+  </action>
+  <action name="menuProtoServer">
+   <property name="text">
+    <string>服务器协议</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+P</string>
+   </property>
+  </action>
+  <action name="menuProtoClient">
+   <property name="text">
+    <string>客户端协议</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+  </action>
+  <action name="menuTableServer">
+   <property name="text">
+    <string>服务器</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+P</string>
+   </property>
+  </action>
+  <action name="menuTableClient">
+   <property name="text">
+    <string>客户端</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+D</string>
+   </property>
+  </action>
+  <action name="menu_setting">
+   <property name="text">
+    <string>选项</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ModuleChat>
+    <ID>11</ID>
+    <Import>ClientPublic.proto</Import>
+    <Import>ClientPublic2.proto</Import>
+    <Message>
+        <ReplyMsg ID = "1101">
+            <Req name="Chat_ChatReq1">
+                <field proto_type="" value_type="string" field_name="chat_msg" tag='1'/>
+                <field proto_type="" value_type="int32" field_name="channel" tag='2'/>
+            </Req>
+            <Reply name="Chat_ChatReply1">
+                <field proto_type="" value_type="string" field_name="chat_msg" tag='1'/>
+            </Reply>                
+        </ReplyMsg>
+        <ReplyMsg ID = "1102">
+            <Req name="Chat_ChatReq2">
+                <field proto_type="" value_type="string" field_name="chat_msg" tag='1'/>
+                <field proto_type="" value_type="int32" field_name="channel" tag='2'/>
+            </Req>
+            <Reply name="Chat_ChatReply2">
+                <field proto_type="" value_type="string" field_name="chat_msg" tag='1'/>
+            </Reply>                
+        </ReplyMsg>        
+        <NotifyMsg>
+            <Notify ID="1103" name="Chat_TestNotify1">
+                <field proto_type="" value_type="string" field_name="chat_msg" tag='1'/>
+            </Notify>
+            <Notify ID="1104" name="Chat_TestNotify2">
+                <field proto_type="" value_type="string" field_name="chat_msg" tag='1'/>
+            </Notify>            
+        </NotifyMsg>
+    </Message>
+</ModuleChat>
+

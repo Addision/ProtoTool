@@ -1,0 +1,47 @@
+syntax = "proto3";
+import "ClientPublic.proto";
+import "ClientPublic2.proto";
+
+message Chat_ChatReq1
+{
+ string chat_msg = 1;
+ int32 channel = 2;   
+}
+
+
+message Chat_ChatReply1
+{
+ string chat_msg = 1;
+
+}
+
+
+message Chat_ChatReq2
+{
+ string chat_msg = 1;
+ int32 channel = 2;
+
+}
+
+
+message Chat_ChatReply2
+{
+ string chat_msg = 1;
+
+}
+
+
+message Chat_TestNotify1
+{
+ string chat_msg = 1;
+
+}
+
+
+message Chat_TestNotify2
+{
+ string chat_msg = 1;
+
+}
+
+
