@@ -13,29 +13,17 @@ func_field = 'static int %(msg_name)sReq(Player* player, Packet* packet);'
 ############################################################################
 
 class GenCpp(object):
-    def __init__(self):
-        self.root = None
-        self.module = ""
+    def __init__(self, root, module):
+        self.root = root
+        self.module = module
         self.enum_fields = ""
         self.handle_fields = ""
         self.func_fields = ""
         self.module_id = 0
         pass
-    
-    def load_xml(self, xml_file):
-        contents = ""
-        with codecs.open(xml_file, "r", "utf-8") as f:
-            contents = f.read()
-        if contents == "":
-            return
-        self.proto_file = os.path.splitext(xml_file)[0] + ".proto"
-        print(self.proto_file)
-        self.root = ET.fromstring(contents)
-        self.module = self.root.attrib['name']
-        print(self.root)
-        pass
 
     def write_cpp(self):
+        self.parse_xml()
         s = ""
         with codecs.open("./proto_cpp.tmpl", "r", "utf-8") as f:
             s = f.read()
@@ -74,9 +62,3 @@ class GenCpp(object):
         self.func_fields = self.func_fields[:-2]
         pass
 
-if __name__ == "__main__":
-    gen_cpp = GenCpp()
-    gen_cpp.load_xml("ModuleChat.xml")
-    gen_cpp.parse_xml()
-    gen_cpp.write_cpp()
-    pass
