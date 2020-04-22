@@ -1,0 +1,24 @@
+#pragma once
+
+#include "packet/PacketMgr.h"
+#include "%(module)s.pb.h"
+#include "SingleTon.hpp"
+
+class Player;
+class Packet;
+extern std::unique_ptr<PacketMgr> g_pPacketMgr;
+class Handle%(module)s : public SingleTon<Handle%(module)s>
+{
+public:
+	enum E%(module)s
+	{
+        MODULE_ID_%(module_upper)s = %(module_id)s,
+        %(enum_fields)s
+	};
+	Handle%(module)s()
+	{
+		%(handle_fields)s
+	}
+public:
+	%(func_fields)s
+};

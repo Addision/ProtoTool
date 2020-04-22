@@ -2,21 +2,7 @@ syntax = "proto3";
 import "ClientPublic.proto";
 import "ClientPublic2.proto";
 
-message Chat_ChatReq1
-{
- string chat_msg = 1;
- int32 channel = 2;   
-}
-
-
-message Chat_ChatReply1
-{
- string chat_msg = 1;
-
-}
-
-
-message Chat_ChatReq2
+message Chat_ChatReq
 {
  string chat_msg = 1;
  int32 channel = 2;
@@ -24,21 +10,36 @@ message Chat_ChatReq2
 }
 
 
-message Chat_ChatReply2
+message Chat_ChatReply
 {
  string chat_msg = 1;
 
 }
 
 
-message Chat_TestNotify1
+message Chat_Chat2Req
+{
+ string chat_msg = 1;
+ int32 channel = 2;
+
+}
+
+
+message Chat_Chat2Reply
 {
  string chat_msg = 1;
 
 }
 
 
-message Chat_TestNotify2
+message Chat_Chat_Test1Notify
+{
+ string chat_msg = 1;
+
+}
+
+
+message Chat_Chat_Test2Notify
 {
  string chat_msg = 1;
 
