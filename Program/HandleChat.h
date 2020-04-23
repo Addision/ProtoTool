@@ -16,6 +16,7 @@ public:
         RPC_CHAT_CHAT_REQ = 1101,
 		RPC_CHAT_CHAT2_REQ = 1102,
 	};
+	// 在InitManager函数调用此函数进行消息注册
 	HandleChat()
 	{
 		g_pPacketMgr->RegisterHandle(RPC_CHAT_CHAT_REQ, HandleChat::ChatReq);

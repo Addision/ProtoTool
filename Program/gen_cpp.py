@@ -42,7 +42,7 @@ class GenCpp(object):
         pass
 
     def parse_xml(self):
-        self.module_id = self.root[0].text
+        self.module_id = self.root.attrib['id']
         for req_reply in self.root.findall("Message/ReqReplyMsg"):
             msg_id = req_reply.attrib["id"]
             msg_name = req_reply.attrib["name"]
