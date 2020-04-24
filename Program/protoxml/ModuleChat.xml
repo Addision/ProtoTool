@@ -4,7 +4,7 @@
 		ClientPublic.proto;ClientPublic2.proto
 	</Import>
 	<Message>
-		<ReqReplyMsg id="1101" name="Chat" comment="单人对话消息">
+		<ReqReplyMsg id="1101" name="chat_one" comment="单人对话消息">
 			<Req>
 				<field proto_type="" value_type="string" field_name="chat_msg" tag="1" />
 				<field proto_type="" value_type="int32" field_name="channel" tag="2" />
@@ -13,7 +13,7 @@
 				<field proto_type="" value_type="string" field_name="chat_msg" tag="1" />
 			</Reply>
 		</ReqReplyMsg>
-		<ReqReplyMsg id="1102" name="Chat2" comment="多人对话消息">
+		<ReqReplyMsg id="1102" name="chat_two" comment="多人对话消息">
 			<Req>
 				<field proto_type="" value_type="string" field_name="chat_msg" tag="1" />
 				<field proto_type="" value_type="int32" field_name="channel" tag="2" />
@@ -23,10 +23,11 @@
 			</Reply>
 		</ReqReplyMsg>
 		<NotifyMsg>
-			<Notify id="1103" name="Chat_Test1" comment="提示1">
+			<Notify id="1103" name="notify_chat_one" comment="提示1">
 				<field proto_type="" value_type="string" field_name="chat_msg" tag="1" />
+				<field proto_type="" value_type="string" field_name="chat_msg2" tag="2" />
 			</Notify>
-			<Notify id="1104" name="Chat_Test2" comment="提示1">
+			<Notify id="1104" name="notify_chat_two" comment="提示1">
 				<field proto_type="" value_type="string" field_name="chat_msg" tag="2" />
 			</Notify>
 		</NotifyMsg>

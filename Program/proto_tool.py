@@ -22,12 +22,19 @@ class ProtoTool(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowOpacity(0.98)
+        # widget 组件设置
+        self.ui.WidMsgTree.setHeaderLabels(['proto msg', 'comment'])
+        self.ui.WidMsgTree.setStyle(QStyleFactory.create('windows'))
+        self.ui.WidMsgTree.clicked.connect(self.onTreeClicked)
 
         self.config = Config()
         self.module_mgr = ModuleMgr()
         # 菜单设置
         self.initMenuBar()
 
+        self.xml_dir = self.config.getProtoXml()
+        if self.xml_dir:
+            self.showModuleMsg()
     pass
 
     def initMenuBar(self):
@@ -56,14 +63,13 @@ class ProtoTool(QMainWindow):
 
     def menuBarOpen(self):
         print("start load xml files......")
-        proto_xml = self.config.getProtoXml()
         # 打开文件对话框
-        proto_xml = QFileDialog.getExistingDirectory(
-            self, 'open dir', proto_xml)
-        if not proto_xml:
+        self.xml_dir = QFileDialog.getExistingDirectory(
+            self, 'open dir', self.xml_dir)
+        if not self.xml_dir:
             return
-        self.config.updateProtoXml(proto_xml)
-        self.showModuleMsg(proto_xml)
+        self.config.updateProtoXml(self.xml_dir)
+        self.showModuleMsg()
         pass
 
     def menuBarRecentOen(self):
@@ -88,8 +94,57 @@ class ProtoTool(QMainWindow):
     def menuBarProtoServer(self):
         pass
 
-    def showModuleMsg(self, proto_xml):
+    def showModuleMsg(self):
+        self.module_mgr.loadXmls(self.xml_dir)
+        if not self.module_mgr.modules:
+            return
+        for module in self.module_mgr.modules:
+            QApplication.processEvents()
+            # add module
+            item_module = QTreeWidgetItem(self.ui.WidMsgTree)
+            item_module.setText(0,module.name)
+            # item_module.setFont(10, QFont("Arial", 15, QFont.Bold))
+            for msg in module.msg_list:
+                # add msg item
+                item_msg = QTreeWidgetItem()
+                item_msg.setText(0,msg.name)
+                item_module.addChild(item_msg)
+                if msg.type == 'ReqReplyMsg':
+                    # add req reply item
+                    item_req = QTreeWidgetItem()
+                    item_req.setText(0,"req")
+                    item_reply = QTreeWidgetItem()
+                    item_reply.setText(0, "reply")
+                    item_msg.addChild(item_req)
+                    item_msg.addChild(item_reply)
+                    for item in msg.req_list:
+                        for k,v in item.items():
+                            if k == 'field_name':
+                                item_field = QTreeWidgetItem()
+                                item_field.setText(0,v)
+                                item_req.addChild(item_field)
+                    for item in msg.reply_list:
+                        for k,v in item.items():
+                            if k == 'field_name':
+                                item_field = QTreeWidgetItem()
+                                item_field.setText(0,v)
+                                item_reply.addChild(item_field)                                                    
+                else:
+                    for item in msg.notify_list:
+                        for k,v in item.items():
+                            if k == 'field_name':
+                                item_field = QTreeWidgetItem()
+                                item_field.setText(0,v)
+                                item_msg.addChild(item_field)                          
+                            pass
+            pass
 
+        pass
+
+    def onTreeClicked(self, item_idx):
+        print(item_idx)
+        item = self.ui.WidMsgTree.currentItem()
+        print(item.text(0))
         pass
 
 

@@ -21,9 +21,9 @@ class Msg(object):
         self.comment = ""
         self.type = ""
         # 保存属性值
-        self.req_dic = {}
-        self.reply_dic = {}
-        self.notify_dic = {}
+        self.req_list = []
+        self.reply_list = []
+        self.notify_list = []
 
 
 class Module(object):
@@ -62,16 +62,20 @@ class Module(object):
             req_msg = req_reply[0]
             reply_msg = req_reply[1]
             for req in req_msg:
-                proto_msg.req_dic['proto_type'] = req.attrib['proto_type']
-                proto_msg.req_dic['value_type'] = req.attrib['value_type']
-                proto_msg.req_dic['field_name'] = req.attrib['field_name']
-                proto_msg.req_dic['tag'] = req.attrib['tag']
+                req_msg_dic = {}
+                req_msg_dic['proto_type'] = req.attrib['proto_type']
+                req_msg_dic['value_type'] = req.attrib['value_type']
+                req_msg_dic['field_name'] = req.attrib['field_name']
+                req_msg_dic['tag'] = req.attrib['tag']
+                proto_msg.req_list.append(req_msg_dic)
 
             for reply in reply_msg:
-                proto_msg.reply_dic['proto_type'] = reply.attrib['proto_type']
-                proto_msg.reply_dic['value_type'] = reply.attrib['value_type']
-                proto_msg.reply_dic['field_name'] = reply.attrib['field_name']
-                proto_msg.reply_dic['tag'] = reply.attrib['tag']
+                reply_msg_dic = {}
+                reply_msg_dic['proto_type'] = reply.attrib['proto_type']
+                reply_msg_dic['value_type'] = reply.attrib['value_type']
+                reply_msg_dic['field_name'] = reply.attrib['field_name']
+                reply_msg_dic['tag'] = reply.attrib['tag']
+                proto_msg.reply_list.append(reply_msg_dic)
             self.msg_list.append(proto_msg)
 
         for notify_msg in self.root.findall("Message/NotifyMsg"):
@@ -82,10 +86,12 @@ class Module(object):
                 proto_msg.comment = notify.attrib['comment']
                 proto_msg.type = "NotifyMsg"
                 for field in notify:
-                    proto_msg.notify_dic['proto_type'] = field.attrib['proto_type']
-                    proto_msg.notify_dic['value_type'] = field.attrib['value_type']
-                    proto_msg.notify_dic['field_name'] = field.attrib['field_name']
-                    proto_msg.notify_dic['tag'] = field.attrib['tag']
+                    notify_msg_dic = {}
+                    notify_msg_dic['proto_type'] = field.attrib['proto_type']
+                    notify_msg_dic['value_type'] = field.attrib['value_type']
+                    notify_msg_dic['field_name'] = field.attrib['field_name']
+                    notify_msg_dic['tag'] = field.attrib['tag']
+                    proto_msg.notify_list.append(notify_msg_dic)
                 self.msg_list.append(proto_msg)
             pass
         pass
@@ -157,7 +163,6 @@ class ModuleMgr(object):
             module = Module()
             module.parseXml(xml_file)
             self.modules.append(module)
-        return self.modules
     
     def writeXmls(self, xml_dir, modules):
         for module in modules:
