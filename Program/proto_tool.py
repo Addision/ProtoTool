@@ -11,8 +11,9 @@ import sys
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from ProtoUI import *
-from Config import *
+from proto_ui import *
+from config import *
+from module import *
 
 
 class ProtoTool(QMainWindow):
@@ -23,6 +24,7 @@ class ProtoTool(QMainWindow):
         self.setWindowOpacity(0.98)
 
         self.config = Config()
+        self.module_mgr = ModuleMgr()
         # 菜单设置
         self.initMenuBar()
 

@@ -14,7 +14,7 @@ def UiToPy():
     path = os.path.split(os.path.abspath(sys.argv[0]))[0]
     os.system("cd "+path)
 
-    os.system("pyuic5 -o ProtoUI.py ../Designer/ProtoUI.ui")
+    os.system("pyuic5 -o proto_ui.py ../Designer/ProtoUI.ui")
     #os.system("pyrcc5 -o resource_rc.py ./res/resource.qrc")
 
     print("transport ui to py ok...")

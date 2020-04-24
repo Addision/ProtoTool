@@ -39,7 +39,7 @@ class Gen(object):
 
 if __name__ == "__main__":
     gen = Gen()
-    gen.load_xml("ModuleChat.xml")
+    gen.load_xml("protoxml/ModuleChat.xml")
     gen.gen_cpp_file()
     gen.gen_proto_file()
     pass
