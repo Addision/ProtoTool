@@ -14,6 +14,7 @@ from PyQt5.QtWidgets import *
 from proto_ui import *
 from config import *
 from module import *
+from item_data import *
 
 
 class ProtoTool(QMainWindow):
@@ -22,28 +23,34 @@ class ProtoTool(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowOpacity(0.98)
-        # widget 组件设置
+        # widget 设置
         self.ui.WidMsgTree.setHeaderLabels(['proto msg', 'comment'])
         self.ui.WidMsgTree.setStyle(QStyleFactory.create('windows'))
         self.ui.WidMsgTree.clicked.connect(self.onTreeClicked)
-
+        # frame 设置
+        self.ui.FrameMsg.setEnabled(False)
+        self.ui.FrameField.setEnabled(False)
+        # button 设置
+        self.ui.BtnSave.setEnabled(False)
+        self.ui.BtnAdd.clicked.connect(lambda:self.onBtnClicked('add'))
+        self.ui.BtnDel.clicked.connect(lambda:self.onBtnClicked('del'))
+        self.ui.BtnUpdate.clicked.connect(lambda:self.onBtnClicked('update'))
+        self.ui.BtnSave.clicked.connect(lambda:self.onBtnClicked('save'))
+        # menu 设置
+        self.ui.menuSave.setEnabled(False)
+        self.ui.menuSaveAs.setEnabled(False)
+        self.ui.menuFile.triggered[QAction].connect(self.onMenuTrigger)
+        self.ui.menuTool.triggered[QAction].connect(self.onMenuTrigger)
+        # other 设置
+        self.selected_item = None
         self.config = Config()
         self.module_mgr = ModuleMgr()
-        # 菜单设置
-        self.initMenuBar()
-
         self.xml_dir = self.config.getProtoXml()
         if self.xml_dir:
             self.showModuleMsg()
     pass
 
-    def initMenuBar(self):
-        self.ui.menuSave.setEnabled(False)
-        self.ui.menuSaveAs.setEnabled(False)
-        self.ui.menuFile.triggered[QAction].connect(self.processMenuTrigger)
-        self.ui.menuTool.triggered[QAction].connect(self.processMenuTrigger)
-
-    def processMenuTrigger(self, menu):
+    def onMenuTrigger(self, menu):
         if menu == self.ui.menuOpen:
             self.menuBarOpen()
         if menu == self.ui.menuRecentOen:
@@ -102,49 +109,69 @@ class ProtoTool(QMainWindow):
             QApplication.processEvents()
             # add module
             item_module = QTreeWidgetItem(self.ui.WidMsgTree)
-            item_module.setText(0,module.name)
+            item_module.setText(0, module.name)
+            item_module.setText(1, module.comment)
+            item_module.setText(2, module.id)
+            item_module.setText(3, str(ItemType.MODULE))
             # item_module.setFont(10, QFont("Arial", 15, QFont.Bold))
             for msg in module.msg_list:
                 # add msg item
                 item_msg = QTreeWidgetItem()
-                item_msg.setText(0,msg.name)
+                item_msg.setText(0, msg.name)
+                item_msg.setText(1, msg.comment)
+                item_msg.setText(2, msg.id)
+                item_msg.setText(3, str(ItemType.MSG))
                 item_module.addChild(item_msg)
                 if msg.type == 'ReqReplyMsg':
                     # add req reply item
                     item_req = QTreeWidgetItem()
+                    # TODO 设置不可以选中
                     item_req.setText(0,"req")
                     item_reply = QTreeWidgetItem()
                     item_reply.setText(0, "reply")
                     item_msg.addChild(item_req)
                     item_msg.addChild(item_reply)
                     for item in msg.req_list:
-                        for k,v in item.items():
-                            if k == 'field_name':
-                                item_field = QTreeWidgetItem()
-                                item_field.setText(0,v)
-                                item_req.addChild(item_field)
+                        item_field = QTreeWidgetItem()
+                        item_field.setText(0, item['field_name'])
+                        item_field.setText(1, item['comment'])
+                        item_field.setText(2, msg.id)
+                        item_field.setText(3, str(ItemType.REQ))
+                        item_req.addChild(item_field)
                     for item in msg.reply_list:
-                        for k,v in item.items():
-                            if k == 'field_name':
-                                item_field = QTreeWidgetItem()
-                                item_field.setText(0,v)
-                                item_reply.addChild(item_field)                                                    
+                        item_field = QTreeWidgetItem()
+                        item_field.setText(0, item['field_name'])
+                        item_field.setText(1, item['comment'])
+                        item_field.setText(2, msg.id)
+                        item_field.setText(3, str(ItemType.REPLY))
+                        item_reply.addChild(item_field)                                                    
                 else:
                     for item in msg.notify_list:
-                        for k,v in item.items():
-                            if k == 'field_name':
-                                item_field = QTreeWidgetItem()
-                                item_field.setText(0,v)
-                                item_msg.addChild(item_field)                          
-                            pass
-            pass
-
-        pass
+                        item_field = QTreeWidgetItem()
+                        item_field.setText(0, item['field_name'])
+                        item_field.setText(1, item['comment'])
+                        item_field.setText(2, msg.id)
+                        item_field.setText(3, str(ItemType.NOTIFY))
+                        item_msg.addChild(item_field)
+                                                
 
     def onTreeClicked(self, item_idx):
         print(item_idx)
-        item = self.ui.WidMsgTree.currentItem()
-        print(item.text(0))
+        self.selected_item = self.ui.WidMsgTree.currentItem()
+        print(self.selected_item.text(0))
+        print(self.selected_item.text(3))
+        pass
+
+    def onBtnClicked(self, btn):
+        if btn == 'add':
+
+            print('add')
+        if btn == 'del':
+            print('del')
+        if btn == 'update':
+            print('update')
+        if btn == 'save':
+            print('save')
         pass
 
 
