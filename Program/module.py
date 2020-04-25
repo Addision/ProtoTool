@@ -166,11 +166,15 @@ class ModuleMgr(object):
     def __init__(self):
         super(ModuleMgr, self).__init__()
         self.modules = []
+        self.next_id = 0
 
     def loadXmls(self, xml_dir):
+        if not os.path.exists(xml_dir):
+            return False
         listFiles = os.listdir(xml_dir)
         if not listFiles:
             return False
+        mod_id = 0
         for file in listFiles:
             if not file.endswith("xml", 3):
                 continue
@@ -178,6 +182,10 @@ class ModuleMgr(object):
             module = Module()
             module.parseXml(xml_file)
             self.modules.append(module)
+            if module.id > mod_id:
+                mod_id = module.id
+            
+        self.next_id = mod_id + 1
     
     def writeXmls(self, xml_dir, modules):
         for module in modules:
@@ -186,9 +194,17 @@ class ModuleMgr(object):
                 os.remove(xml_file)
             module.writeXml(xml_file)
 
+    def getModule(self, id, item_type):
+        for module in self.modules:
+            if module.id == id and module.item_type == item_type:
+                return module
+
+    def getNextId(self):
+        return self.next_id
+
 if __name__ == "__main__":
     module = Module()
-    module.parseXml('D:/ProtoTool/Program/protoxml/ModuleChat.xml')
-    # module.writeXml('D:/ProtoTool/Program/protoxml/ModuleChat2.xml')
+    module.parseXml('C:/ProtoTool/Program/protoxml/ModuleChat.xml')
+    # module.writeXml('C:/ProtoTool/Program/protoxml/ModuleChat2.xml')
     pass
     
