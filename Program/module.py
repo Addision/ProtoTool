@@ -15,8 +15,9 @@ import xml.etree.ElementTree as ET
 from item_data import *
 
 class Msg(object):
-    def __init__(self):
+    def __init__(self, mod_id):
         super(Msg, self).__init__()
+        self.mod_id = mod_id
         self.id = 0
         self.name = ""
         self.comment = ""
@@ -37,6 +38,7 @@ class Module(object):
         self.proto_imp = ""
         self.item_type = ItemType.MODULE
         self.msg_list = []
+        self.msg_next_id = 0
 
     def __loadXml(self, xml_file):
         contents = ""
@@ -46,7 +48,7 @@ class Module(object):
             return
         self.root = ET.fromstring(contents)
         if self.root:
-            self.id = self.root.attrib['id']
+            self.id = int(self.root.attrib['id'])
             self.name = self.root.attrib['name']
             self.comment = self.root.attrib['comment']
             self.proto_imp = self.root[0].text
@@ -56,9 +58,10 @@ class Module(object):
     def parseXml(self, xml_file):
         if not self.__loadXml(xml_file):
             return False
+   
         for req_reply in self.root.findall("Message/ReqReplyMsg"):
-            proto_msg = Msg()
-            proto_msg.id = req_reply.attrib['id']
+            proto_msg = Msg(self.id)
+            proto_msg.id = int(req_reply.attrib['id'])
             proto_msg.name = req_reply.attrib['name']
             proto_msg.comment = req_reply.attrib['comment']
             proto_msg.type = "ReqReplyMsg"
@@ -71,7 +74,6 @@ class Module(object):
                 req_msg_dic['field_name'] = req.attrib['field_name']
                 req_msg_dic['comment'] = req.attrib['comment']
                 req_msg_dic['tag'] = req.attrib['tag']
-                req_msg_dic['item_type'] = ItemType.REQ
                 req_msg_dic['id'] = proto_msg.id
                 proto_msg.req_list.append(req_msg_dic)
 
@@ -82,38 +84,48 @@ class Module(object):
                 reply_msg_dic['field_name'] = reply.attrib['field_name']
                 reply_msg_dic['tag'] = reply.attrib['tag']
                 reply_msg_dic['comment'] = reply.attrib['comment']
-                reply_msg_dic['item_type'] = ItemType.REPLY
                 reply_msg_dic['id'] = proto_msg.id
                 proto_msg.reply_list.append(reply_msg_dic)
             self.msg_list.append(proto_msg)
+            if self.msg_next_id < int(proto_msg.id):
+                self.msg_next_id = int(proto_msg.id)
 
-        for notify_msg in self.root.findall("Message/NotifyMsg"):
-            for notify in notify_msg:
-                proto_msg = Msg()
-                proto_msg.id = notify.attrib['id']
-                proto_msg.name = notify.attrib['name']
-                proto_msg.comment = notify.attrib['comment']
-                proto_msg.type = "NotifyMsg"
-                for field in notify:
-                    notify_msg_dic = {}
-                    notify_msg_dic['proto_type'] = field.attrib['proto_type']
-                    notify_msg_dic['value_type'] = field.attrib['value_type']
-                    notify_msg_dic['field_name'] = field.attrib['field_name']
-                    notify_msg_dic['tag'] = field.attrib['tag']
-                    notify_msg_dic['comment'] = field.attrib['comment']
-                    notify_msg_dic['item_type'] = ItemType.NOTIFY
-                    notify_msg_dic['id'] = proto_msg.id
-                    proto_msg.notify_list.append(notify_msg_dic)
-                self.msg_list.append(proto_msg)
-            pass
-        pass
+
+        for notify in self.root.findall("Message/NotifyMsg/Notify"):
+            proto_msg = Msg(self.id)
+            proto_msg.id = int(notify.attrib['id'])
+            proto_msg.name = notify.attrib['name']
+            proto_msg.comment = notify.attrib['comment']
+            proto_msg.type = "NotifyMsg"
+            for field in notify:
+                notify_msg_dic = {}
+                notify_msg_dic['proto_type'] = field.attrib['proto_type']
+                notify_msg_dic['value_type'] = field.attrib['value_type']
+                notify_msg_dic['field_name'] = field.attrib['field_name']
+                notify_msg_dic['tag'] = field.attrib['tag']
+                notify_msg_dic['comment'] = field.attrib['comment']
+                notify_msg_dic['id'] = proto_msg.id
+                proto_msg.notify_list.append(notify_msg_dic)
+            self.msg_list.append(proto_msg)
+            if self.msg_next_id < int(proto_msg.id):
+                self.msg_next_id = int(proto_msg.id)
+        self.msg_next_id = self.msg_next_id + 1
+        return True
+
+    def addMsg(self, msg):
+        self.msg_list.append(msg)
+    
+    def getMsg(self, msg_id):
+        for msg in self.msg_list:
+            if msg.id == msg_id:
+                return msg
 
     def writeXml(self, xml_file):
         # 如果已有删除，重新生成新xml文件 TODO 优化直接更改xml文件内容
         if os.path.exists(xml_file):
             os.remove(xml_file)
         root = ET.Element('Module')
-        root.attrib['id'] = self.id
+        root.attrib['id'] = str(self.id)
         root.attrib['name'] = self.name
         root.attrib['comment'] = self.comment
         proto_imp = ET.SubElement(root, 'Import')
@@ -122,7 +134,7 @@ class Module(object):
         for msg in self.msg_list:
             if msg.type == "ReqReplyMsg":
                 req_reply_msg = ET.SubElement(message, 'ReqReplyMsg')
-                req_reply_msg.attrib['id'] = msg.id
+                req_reply_msg.attrib['id'] = str(msg.id)
                 req_reply_msg.attrib['name'] = msg.name
                 req_reply_msg.attrib['comment'] = msg.comment
                 # 创建请求
@@ -159,14 +171,17 @@ class Module(object):
         # 将 xml tree 写入文件
         tree = ET.ElementTree(root)    
         tree.write(xml_file, encoding='utf-8', xml_declaration=True)
-pass
+
+    def nextMsgId(self):
+        return self.msg_next_id
+
 
 
 class ModuleMgr(object):
     def __init__(self):
         super(ModuleMgr, self).__init__()
-        self.modules = []
-        self.next_id = 0
+        self.modules = {}
+        self.mod_next_id = 0
 
     def loadXmls(self, xml_dir):
         if not os.path.exists(xml_dir):
@@ -181,11 +196,11 @@ class ModuleMgr(object):
             xml_file = os.path.join(xml_dir, file).replace('\\', '/')
             module = Module()
             module.parseXml(xml_file)
-            self.modules.append(module)
-            if module.id > mod_id:
-                mod_id = module.id
+            self.modules[module.id] = module
+            if int(module.id) > mod_id:
+                mod_id = int(module.id)
             
-        self.next_id = mod_id + 1
+        self.mod_next_id = mod_id + 1
     
     def writeXmls(self, xml_dir, modules):
         for module in modules:
@@ -194,13 +209,18 @@ class ModuleMgr(object):
                 os.remove(xml_file)
             module.writeXml(xml_file)
 
-    def getModule(self, id, item_type):
-        for module in self.modules:
-            if module.id == id and module.item_type == item_type:
-                return module
+    def getModule(self, id):
+        id = int(id)
+        return self.modules[id]
 
-    def getNextId(self):
-        return self.next_id
+    def nextModId(self):
+        return self.mod_next_id
+
+    def addModule(self, module):
+        id = int(module.id)
+        if self.modules[id]:
+            return
+        self.modules[id] = module
 
 if __name__ == "__main__":
     module = Module()

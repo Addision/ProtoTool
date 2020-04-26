@@ -6,6 +6,7 @@ class ItemType(object):
     REQ = '3'
     REPLY = '4'
     NOTIFY = '5'
+    FIELD = '6'
 
 class ItemData(object):
     def __init__(self, id, item_type):

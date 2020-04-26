@@ -13,14 +13,17 @@
   <property name="windowTitle">
    <string>自动化工具</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>true</bool>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTreeWidget" name="WidMsgTree">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>60</y>
+      <y>70</y>
       <width>491</width>
-      <height>661</height>
+      <height>651</height>
      </rect>
     </property>
     <property name="font">
@@ -30,6 +33,15 @@
       <weight>75</weight>
       <bold>true</bold>
      </font>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAsNeeded</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="autoScroll">
+     <bool>false</bool>
     </property>
     <property name="autoExpandDelay">
      <number>-1</number>
@@ -76,11 +88,20 @@
       <height>171</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::Box</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="midLineWidth">
+     <number>2</number>
     </property>
     <widget class="QRadioButton" name="BtnReq">
      <property name="geometry">
@@ -164,7 +185,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>ADD</string>
+      <string>确定</string>
      </property>
     </widget>
    </widget>
@@ -220,20 +241,29 @@
      <string>SAVE</string>
     </property>
    </widget>
-   <widget class="QFrame" name="FrameMsg_2">
+   <widget class="QFrame" name="FrameMod">
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>0</y>
+      <y>10</y>
       <width>491</width>
       <height>51</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::Box</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="midLineWidth">
+     <number>2</number>
     </property>
     <widget class="QLabel" name="label_6">
      <property name="geometry">
@@ -263,7 +293,7 @@
       <rect>
        <x>190</x>
        <y>10</y>
-       <width>61</width>
+       <width>51</width>
        <height>21</height>
       </rect>
      </property>
@@ -291,7 +321,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>ADD</string>
+      <string>确定</string>
      </property>
     </widget>
    </widget>
@@ -314,11 +344,20 @@
       <height>331</height>
      </rect>
     </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
     <property name="frameShape">
-     <enum>QFrame::Box</enum>
+     <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
+     <enum>QFrame::Plain</enum>
+    </property>
+    <property name="lineWidth">
+     <number>2</number>
+    </property>
+    <property name="midLineWidth">
+     <number>2</number>
     </property>
     <widget class="QComboBox" name="CbxValueType">
      <property name="geometry">
@@ -411,7 +450,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>ADD</string>
+      <string>确定</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_2">
