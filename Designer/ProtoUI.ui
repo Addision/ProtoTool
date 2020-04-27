@@ -16,6 +16,9 @@
   <property name="autoFillBackground">
    <bool>true</bool>
   </property>
+  <property name="styleSheet">
+   <string notr="true"/>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTreeWidget" name="WidMsgTree">
     <property name="geometry">
@@ -50,7 +53,7 @@
      <number>10</number>
     </property>
     <property name="sortingEnabled">
-     <bool>true</bool>
+     <bool>false</bool>
     </property>
     <property name="columnCount">
      <number>4</number>
@@ -91,11 +94,14 @@
     <property name="autoFillBackground">
      <bool>true</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
+     <enum>QFrame::Sunken</enum>
     </property>
     <property name="lineWidth">
      <number>2</number>
@@ -189,56 +195,43 @@
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="BtnAdd">
-    <property name="geometry">
-     <rect>
-      <x>520</x>
-      <y>110</y>
-      <width>81</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>ADD</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="BtnDel">
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>210</y>
+      <y>140</y>
       <width>81</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>DEL</string>
+     <string>删除</string>
     </property>
    </widget>
    <widget class="QPushButton" name="BtnUpdate">
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>310</y>
+      <y>240</y>
       <width>81</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>UPDATE</string>
+     <string>修改</string>
     </property>
    </widget>
    <widget class="QPushButton" name="BtnSave">
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>410</y>
+      <y>340</y>
       <width>81</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>SAVE</string>
+     <string>保存</string>
     </property>
    </widget>
    <widget class="QFrame" name="FrameMod">
@@ -253,11 +246,14 @@
     <property name="autoFillBackground">
      <bool>true</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
+     <enum>QFrame::Sunken</enum>
     </property>
     <property name="lineWidth">
      <number>2</number>
@@ -321,7 +317,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>确定</string>
+      <string>添加新模块</string>
      </property>
     </widget>
    </widget>
@@ -347,11 +343,14 @@
     <property name="autoFillBackground">
      <bool>true</bool>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="frameShape">
      <enum>QFrame::StyledPanel</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Plain</enum>
+     <enum>QFrame::Sunken</enum>
     </property>
     <property name="lineWidth">
      <number>2</number>
@@ -540,7 +539,6 @@
      <string>文件</string>
     </property>
     <addaction name="menuOpen"/>
-    <addaction name="menuRecentOen"/>
     <addaction name="separator"/>
     <addaction name="menuSave"/>
     <addaction name="menuSaveAs"/>
@@ -558,16 +556,8 @@
      <addaction name="separator"/>
      <addaction name="menuProtoClient"/>
     </widget>
-    <widget class="QMenu" name="menuTable">
-     <property name="title">
-      <string>导出数据表</string>
-     </property>
-     <addaction name="menuTableServer"/>
-     <addaction name="separator"/>
-     <addaction name="menuTableClient"/>
-    </widget>
     <addaction name="menuProto"/>
-    <addaction name="menuTable"/>
+    <addaction name="action"/>
     <addaction name="separator"/>
     <addaction name="menu_setting"/>
    </widget>
@@ -655,6 +645,11 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>导出数据表</string>
    </property>
   </action>
  </widget>
