@@ -17,18 +17,19 @@ from module import *
 from item_data import *
 
 
-class ProtoTool(QMainWindow):
+class ProtoTool(QMainWindow, QWidget):
     def __init__(self, parent=None):
         super(ProtoTool, self).__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.setWindowOpacity(0.98)
+        self.setWindowOpacity(0.96)
+        self.setStyleSheet('background-color: rgb(230, 230, 230);')
         # widget 设置
-        self.ui.WidMsgTree.setHeaderLabels(['proto msg', 'comment'])
+        self.ui.WidMsgTree.setHeaderLabels(['模块消息', '说明'])
         self.ui.WidMsgTree.setStyle(QStyleFactory.create('windows'))
         self.ui.WidMsgTree.clicked.connect(self.onTreeClicked)
         self.ui.WidMsgTree.itemClicked.connect(self.onTreeItemClicked)
-        
+
         # frame 设置
         self.ui.FrameMod.setEnabled(True)
         self.ui.FrameMsg.setEnabled(False)
@@ -36,10 +37,11 @@ class ProtoTool(QMainWindow):
         self.ui.FrameMod.installEventFilter(self)
         self.ui.FrameMsg.installEventFilter(self)
         self.ui.FrameField.installEventFilter(self)
-        # self.ui.FrameMod.setFrameStyle(QFrame.Box | QFrame.Sunken)
+        self.ui.FrameMod.setStyleSheet('background-color: rgb(200, 200, 200);')
+        self.ui.FrameMsg.setStyleSheet('background-color: rgb(200, 200, 200);')
+        self.ui.FrameField.setStyleSheet('background-color: rgb(200, 200, 200);')
         # button 设置
         self.ui.BtnSave.setEnabled(False)
-        self.ui.BtnAdd.clicked.connect(lambda: self.onBtnClicked('add'))
         self.ui.BtnDel.clicked.connect(lambda: self.onBtnClicked('del'))
         self.ui.BtnUpdate.clicked.connect(lambda: self.onBtnClicked('update'))
         self.ui.BtnSave.clicked.connect(lambda: self.onBtnClicked('save'))
@@ -47,6 +49,9 @@ class ProtoTool(QMainWindow):
         self.ui.BtnMsgAdd.clicked.connect(lambda: self.onBtnClicked('msg_add'))
         self.ui.BtnFieldAdd.clicked.connect(
             lambda: self.onBtnClicked('field_add'))
+        self.ui.BtnDel.setEnabled(False)
+        self.ui.BtnUpdate.setEnabled(False)
+        self.ui.BtnSave.setEnabled(False)
         # menu 设置
         self.ui.menuSave.setEnabled(False)
         self.ui.menuSaveAs.setEnabled(False)
@@ -54,7 +59,7 @@ class ProtoTool(QMainWindow):
         self.ui.menuTool.triggered[QAction].connect(self.onMenuTrigger)
         # tableview 设置
         self.model = QStandardItemModel()
-        self.model.setHorizontalHeaderLabels(['name', 'value'])
+        self.model.setHorizontalHeaderLabels(['名称', '说明'])
         self.ui.BbvInfo.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.BbvInfo.setEditTriggers(QTableView.NoEditTriggers)
         self.ui.BbvInfo.setSelectionMode(QAbstractItemView.NoSelection)
@@ -203,7 +208,6 @@ class ProtoTool(QMainWindow):
                         item_msg.addChild(item_field)
             self.ui.WidMsgTree.expandToDepth(0)
 
-
     def onTreeClicked(self, item_idx):
         tree_item = self.ui.WidMsgTree.currentItem()
         if tree_item.text(3) == ItemType.MODULE:
@@ -213,6 +217,8 @@ class ProtoTool(QMainWindow):
         pass
 
     def onTreeItemClicked(self, idx):
+        self.ui.BtnDel.setEnabled(True)
+        self.ui.BtnUpdate.setEnabled(True)
         self.selected_item = self.ui.WidMsgTree.currentItem()
         self.showItemInfo(self.selected_item)
         item_type = self.selected_item.text(3)
@@ -240,60 +246,145 @@ class ProtoTool(QMainWindow):
             self.is_add_field = False
             self.ui.FrameMsg.setEnabled(False)
             self.ui.FrameField.setEnabled(False)
-        # clear edit      
+        # clear edit
         self.ui.LetModName.clear()
         self.ui.LetModCmt.clear()
         self.ui.LetMsgName.clear()
         self.ui.LetMsgCmt.clear()
-        self.ui.LetFieldName.clear()      
+        self.ui.LetFieldName.clear()
         self.ui.LetFieldCmt.clear()
 
+    def saveAll(self):
+        save_dir = self.config.getProtoXml()
+        self.module_mgr.writeXmls(save_dir)
+        pass    
+
     def onBtnClicked(self, btn):
-        if btn == 'add':
-            # 如果选中的是消息 增加字段 否则 增加新模块
-            if self.selected_item and self.selected_item.text(3) == ItemType.MODULE:
-                self.ui.FrameMsg.setEnabled(True)
-                self.selected_item = None
-            if self.selected_item and self.selected_item.text(3) == ItemType.MSG:
-                self.ui.FrameField.setEnabled(True)
-                self.ui.FrameMsg.setEnabled(False)
-                self.selected_item = None
-            else:
-                print('add module')
-
-            print('add')
-        if btn == 'del':
-            print('del')
-        if btn == 'update':
-            print('update')
-        if btn == 'save':
-            print('save')
-
+        self.ui.BtnSave.setEnabled(True)
         if btn == 'mod_add':
             self.modAdd()
+            self.showModuleMsg()        
+        if not self.selected_item:
+            return
+        if btn != 'mod_add' and self.selected_item.text(3) == ItemType.MODULE:
+            mod_id = self.selected_item.text(2)
+            if btn == 'del':
+                self.module_mgr.delModule(mod_id)
+            if btn == 'update':
+                mod_name = self.ui.LetModName.text().strip()
+                mod_comment = self.ui.LetModCmt.text().strip()
+                mod = self.module_mgr.getModule(mod_id)
+                if not mod:
+                    return
+                mod.update(mod_name, mod_comment)
+            pass
+        if self.selected_item.text(3) == ItemType.MSG or self.selected_item.text(3)== ItemType.NOTIFY:
+            mod_id = self.selected_item.parent().text(2)
+            mod = self.module_mgr.getModule(mod_id)
+            if not mod:
+                return
+            if btn == 'del':
+                msg_id = self.selected_item.text(2)
+                mod.delMsg(msg_id)
+            if btn == 'update':
+                msg_name = self.ui.LetMsgName.text().strip()
+                msg_comment = self.ui.LetMsgCmt.text().strip()
+                msg = mod.getMsg(self.selected_item.text(2))
+                if not msg:
+                    return
+                msg.updateMsg(msg_name, msg_comment)
+            pass
+        if self.selected_item.text(3) == ItemType.FIELD:
+            msg = self.getMsgByFieldItem(self.selected_item)
+            field_name = self.selected_item.text(0)
+            if not msg:
+                return            
+            if btn == 'del':
+                msg_item = self.selected_item.parent()
+                if msg_item.text(3) == ItemType.REQ:
+                    msg.delField(field_name, 'req')
+                if msg_item.text(3) == ItemType.REPLY:
+                    msg.delField(field_name, 'reply')
+                if msg_item.text(3) == ItemType.NOTIFY:
+                    msg.delField(field_name, 'notify')
+            if btn == 'update':
+                field = None
+                msg_item = self.selected_item.parent()
+                if msg_item.text(3) == ItemType.REQ:
+                    field = msg.findField(field_name, 'req')
+                if msg_item.text(3) == ItemType.REPLY:
+                    field = msg.findField(field_name, 'reply')
+                if msg_item.text(3) == ItemType.NOTIFY:
+                    field = msg.findField(field_name, 'notify')      
+                field['proto_type'] = self.ui.CbxProtoType
+                field['proto_value']= self.ui.CbxValueType
+                field_name = self.ui.LetFieldName.text().strip()
+                field_comment = self.ui.LetFieldCmt.text().strip()
+                if field_name != "":
+                    field['field_name'] = field_name
+                if field_comment != "":
+                    field['comment'] = field_comment
+            pass
+        if btn == 'save':
+            self.saveAll()
+
         if btn == 'msg_add':
             self.msgAdd()
         if btn == 'field_add':
             self.fieldAdd()
 
-    def fieldAdd(self):
-        name = self.selected_item.text(0)
+        self.ui.BtnSave.setEnabled(False)
+        self.ui.BtnDel.setEnabled(False)
+        self.ui.BtnUpdate.setEnabled(False)
+        self.ui.WidMsgTree.clearSelection()
+        self.selected_item = None
+        self.showModuleMsg()
+        self.ui.WidMsgTree.expandToDepth(2)
+
+    def getMsgByFieldItem(self, item):
+        name = item.text(0)
         msg_item = None
-        if name == "req" or name == "reply":
-            msg_item = self.selected_item.parent()
+        if name == 'req' or name == 'reply':
+            msg_item = item.parent()
         else:
-            msg_item = self.selected_item
+            msg_item = item
         msg_id = msg_item.text(2)
-        
+        mod_id = msg_item.parent().text(2)
+        msg = self.module_mgr.getMsg(mod_id, msg_id)
+        return msg        
         pass
+
+    def fieldAdd(self):
+        if self.ui.LetFieldName == "":
+            return
+        name = self.selected_item.text(0)
+        msg = self.getMsgByFieldItem(self.selected_item)
+        if not msg:
+            return
+        next_tag = 0
+        if name == 'req' or name == 'reply':
+            next_tag = msg.getNextTag(name)
+        else:
+            next_tag = msg.getNextTag('notify')
+        field = {}
+        field['proto_type'] = self.ui.CbxProtoType.currentText()
+        field['value_type'] = self.ui.CbxValueType.currentText()
+        field['field_name'] = self.ui.LetFieldName.text().strip()
+        field['tag'] = str(next_tag)
+        field['comment'] = self.ui.LetFieldCmt.text().strip()
+        if name == 'req' or name == 'reply':
+            msg.addField(field, name)
+        else:
+            msg.addField(field, 'notify')
+            pass
 
     def msgAdd(self):
         mod_id = self.selected_item.text(2)
         msg = Msg(mod_id)
         msg.name = self.ui.LetMsgName.text().strip()
         if msg.name == "":
-            return  
-        msg.comment = self.ui.LetMsgCmt.text().strip()          
+            return
+        msg.comment = self.ui.LetMsgCmt.text().strip()
         mod = self.module_mgr.getModule(mod_id)
         if not mod:
             return
@@ -305,8 +396,6 @@ class ProtoTool(QMainWindow):
             # add notify msg
             msg.type = "NotifyMsg"
         mod.addMsg(msg)
-        self.showModuleMsg()
-
         pass
 
     def modAdd(self):
@@ -318,16 +407,15 @@ class ProtoTool(QMainWindow):
         mod.comment = self.ui.LetModCmt.text().strip() or ""
         mod.proto_imp = ""
         self.module_mgr.addModule(mod)
-        self.showModuleMsg()
         # clear
         self.ui.LetModCmt.clear()
         self.ui.LetModName.clear()
 
     def showItemInfo(self, item):
         item_type = item.text(3)
-
+        self.model.clear()
+        self.model.setHorizontalHeaderLabels(['名称', '说明'])
         if item_type == ItemType.MODULE or item_type == ItemType.MSG or item_type == ItemType.NOTIFY:
-            self.model.removeRows(0, 3)
             name = item.text(0)
             comment = item.text(1)
             id = item.text(2)
@@ -338,9 +426,23 @@ class ProtoTool(QMainWindow):
                 [QStandardItem('comment'), QStandardItem(comment)])
             pass
         if item_type == ItemType.FIELD:
-            print(item.parent().text(3))
-            print(item.parent().text(1))
-            pass
+            msg = self.getMsgByFieldItem(item.parent())
+            item_name = item.text(0)
+            field = None
+            item_parent_name = item.parent().text(0)
+            if item_parent_name == 'req' or item_parent_name=='reply':
+                field = msg.getField(item_name, item_parent_name)
+            else:
+                field = msg.getField(item_name, 'notify')
+            if not field:
+                return
+            self.model.appendRow([QStandardItem('msg'), QStandardItem(msg.name)])                
+            self.model.appendRow([QStandardItem('name'), QStandardItem(field['field_name'])])
+            self.model.appendRow([QStandardItem('tag'), QStandardItem(field['tag'])])            
+            self.model.appendRow([QStandardItem('value type'), QStandardItem(field['value_type'])])            
+            self.model.appendRow([QStandardItem('comment'), QStandardItem(field['comment'])])            
+
+
 
 
 if __name__ == '__main__':
