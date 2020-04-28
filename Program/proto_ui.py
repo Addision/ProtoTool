@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '../Designer/ProtoUI.ui'
+# Form implementation generated from reading ui file '../Designer/tool.ui'
 #
 # Created by: PyQt5 UI code generator 5.13.0
 #
@@ -162,8 +162,8 @@ class Ui_MainWindow(object):
         self.menuTool.setObjectName("menuTool")
         self.menuProto = QtWidgets.QMenu(self.menuTool)
         self.menuProto.setObjectName("menuProto")
-        self.menuTable = QtWidgets.QMenu(self.menuTool)
-        self.menuTable.setObjectName("menuTable")
+        self.menuSet = QtWidgets.QMenu(self.menubar)
+        self.menuSet.setObjectName("menuSet")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
@@ -188,10 +188,11 @@ class Ui_MainWindow(object):
         self.menuTableServer.setObjectName("menuTableServer")
         self.menuTableClient = QtWidgets.QAction(MainWindow)
         self.menuTableClient.setObjectName("menuTableClient")
-        self.menu_setting = QtWidgets.QAction(MainWindow)
-        self.menu_setting.setObjectName("menu_setting")
+        self.menuTable = QtWidgets.QAction(MainWindow)
+        self.menuTable.setObjectName("menuTable")
+        self.menuSetting = QtWidgets.QAction(MainWindow)
+        self.menuSetting.setObjectName("menuSetting")
         self.menuFile.addAction(self.menuOpen)
-        self.menuFile.addAction(self.menuRecentOen)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.menuSave)
         self.menuFile.addAction(self.menuSaveAs)
@@ -199,15 +200,13 @@ class Ui_MainWindow(object):
         self.menuProto.addAction(self.menuProtoServer)
         self.menuProto.addSeparator()
         self.menuProto.addAction(self.menuProtoClient)
-        self.menuTable.addAction(self.menuTableServer)
-        self.menuTable.addSeparator()
-        self.menuTable.addAction(self.menuTableClient)
         self.menuTool.addAction(self.menuProto.menuAction())
-        self.menuTool.addAction(self.menuTable.menuAction())
+        self.menuTool.addAction(self.menuTable)
         self.menuTool.addSeparator()
-        self.menuTool.addAction(self.menu_setting)
+        self.menuSet.addAction(self.menuSetting)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuTool.menuAction())
+        self.menubar.addAction(self.menuSet.menuAction())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -247,7 +246,7 @@ class Ui_MainWindow(object):
         self.menuFile.setTitle(_translate("MainWindow", "文件"))
         self.menuTool.setTitle(_translate("MainWindow", "工具"))
         self.menuProto.setTitle(_translate("MainWindow", "导出协议"))
-        self.menuTable.setTitle(_translate("MainWindow", "导出数据表"))
+        self.menuSet.setTitle(_translate("MainWindow", "设置"))
         self.actionopen.setText(_translate("MainWindow", "open"))
         self.menuOpen.setText(_translate("MainWindow", "打开"))
         self.menuOpen.setShortcut(_translate("MainWindow", "Ctrl+O"))
@@ -266,5 +265,5 @@ class Ui_MainWindow(object):
         self.menuTableServer.setShortcut(_translate("MainWindow", "Ctrl+Shift+P"))
         self.menuTableClient.setText(_translate("MainWindow", "客户端"))
         self.menuTableClient.setShortcut(_translate("MainWindow", "Ctrl+Shift+D"))
-        self.menu_setting.setText(_translate("MainWindow", "选项"))
-        self.menu_setting.setShortcut(_translate("MainWindow", "Ctrl+T"))
+        self.menuTable.setText(_translate("MainWindow", "导出数据表"))
+        self.menuSetting.setText(_translate("MainWindow", "设置选项"))

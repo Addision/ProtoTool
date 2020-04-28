@@ -1,17 +1,4 @@
-'''
-@Author: jia.lai
-@Date: 2020-04-23 10:55:24
-@LastEditors: jia.lai
-@LastEditTime: 2020-04-23 16:17:23
-@Description: 
-'''
-'''
-[project]
-name = proj
-path = C:/aaa/bb
-'''
 # -*-coding:utf-8-*-
-
 from configparser import ConfigParser
 import os
 class Config(object):
@@ -26,19 +13,29 @@ class Config(object):
                 self.conf.read(self.path)
                 self.conf.add_section('project')
                 self.conf.set('project', 'name', "proto tool")
-                self.conf.set('project', 'proto_xml', "/")
-                self.conf.set('project', 'proto_dir', "/")
-                self.conf.write(open(self.path, "w"))
+                self.conf.set('project', 'msg_path', "C:/")
+                self.conf.set('project', 'proto_path', "C:/")
+                self.conf.set('project', 'proto_gen_path', 'C:/')
+                self.conf.set('project', 'table_path', 'C:/')
+                self.conf.write(f)
         else:
-            self.conf.read(self.path)
+            self.conf.read(self.path, encoding='utf-8-sig')
 
-    def updateProtoXml(self, proto_xml):
-        self.conf.set('project', 'proto_xml', proto_xml)
+    def updateConf(self, msg_path, proto_path, proto_gen_path, table_path):
+        self.conf.set('project', 'msg_path', msg_path)
+        self.conf.set('project', 'proto_path', proto_path)
+        self.conf.set('project', 'proto_gen_path', proto_gen_path)
+        self.conf.set('project', 'table_path', table_path)
+
+    def updateConfOne(self, conf_lable, content):
+        self.conf.set('project', conf_lable, content)
         self.conf.write(open(self.path, "w"))
 
-    def getProtoXml(self):
-        proto_xml = self.conf.get('project', 'proto_xml')
-        return proto_xml
+    def getConfOne(self, conf_lable):
+        path = self.conf.get('project', conf_lable)
+        return path
+
+
 
 # if __name__ == '__main__':
 #     config = Config()
