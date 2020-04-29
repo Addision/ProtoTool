@@ -18,6 +18,7 @@ from msg import *
 from module_mgr import *
 from item_data import *
 from setting import *
+from mod_gui import *
 import configparser
 
 
@@ -28,21 +29,25 @@ class ProtoTool(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowOpacity(0.96)
         self.setStyleSheet('background-color: rgb(230, 230, 230);')
-
+        # 禁用窗口最大化 拉伸
+        self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
+        self.setFixedSize(self.width(), self.height())
         # widget 设置
         self.ui.WidMsgTree.setHeaderLabels(['模块消息', '说明'])
         self.ui.WidMsgTree.setStyle(QStyleFactory.create('windows'))
         self.ui.WidMsgTree.clicked.connect(self.onTreeClicked)
         self.ui.WidMsgTree.itemClicked.connect(self.onTreeItemClicked)
-
+        # 右键菜单
+        self.ui.WidMsgTree.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.ui.WidMsgTree.customContextMenuRequested.connect(self.rightClickMenu)
         # frame 设置
-        self.ui.FrameMod.setEnabled(True)
+        # self.ui.FrameMod.setEnabled(True)
         self.ui.FrameMsg.setEnabled(False)
         self.ui.FrameField.setEnabled(False)
-        self.ui.FrameMod.installEventFilter(self)
+        # self.ui.FrameMod.installEventFilter(self)
         self.ui.FrameMsg.installEventFilter(self)
         self.ui.FrameField.installEventFilter(self)
-        self.ui.FrameMod.setStyleSheet('background-color: rgb(200, 200, 200);')
+        # self.ui.FrameMod.setStyleSheet('background-color: rgb(200, 200, 200);')
         self.ui.FrameMsg.setStyleSheet('background-color: rgb(200, 200, 200);')
         self.ui.FrameField.setStyleSheet(
             'background-color: rgb(200, 200, 200);')
@@ -51,7 +56,7 @@ class ProtoTool(QMainWindow):
         self.ui.BtnDel.clicked.connect(lambda: self.onBtnClicked('del'))
         self.ui.BtnUpdate.clicked.connect(lambda: self.onBtnClicked('update'))
         self.ui.BtnSave.clicked.connect(lambda: self.onBtnClicked('save'))
-        self.ui.BtnModAdd.clicked.connect(lambda: self.onBtnClicked('mod_add'))
+        # self.ui.BtnModAdd.clicked.connect(lambda: self.onBtnClicked('mod_add'))
         self.ui.BtnMsgAdd.clicked.connect(lambda: self.onBtnClicked('msg_add'))
         self.ui.BtnFieldAdd.clicked.connect(
             lambda: self.onBtnClicked('field_add'))
@@ -76,7 +81,6 @@ class ProtoTool(QMainWindow):
         self.ui.BbvInfo.setModel(self.model)
         # other 设置
         self.ui.BtnReq.setChecked(True)
-        self.setFixedSize(self.width(), self.height())
         self.selected_item = None
         self.config = Config()
         self.module_mgr = ModuleMgr()
@@ -84,6 +88,37 @@ class ProtoTool(QMainWindow):
         self.is_add_msg = False
         self.is_add_field = False
     pass
+
+    def rightClickMenu(self, pos):
+        try:
+            self.contextMenu = QMenu(self.ui.WidMsgTree)#创建对象
+            item = self.ui.WidMsgTree.itemAt(pos)
+            add_menu = None
+            del_menu = None
+            update_menu = None
+            if not item:
+                add_menu = self.contextMenu.addAction(u'添加模块')#添加动作
+                del_menu = self.contextMenu.addAction(u'删除模块')
+            elif item.text(3) == ItemType.MODULE:
+                add_menu = self.contextMenu.addAction(u'添加消息')
+                update_menu = self.contextMenu.addAction(u'更新消息')
+                del_menu = self.contextMenu.addAction(u'删除消息')
+            add_menu.triggered.connect(lambda: self.actionHandler('add', item))
+            if update_menu:
+                update_menu.triggered.connect(lambda: self.actionHandler('update', item))
+            del_menu.triggered.connect(lambda: self.actionHandler('del', item))
+            self.contextMenu.exec_(QCursor.pos())#随指针的位置显示菜单       
+        except Exception as e:
+            print(e)
+            pass
+        pass
+
+    def actionHandler(self, op_flag, item=None):
+        if not item and op_flag == 'add':
+            self.mod_form = ModGui()
+            self.mod_form.show()
+
+        print('aaaaaaaaddddddddddddd')
 
     def openProto(self):
         msg_path = self.config.getConfOne('msg_path')
@@ -96,20 +131,20 @@ class ProtoTool(QMainWindow):
         print(event)
 
     def eventFilter(self, object, event):
-        if event.type() == QtCore.QEvent.FocusOut:
-            print("FocusOut......")
-        if event.type() == QtCore.QEvent.FocusIn:
-            print("XXXXXXXXXXXXXXXXXXXXXXXXX")
-        if event.type() == QtCore.QEvent.MouseButtonPress:
-            if object != self.ui.FrameMod:
-                self.ui.LetModName.clear()
-                self.ui.LetModCmt.clear()
-            if object != self.ui.FrameMsg:
-                self.ui.LetMsgName.clear()
-                self.ui.LetMsgCmt.clear()
-            if object != self.ui.FrameField:
-                self.ui.LetFieldName.clear()
-                self.ui.LetFieldCmt.clear()
+        # if event.type() == QtCore.QEvent.FocusOut:
+        #     print("FocusOut......")
+        # if event.type() == QtCore.QEvent.FocusIn:
+        #     print("XXXXXXXXXXXXXXXXXXXXXXXXX")
+        # if event.type() == QtCore.QEvent.MouseButtonPress:
+        #     if object != self.ui.FrameMod:
+        #         self.ui.LetModName.clear()
+        #         self.ui.LetModCmt.clear()
+        #     if object != self.ui.FrameMsg:
+        #         self.ui.LetMsgName.clear()
+        #         self.ui.LetMsgCmt.clear()
+        #     if object != self.ui.FrameField:
+        #         self.ui.LetFieldName.clear()
+        #         self.ui.LetFieldCmt.clear()
         return True
 
     def onMenuTrigger(self, menu):
