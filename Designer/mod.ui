@@ -16,7 +16,7 @@
   <property name="windowTitle">
    <string>模块</string>
   </property>
-  <widget class="QPushButton" name="BtnModAdd">
+  <widget class="QPushButton" name="BtnMod">
    <property name="geometry">
     <rect>
      <x>70</x>

@@ -2,15 +2,14 @@
 import os
 import sys
 import codecs
-from item_data import *
 from module import *
-
 
 class ModuleMgr(object):
     def __init__(self):
         super(ModuleMgr, self).__init__()
-        self.modules = {}
-        self.mod_next_id = 10
+        self.module_dic = {}  # <mod_id, mod>
+        self.mod_file_dic = {}  # <mod_id, path>
+        self.mod_next_id = '0'
 
     def loadXmls(self, xml_dir):
         if not os.path.exists(xml_dir):
@@ -18,54 +17,53 @@ class ModuleMgr(object):
         listFiles = os.listdir(xml_dir)
         if not listFiles:
             return False
-        mod_id = 0
+
         for file in listFiles:
             if not file.endswith(".xml", 4):
                 continue
             xml_file = os.path.join(xml_dir, file).replace('\\', '/')
             module = Module()
-            module.parseXml(xml_file)
-            self.modules[module.id] = module
-            if int(module.id) > mod_id:
-                mod_id = int(module.id)
+            module.loadXml(xml_file)
+            self.module_dic[module.id] = module
 
-        self.mod_next_id = mod_id
+            if int(module.id) > int(self.mod_next_id):
+                self.mod_next_id = module.id
+        self.mod_next_id = str(int(self.mod_next_id)+1)
 
-    def getModFile(self, xml_dir, mod):
-        xml_file = xml_dir + "/Module" + mod.name+".xml"
+    def getModFile(self, xml_dir, mod_name):
+        xml_file = xml_dir + "/Module" + mod_name+".xml"
         return xml_file
 
-    def writeXmls(self, xml_dir):
-        for _, module in self.modules.items():
-            xml_file = self.getModFile(xml_dir, module)
-            module.writeXml(xml_file)
+    def saveXmls(self, xml_dir):
+        for mod_id, module in self.module_dic.items():
+            xml_file = self.getModFile(xml_dir, module.name)
+            module.saveXml(xml_file)
 
-    def getMod(self, id):
-        if id == '':
-            return None
-        id = int(id)
-        return self.modules[id]
+    def existModule(self, mod_id):
+        if not mod_id:
+            return False, None
+        if mod_id in self.module_dic.keys():
+            return True, self.module_dic[mod_id]
+        return False, None
 
-    def getMsg(self, mod_id, msg_id):
-        mod = self.getMod(mod_id)
-        if not mod:
-            return
-        msg = mod.getMsg(msg_id)
-        return msg
-
-    def nextModId(self):
-        self.mod_next_id += 1
-        return self.mod_next_id
+    def getModule(self, mod_id):
+        is_exist, module = self.existModule(mod_id)
+        if is_exist:
+            return module
+        return None
 
     def addModule(self, module):
-        id = int(module.id)
-        if id in self.modules.keys():
-            return
-        self.modules[id] = module
+        is_exist, module = self.existModule(module.id)
+        if not is_exist:
+            self.module_dic[module.id] = module
 
     def delModule(self, mod_id):
-        id = int(mod_id)
-        if not self.modules[id]:
-            return
-        os.remove(self.modules[id].xml_file)
-        self.modules.pop(id)
+        is_exist, module = self.existModule(mod_id)
+        if is_exist:
+            os.remove(self.modules[mod_id].xml_file)
+            self.module_dic.pop(mod_id)
+
+    def getNextModId(self):
+        next_id = self.mod_next_id
+        self.mod_next_id = self.mod_next_id + 1
+        return next_id

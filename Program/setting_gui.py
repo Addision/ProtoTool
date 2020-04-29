@@ -7,9 +7,9 @@ from setting_ui import *
 from config import *
 
 
-class Setting(QMainWindow):
+class SettingGui(QMainWindow):
     def __init__(self, parent=None):
-        super(Setting, self).__init__()
+        super(SettingGui, self).__init__()
         self.ui = Ui_SettingWindow()
         self.ui.setupUi(self)
         self.setWindowOpacity(0.96)

@@ -2,13 +2,11 @@
 
 # Form implementation generated from reading ui file '../Designer/tool.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -240,3 +238,4 @@ class Ui_MainWindow(object):
         self.menuTableClient.setShortcut(_translate("MainWindow", "Ctrl+Shift+D"))
         self.menuTable.setText(_translate("MainWindow", "导出数据表"))
         self.menuSetting.setText(_translate("MainWindow", "设置选项"))
+

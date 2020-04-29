@@ -16,9 +16,9 @@ from config import *
 from module import *
 from msg import *
 from module_mgr import *
-from setting_gui import *
+from item_data import *
+from setting import *
 from mod_gui import *
-from common import *
 import configparser
 
 
@@ -39,11 +39,15 @@ class ProtoTool(QMainWindow):
         self.ui.WidMsgTree.itemClicked.connect(self.onTreeItemClicked)
         # 右键菜单
         self.ui.WidMsgTree.setContextMenuPolicy(Qt.CustomContextMenu)
-        self.ui.WidMsgTree.customContextMenuRequested.connect(
-            self.rightClickMenu)
+        self.ui.WidMsgTree.customContextMenuRequested.connect(self.rightClickMenu)
         # frame 设置
+        # self.ui.FrameMod.setEnabled(True)
         self.ui.FrameMsg.setEnabled(False)
         self.ui.FrameField.setEnabled(False)
+        # self.ui.FrameMod.installEventFilter(self)
+        self.ui.FrameMsg.installEventFilter(self)
+        self.ui.FrameField.installEventFilter(self)
+        # self.ui.FrameMod.setStyleSheet('background-color: rgb(200, 200, 200);')
         self.ui.FrameMsg.setStyleSheet('background-color: rgb(200, 200, 200);')
         self.ui.FrameField.setStyleSheet(
             'background-color: rgb(200, 200, 200);')
@@ -52,6 +56,7 @@ class ProtoTool(QMainWindow):
         self.ui.BtnDel.clicked.connect(lambda: self.onBtnClicked('del'))
         self.ui.BtnUpdate.clicked.connect(lambda: self.onBtnClicked('update'))
         self.ui.BtnSave.clicked.connect(lambda: self.onBtnClicked('save'))
+        # self.ui.BtnModAdd.clicked.connect(lambda: self.onBtnClicked('mod_add'))
         self.ui.BtnMsgAdd.clicked.connect(lambda: self.onBtnClicked('msg_add'))
         self.ui.BtnFieldAdd.clicked.connect(
             lambda: self.onBtnClicked('field_add'))
@@ -66,6 +71,7 @@ class ProtoTool(QMainWindow):
         self.ui.menuFile.triggered[QAction].connect(self.onMenuTrigger)
         self.ui.menuTool.triggered[QAction].connect(self.onMenuTrigger)
         self.ui.menuSet.triggered[QAction].connect(self.onMenuTrigger)
+
         # tableview 设置
         self.model = QStandardItemModel()
         self.model.setHorizontalHeaderLabels(['名称', '说明'])
@@ -79,78 +85,67 @@ class ProtoTool(QMainWindow):
         self.config = Config()
         self.module_mgr = ModuleMgr()
         self.openProto()
+        self.is_add_msg = False
+        self.is_add_field = False
     pass
 
     def rightClickMenu(self, pos):
         try:
-            self.contextMenu = QMenu(self.ui.WidMsgTree)  # 创建对象
+            self.contextMenu = QMenu(self.ui.WidMsgTree)#创建对象
             item = self.ui.WidMsgTree.itemAt(pos)
             add_menu = None
             del_menu = None
             update_menu = None
             if not item:
-                add_menu = self.contextMenu.addAction(u'添加模块')  # 添加动作
-                update_menu = self.contextMenu.addAction(u'更新模块')
+                add_menu = self.contextMenu.addAction(u'添加模块')#添加动作
                 del_menu = self.contextMenu.addAction(u'删除模块')
             elif item.text(3) == ItemType.MODULE:
                 add_menu = self.contextMenu.addAction(u'添加消息')
                 update_menu = self.contextMenu.addAction(u'更新消息')
                 del_menu = self.contextMenu.addAction(u'删除消息')
             add_menu.triggered.connect(lambda: self.actionHandler('add', item))
-            update_menu.triggered.connect(
-                lambda: self.actionHandler('update', item))
+            if update_menu:
+                update_menu.triggered.connect(lambda: self.actionHandler('update', item))
             del_menu.triggered.connect(lambda: self.actionHandler('del', item))
-            self.contextMenu.exec_(QCursor.pos())  # 随指针的位置显示菜单
+            self.contextMenu.exec_(QCursor.pos())#随指针的位置显示菜单       
         except Exception as e:
             print(e)
             pass
         pass
 
-    def addModule(self):
-        
-        pass
-
-    def updateModule(self):
-        pass
-
-    def delModule(self):
-        pass
-
-    def addMsg(self):
-        pass
-
-    def updateMsg(self):
-        pass
-
-    def delMsg(self):
-        pass
-
-    def addField(self):
-        pass
-
-    def updateField(self):
-        pass
-
-    def delField(self):
-        pass
-
     def actionHandler(self, op_flag, item=None):
-        if not item:
-            if op_flag == 'add':  # add mod
-                pass
-            if op_flag == 'update':  # update mod
-                pass
-            if op_flag == 'del':  # del mod
-                pass
         if not item and op_flag == 'add':
             self.mod_form = ModGui()
             self.mod_form.show()
+
+        print('aaaaaaaaddddddddddddd')
 
     def openProto(self):
         msg_path = self.config.getConfOne('msg_path')
         if msg_path:
             self.module_mgr.loadXmls(msg_path)
             self.showModuleMsg()
+
+    def mousePressEvent(self, event):
+        print("mousePressEvent")
+        print(event)
+
+    def eventFilter(self, object, event):
+        # if event.type() == QtCore.QEvent.FocusOut:
+        #     print("FocusOut......")
+        # if event.type() == QtCore.QEvent.FocusIn:
+        #     print("XXXXXXXXXXXXXXXXXXXXXXXXX")
+        # if event.type() == QtCore.QEvent.MouseButtonPress:
+        #     if object != self.ui.FrameMod:
+        #         self.ui.LetModName.clear()
+        #         self.ui.LetModCmt.clear()
+        #     if object != self.ui.FrameMsg:
+        #         self.ui.LetMsgName.clear()
+        #         self.ui.LetMsgCmt.clear()
+        #     if object != self.ui.FrameField:
+        #         self.ui.LetFieldName.clear()
+        #         self.ui.LetFieldCmt.clear()
+        return True
 
     def onMenuTrigger(self, menu):
         if menu == self.ui.menuOpen:
@@ -169,7 +164,7 @@ class ProtoTool(QMainWindow):
             self.menuSetting()
 
     def menuSetting(self):
-        self.setting = SettingGui()
+        self.setting = Setting()
         self.setting.show()
 
     def menuBarOpen(self):
@@ -200,75 +195,65 @@ class ProtoTool(QMainWindow):
 
         pass
 
-    def getMsgTypeByItemName(self, item_name):
-        if item_name.endswith('Req', 3):
-            return MsgType.REQ
-        if item_name.endswith('Reply', 5):
-            return MsgType.REPLY
-        if item_name.endswith('Notify', 6):
-            return MsgType.NOTIFY
-
     def showModuleMsg(self):
         self.ui.WidMsgTree.clear()
-        if not self.module_mgr.module_dic:
+        if not self.module_mgr.modules:
             return
-        for id, module in self.module_mgr.module_dic.items():
+        for id, module in self.module_mgr.modules.items():
             QApplication.processEvents()
             # add module
             item_module = QTreeWidgetItem(self.ui.WidMsgTree)
             item_module.setText(0, module.name)
             item_module.setText(1, module.comment)
-            item_module.setText(2, module.id)
-            item_module.setText(3, ItemType.MODULE)
-            # add msg
-            for msg_id, req_msg in module.req_msg_dic.items():
-                # add req
-                item_req_msg = QTreeWidgetItem()
-                item_module.addChild(item_req_msg)
-                item_req_msg.setText(0, req_msg.name)
-                item_req_msg.setText(1, req_msg.comment)
-                item_req_msg.setText(2, req_msg.id)
-                item_req_msg.setText(3, ItemType.MSG)
-                # add field
-                for field in req_msg.field_list:
-                    item_field = QTreeWidgetItem()
-                    item_req_msg.addChild(item_field)
-                    item_field.setText(0, field.field_name)
-                    item_field.setText(1, field.comment)
-                    item_field.setText(2, req_msg.id)
-                    item_field.setText(3, ItemType.FIELD)
-                # add reply
-                reply_msg = module.reply_msg_dic[msg_id]
-                item_reply_msg = QTreeWidgetItem()
-                item_module.addChild(item_reply_msg)
-                item_reply_msg.setText(0, reply_msg.name)
-                item_reply_msg.setText(1, reply_msg.comment)
-                item_reply_msg.setText(2, reply_msg.id)
-                item_reply_msg.setText(3, ItemType.MSG)
-                for field in reply_msg.field_list:
-                    item_field = QTreeWidgetItem()
-                    item_reply_msg.addChild(item_field)
-                    item_field.setText(0, field.field_name)
-                    item_field.setText(1, field.comment)
-                    item_field.setText(2, reply_msg.id)
-                    item_field.setText(3, ItemType.FIELD)
-
-            for msg_id, msg in module.notify_msg_dic.items():
+            item_module.setText(2, str(module.id))
+            item_module.setText(3, str(ItemType.MODULE))
+            # item_module.setFont(10, QFont("Arial", 15, QFont.Bold))
+            for msg in module.msg_list:
+                # add msg item
                 item_msg = QTreeWidgetItem()
-                item_module.addChild(item_msg)
                 item_msg.setText(0, msg.name)
                 item_msg.setText(1, msg.comment)
-                item_msg.setText(2, msg.id)
-                item_msg.setText(3, ItemType.MSG)
-                # add field
-                for field in msg.field_list:
-                    item_field = QTreeWidgetItem()
-                    item_msg.addChild(item_field)
-                    item_field.setText(0, field.field_name)
-                    item_field.setText(1, field.comment)
-                    item_field.setText(2, msg.id)
-                    item_field.setText(3, ItemType.FIELD)
-
+                item_msg.setText(2, str(msg.id))
+                item_msg.setText(3, str(ItemType.MSG))
+                item_module.addChild(item_msg)
+                if msg.type == 'ReqReplyMsg':
+                    # add req reply item
+                    item_req = QTreeWidgetItem()
+                    item_req.setText(0, "req")
+                    item_req.setText(3, ItemType.REQ)
+                    item_reply = QTreeWidgetItem()
+                    item_reply.setText(0, "reply")
+                    item_reply.setText(3, ItemType.REPLY)
+                    # item_reply.setSelected(False)
+                    item_msg.addChild(item_req)
+                    item_msg.addChild(item_reply)
+                    for item in msg.req_list:
+                        if not item:
+                            continue
+                        item_field = QTreeWidgetItem()
+                        item_field.setText(0, item['field_name'])
+                        item_field.setText(1, item['comment'])
+                        item_field.setText(2, str(msg.id))
+                        item_field.setText(3, ItemType.FIELD)
+                        item_req.addChild(item_field)
+                    for item in msg.reply_list:
+                        if not item:
+                            continue
+                        item_field = QTreeWidgetItem()
+                        item_field.setText(0, item['field_name'])
+                        item_field.setText(1, item['comment'])
+                        item_field.setText(2, str(msg.id))
+                        item_field.setText(3, ItemType.FIELD)
+                        item_reply.addChild(item_field)
+                else:
+                    item_msg.setText(3, ItemType.NOTIFY)
+                    for item in msg.notify_list:
+                        item_field = QTreeWidgetItem()
+                        item_field.setText(0, item['field_name'])
+                        item_field.setText(1, item['comment'])
+                        item_field.setText(2, str(msg.id))
+                        item_field.setText(3, ItemType.FIELD)
+                        item_msg.addChild(item_field)
             self.ui.WidMsgTree.expandToDepth(0)
 
     def onTreeClicked(self, item_idx):
@@ -280,33 +265,53 @@ class ProtoTool(QMainWindow):
         pass
 
     def onTreeItemClicked(self, idx):
+        self.ui.BtnDel.setEnabled(True)
+        self.ui.BtnUpdate.setEnabled(True)
         self.selected_item = self.ui.WidMsgTree.currentItem()
-        self.showItemDetail(self.selected_item)
+        self.showItemInfo(self.selected_item)
         item_type = self.selected_item.text(3)
-        self.setFrameEnable(item_type)
+        if item_type == ItemType.MODULE:
+            self.addMsgOrAddField(1)
+        if item_type == ItemType.REQ or item_type == ItemType.REPLY or item_type == ItemType.NOTIFY:
+            self.addMsgOrAddField(2)
+        else:
+            self.addMsgOrAddField(3)
 
-    def setFrameEnable(self, item_type):
-        if item_type == ItemType.MODULE:  # add msg
+        if item_type == ItemType.MODULE:
             self.ui.FrameMsg.setEnabled(True)
-            self.ui.BtnUpdate.setEnabled(False)
-            self.ui.BtnDel.setEnabled(False)
-            pass
+            self.ui.BtnMsgAdd.setEnabled(True)
 
-        if item_type == ItemType.MSG:   # modify del msg  or add Field
+        if item_type == ItemType.MSG or item_type == ItemType.NOTIFY:
             self.ui.FrameMsg.setEnabled(True)
             self.ui.BtnMsgAdd.setEnabled(False)
-            self.ui.FrameField.setEnabled(True)
             self.ui.BtnFieldAdd.setEnabled(True)
-            self.ui.BtnUpdate.setEnabled(True)
-            self.ui.BtnDel.setEnabled(True)
-            pass
-
-        if item_type == ItemType.FIELD:   # modify del Field
-            self.ui.FrameMsg.setEnabled(False)
+        if item_type == ItemType.REPLY or item_type == ItemType.REQ:
+            self.ui.BtnDel.setEnabled(False)
+            self.ui.BtnUpdate.setEnabled(False)
+            self.ui.BtnFieldAdd.setEnabled(True)
+        if item_type == ItemType.FIELD:
             self.ui.FrameField.setEnabled(True)
             self.ui.BtnFieldAdd.setEnabled(False)
-            pass
+
+    def addMsgOrAddField(self, add_flag):
+        if add_flag == 1:
+            self.is_add_msg = True
+            self.is_add_field = False
+            self.ui.FrameMsg.setEnabled(True)
+            self.ui.FrameField.setEnabled(False)
+        if add_flag == 2:
+            self.is_add_msg = False
+            self.is_add_field = True
+            self.ui.FrameMsg.setEnabled(False)
+            self.ui.FrameField.setEnabled(True)
+        else:
+            self.is_add_msg = False
+            self.is_add_field = False
+            self.ui.FrameMsg.setEnabled(False)
+            self.ui.FrameField.setEnabled(False)
         # clear edit
+        self.ui.LetModName.clear()
+        self.ui.LetModCmt.clear()
         self.ui.LetMsgName.clear()
         self.ui.LetMsgCmt.clear()
         self.ui.LetFieldName.clear()
@@ -371,6 +376,7 @@ class ProtoTool(QMainWindow):
             msg.delField(field_name, 'notify')
 
     def onBtnUpdateField(self):
+
         msg = self.getMsgByFieldItem(self.selected_item)
         field_name = self.selected_item.text(0)
         if not msg:
@@ -435,13 +441,19 @@ class ProtoTool(QMainWindow):
             print(e)
 
     def getMsgByFieldItem(self, item):
-        if not item:
+        name = item.text(0)
+        msg_item = None
+        if item.text(3) != ItemType.FIELD:
             return None
-        mod_item = item.parent().parent()
-        msg_item = item.parent()
-        module = self.module_mgr.getModule(mod_item.text(2))
-        msg = module.getMsg(msg_item.text(2), int(msg_item.text(3)))
+        if item.parent().text(3) == ItemType.NOTIFY:
+            msg_item = item.parent()
+        else:
+            msg_item = item.parent().parent()
+        msg_id = msg_item.text(2)
+        mod_id = msg_item.parent().text(2)
+        msg = self.module_mgr.getMsg(mod_id, msg_id)
         return msg
+        pass
 
     def getMsgByMsgItem(self, item):
         msg_item = None
@@ -515,49 +527,41 @@ class ProtoTool(QMainWindow):
         self.showModuleMsg()
         self.clearTreeWidgetSelect()
 
-    def showItemDetail(self, item):
-        if not item:
-            return
+    def showItemInfo(self, item):
         item_type = item.text(3)
         self.model.clear()
         self.model.setHorizontalHeaderLabels(['名称', '说明'])
-        if item_type == ItemType.MODULE:
+        if item_type == ItemType.MODULE or item_type == ItemType.MSG or item_type == ItemType.NOTIFY:
+            name = item.text(0)
+            comment = item.text(1)
+            id = item.text(2)
             self.model.appendRow(
-                [QStandardItem('module id'), QStandardItem(item.text(2))])
+                [QStandardItem('id'), QStandardItem(id)])
+            self.model.appendRow([QStandardItem('name'), QStandardItem(name)])
             self.model.appendRow(
-                [QStandardItem('module name'), QStandardItem(item.text(0))])
-            self.model.appendRow(
-                [QStandardItem('comment'), QStandardItem(item.text(1))])
+                [QStandardItem('comment'), QStandardItem(comment)])
             pass
-
-        if item_type == ItemType.MSG:
-            module = self.module_mgr.getModule(item.parent().text(2))
-            self.model.appendRow(
-                [QStandardItem('msg id'), QStandardItem(item.text(2))])
-            self.model.appendRow(
-                [QStandardItem('msg name'), QStandardItem(item.text(0))])
-            self.model.appendRow(
-                [QStandardItem('belong module'), QStandardItem(module.name)])
-            self.model.appendRow(
-                [QStandardItem('comment'), QStandardItem(item.text(1))])
-            pass
-
         if item_type == ItemType.FIELD:
-            module = self.module_mgr.getModule(item.parent().parent().text(2))
-            msg_type = self.getMsgTypeByItemName(item.parent().text(0))
-            msg = module.getMsg(item.parent().text(2), msg_type)
-            field = msg.getFieldByName(item.text(0))
+            msg = self.getMsgByFieldItem(item)
+            item_name = item.text(0)
+            field = None
+            item_parent_name = item.parent().text(0)
+            if item_parent_name == 'req' or item_parent_name == 'reply':
+                field = msg.getField(item_name, item_parent_name)
+            else:
+                field = msg.getField(item_name, 'notify')
+            if not field:
+                return
             self.model.appendRow(
-                [QStandardItem('name'), QStandardItem(field.field_name)])
+                [QStandardItem('msg'), QStandardItem(msg.name)])
             self.model.appendRow(
-                [QStandardItem('tag'), QStandardItem(field.tag)])
+                [QStandardItem('name'), QStandardItem(field['field_name'])])
             self.model.appendRow(
-                [QStandardItem('value type'), QStandardItem(field.value_type)])
+                [QStandardItem('tag'), QStandardItem(field['tag'])])
             self.model.appendRow(
-                [QStandardItem('belong name'), QStandardItem(msg.name)])
+                [QStandardItem('value type'), QStandardItem(field['value_type'])])
             self.model.appendRow(
-                [QStandardItem('comment'), QStandardItem(field.comment)])
-            pass
+                [QStandardItem('comment'), QStandardItem(field['comment'])])
 
 
 if __name__ == '__main__':

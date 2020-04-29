@@ -2,21 +2,20 @@
 
 # Form implementation generated from reading ui file '../Designer/mod.ui'
 #
-# Created by: PyQt5 UI code generator 5.13.0
+# Created by: PyQt5 UI code generator 5.9.2
 #
 # WARNING! All changes made in this file will be lost!
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
-
 
 class Ui_FormMod(object):
     def setupUi(self, FormMod):
         FormMod.setObjectName("FormMod")
+        FormMod.setWindowModality(QtCore.Qt.NonModal)
         FormMod.resize(250, 159)
-        self.BtnModAdd = QtWidgets.QPushButton(FormMod)
-        self.BtnModAdd.setGeometry(QtCore.QRect(70, 120, 111, 31))
-        self.BtnModAdd.setObjectName("BtnModAdd")
+        self.BtnMod = QtWidgets.QPushButton(FormMod)
+        self.BtnMod.setGeometry(QtCore.QRect(70, 120, 111, 31))
+        self.BtnMod.setObjectName("BtnMod")
         self.LetModCmt = QtWidgets.QLineEdit(FormMod)
         self.LetModCmt.setGeometry(QtCore.QRect(70, 70, 161, 31))
         self.LetModCmt.setObjectName("LetModCmt")
@@ -36,6 +35,7 @@ class Ui_FormMod(object):
     def retranslateUi(self, FormMod):
         _translate = QtCore.QCoreApplication.translate
         FormMod.setWindowTitle(_translate("FormMod", "模块"))
-        self.BtnModAdd.setText(_translate("FormMod", "确定"))
+        self.BtnMod.setText(_translate("FormMod", "确定"))
         self.label_7.setText(_translate("FormMod", "模块说明"))
         self.label_6.setText(_translate("FormMod", "模块名称"))
+
