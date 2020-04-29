@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Module id="11" name="Chat" comment="聊天模块">
+	<Import>
+		ClientPublic.proto;ClientPublic2.proto
+	</Import>
+	<Message>
+		<ReqReplyMsg id="1101" name="chat_one" comment="单人对话消息">
+			<Req>
+				<field proto_type="" value_type="string" field_name="chat_msg" tag="1" comment="11" />
+				<field proto_type="" value_type="int32" field_name="channel" tag="2" comment="12" />
+			</Req>
+			<Reply>
+				<field proto_type="" value_type="string" field_name="chat_msg" tag="1" comment="13" />
+			</Reply>
+		</ReqReplyMsg>
+		<ReqReplyMsg id="1102" name="chat_two" comment="多人对话消息">
+			<Req>
+				<field proto_type="" value_type="string" field_name="chat_msg" tag="1" comment="14" />
+				<field proto_type="" value_type="int32" field_name="channel" tag="2" comment="15" />
+			</Req>
+			<Reply>
+				<field proto_type="" value_type="string" field_name="chat_msg" tag="1" comment="16" />
+			</Reply>
+		</ReqReplyMsg>
+		<NotifyMsg>
+			<Notify id="1103" name="notify_chat_one" comment="提示1">
+				<field proto_type="" value_type="string" field_name="chat_msg" tag="1" comment="17" />
+				<field proto_type="" value_type="string" field_name="chat_msg2" tag="2" comment="18" />
+			</Notify>
+			<Notify id="1104" name="notify_chat_two" comment="提示1">
+				<field proto_type="" value_type="string" field_name="chat_msg" tag="2" comment="19" />
+			</Notify>
+		</NotifyMsg>
+	</Message>
+</Module>

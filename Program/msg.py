@@ -1,112 +1,85 @@
 # -*-coding:utf-8-*-
-from item_data import *
+from common import *
 
+# 消息分为三类 请求消息  回复消息  广播消息 
+# 请求消息、回复消息使用相同id
 
-class Msg(object):
+class Field(object):
+    def __init__(self):
+        super(Field, self).__init__()
+        self.proto_type = ""
+        self.value_type = ""
+        self.field_name = ""
+        self.tag = ""
+        self.comment = ""
+
+class MsgBase(object):
     def __init__(self, mod_id):
-        super(Msg, self).__init__()
+        super(MsgBase, self).__init__()
         self.mod_id = mod_id
         self.id = 0
         self.name = ""
         self.comment = ""
         self.type = ""
-        self.item_type = ItemType.MSG
-        # 保存属性值
-        self.req_list = []
-        self.reply_list = []
-        self.notify_list = []
+        self.next_tag = '1'
+        # 保存属性值列表
+        self.field_list = []
+    
+    def existField(self, field_name):
+        if not field_name:
+            return False
+        for item in self.field_list:
+            if field_name == item.field_name:
+                return True, item
+        return False, None
 
-    def getField(self, name, field_flag):
-        if field_flag == 'req':
-            for field in self.req_list:
-                if field['field_name'] == name:
-                    return field
-        if field_flag == 'reply':
-            for field in self.reply_list:
-                if field['field_name'] == name:
-                    return field
-        if field_flag == 'notify':
-            for field in self.notify_list:
-                if field['field_name'] == name:
-                    return field
+    def addField(self, field):
+        is_exist, _ = self.existField(field.field_name)
+        if not is_exist:
+            field.tag = self.getNextTag()
+            self.field_list.append(field)
+        pass
+    
+    def delField(self, field_name):
+        is_exist, item = self.existField(field_name)
+        if is_exist:
+            self.field_list.remove(item)
+        pass
+    
+    def updateField(self, old_name, name, comment):
+        is_exist, item = self.existField(old_name)
+        if is_exist:
+            if name:
+                item.name = name
+            if comment:
+                item.comment = comment       
+        pass
+    
+    def getNextTag(self):
+        next_tag = self.next_tag
+        self.next_tag = str(int(self.next_tag)+1)
+        return next_tag
+
+
+class MsgReq(MsgBase):
+    def __init__(self, mod_id):
+        super(MsgReq, self).__init__(mod_id)
+        self.mod_id = mod_id
+        self.type = MsgType.REQ
         pass
 
-    def findField(self, field_name, field_flag):
-        field = None
-        if field_flag == 'req':
-            for field in self.req_list:
-                if field['field_name'] == field_name:
-                    field = field
-        if field_flag == 'reply':
-            for field in self.reply_list:
-                if field['field_name'] == field_name:
-                    field = field
-        if field_flag == 'notify':
-            for field in self.notify_list:
-                if field['field_name'] == field_name:
-                    field = field
-        return field
-
-    def addField(self, field, field_flag):
-        if not field:
-            return
-        if field_flag == 'req':
-            self.req_list.append(field)
-        if field_flag == 'reply':
-            self.reply_list.append(field)
-        if field_flag == 'notify':
-            self.notify_list.append(field)
-
-    def delField(self, field_name, field_flag):
-        if field_flag == 'req':
-            for field in self.req_list:
-                print(field)
-                if field['field_name'] == field_name:
-                    self.req_list.remove(field)
-        if field_flag == 'reply':
-            for field in self.reply_list:
-                if field['field_name'] == field_name:
-                    self.reply_list.remove(field)
-        if field_flag == 'notify':
-            for field in self.notify_list:
-                if field['field_name'] == field_name:
-                    self.notify_list.remove(field)
-
-    def updateField(self, field_name, field, field_flag):
-        if field_flag == 'req':
-            for field in self.req_list:
-                if field['field_name'] == field_name:
-                    self.req_list.remove(item)
-                    self.req_list.append(field)
-        if field_flag == 'reply':
-            for field in self.reply_list:
-                if field['field_name'] == field_name:
-                    self.reply_list.remove(item)
-                    self.reply_list.append(field)
-        if field_flag == 'notify':
-            for field in self.notify_list:
-                if field['field_name'] == field_name:
-                    self.notify_list.remove(item)
-                    self.notify_list.append(field)
+class MsgReply(MsgBase):
+    def __init__(self, mod_id):
+        super(MsgReply, self).__init__(mod_id)
+        self.mod_id = mod_id
+        self.type = MsgType.REPLY
         pass
 
-    def getNextTag(self, field_flag):
-        tag = 0
-        if field_flag == "req":
-            for field in self.req_list:
-                if int(field['tag']) > tag:
-                    tag = int(field['tag'])
-        if field_flag == "reply":
-            for field in self.reply_list:
-                if int(field['tag'] > tag):
-                    tag = int(field['tag'])
-        if field_flag == 'notify':
-            for field in self.notify_list:
-                if int(field['tag'] > tag):
-                    tag = int(field['tag'])
-        tag = tag + 1
-        return tag
 
-    def updateMsg(self, msg_name, msg_comment):
-        self.name = msg_name
-        self.comment = msg_comment
+class MsgNotify(MsgBase):
+    def __init__(self, mod_id):
+        super(MsgNotify, self).__init__(mod_id)
+        self.mod_id = mod_id
+        self.type = MsgType.NOTIFY
+        pass
+
