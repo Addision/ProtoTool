@@ -23,19 +23,22 @@ class Module(object):
         self.msg_next_id = 0
 
     def __loadXml(self):
-        contents = ""
-        with codecs.open(self.xml_file, "r", "utf-8") as f:
-            contents = f.read()
-        if contents == "":
+        try:
+            contents = ""
+            with codecs.open(self.xml_file, "r", "utf-8") as f:
+                contents = f.read()
+            if contents == "":
+                return False
+            self.root = ET.fromstring(contents)
+            if self.root:
+                self.id = int(self.root.attrib['id'])
+                self.name = self.root.attrib['name']
+                self.comment = self.root.attrib['comment']
+                self.proto_imp = self.root[0].text
+                return True
             return False
-        self.root = ET.fromstring(contents)
-        if self.root:
-            self.id = int(self.root.attrib['id'])
-            self.name = self.root.attrib['name']
-            self.comment = self.root.attrib['comment']
-            self.proto_imp = self.root[0].text
-            return True
-        return False
+        except Exception as e:
+            print(e)
 
     def parseXml(self, xml_file):
         self.xml_file = xml_file

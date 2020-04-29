@@ -34,17 +34,17 @@ class Msg(object):
     def findField(self, field_name, field_flag):
         field = None
         if field_flag == 'req':
-            for item in self.req_list:
-                if item.field_name == field_name:
-                    field = item
+            for field in self.req_list:
+                if field['field_name'] == field_name:
+                    field = field
         if field_flag == 'reply':
-            for item in self.reply_list:
-                if item.field_name == field_name:
-                    field = item
+            for field in self.reply_list:
+                if field['field_name'] == field_name:
+                    field = field
         if field_flag == 'notify':
-            for item in self.notify_list:
-                if item.field_name == field_name:
-                    field = item
+            for field in self.notify_list:
+                if field['field_name'] == field_name:
+                    field = field
         return field
 
     def addField(self, field, field_flag):
@@ -59,32 +59,33 @@ class Msg(object):
 
     def delField(self, field_name, field_flag):
         if field_flag == 'req':
-            for item in self.req_list:
-                if item.field_name == field_name:
-                    self.req_list.remove(item)
+            for field in self.req_list:
+                print(field)
+                if field['field_name'] == field_name:
+                    self.req_list.remove(field)
         if field_flag == 'reply':
-            for item in self.reply_list:
-                if item.field_name == field_name:
-                    self.reply_list.remove(item)
+            for field in self.reply_list:
+                if field['field_name'] == field_name:
+                    self.reply_list.remove(field)
         if field_flag == 'notify':
-            for item in self.notify_list:
-                if item.field_name == field_name:
-                    self.notify_list.remove(item)
+            for field in self.notify_list:
+                if field['field_name'] == field_name:
+                    self.notify_list.remove(field)
 
     def updateField(self, field_name, field, field_flag):
         if field_flag == 'req':
-            for item in self.req_list:
-                if item.field_name == field_name:
+            for field in self.req_list:
+                if field['field_name'] == field_name:
                     self.req_list.remove(item)
                     self.req_list.append(field)
         if field_flag == 'reply':
-            for item in self.reply_list:
-                if item.field_name == field_name:
+            for field in self.reply_list:
+                if field['field_name'] == field_name:
                     self.reply_list.remove(item)
                     self.reply_list.append(field)
         if field_flag == 'notify':
-            for item in self.notify_list:
-                if item.field_name == field_name:
+            for field in self.notify_list:
+                if field['field_name'] == field_name:
                     self.notify_list.remove(item)
                     self.notify_list.append(field)
         pass

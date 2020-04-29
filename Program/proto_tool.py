@@ -241,12 +241,22 @@ class ProtoTool(QMainWindow):
             self.addMsgOrAddField(2)
         else:
             self.addMsgOrAddField(3)
-        
+
+        if item_type == ItemType.MODULE:
+            self.ui.FrameMsg.setEnabled(True)
+            self.ui.BtnMsgAdd.setEnabled(True)
+
+        if item_type == ItemType.MSG or item_type == ItemType.NOTIFY:
+            self.ui.FrameMsg.setEnabled(True)
+            self.ui.BtnMsgAdd.setEnabled(False)
+            self.ui.BtnFieldAdd.setEnabled(True)
         if item_type == ItemType.REPLY or item_type == ItemType.REQ:
             self.ui.BtnDel.setEnabled(False)
             self.ui.BtnUpdate.setEnabled(False)
+            self.ui.BtnFieldAdd.setEnabled(True)
         if item_type == ItemType.FIELD:
             self.ui.FrameField.setEnabled(True)
+            self.ui.BtnFieldAdd.setEnabled(False)
 
     def addMsgOrAddField(self, add_flag):
         if add_flag == 1:
@@ -276,12 +286,14 @@ class ProtoTool(QMainWindow):
         save_dir = self.config.getConfOne('msg_path')
         self.module_mgr.writeXmls(save_dir)
         self.clearTreeWidgetSelect()
+        # 生成proto 文件
+
         pass
 
     def clearTreeWidgetSelect(self):
         self.ui.WidMsgTree.clearSelection()
         self.selected_item = None
-    
+
     def onBtnDelMod(self):
         mod_id = self.selected_item.text(2)
         self.module_mgr.delModule(mod_id)
@@ -307,14 +319,14 @@ class ProtoTool(QMainWindow):
         mod_id = self.selected_item.parent().text(2)
         mod = self.module_mgr.getMod(mod_id)
         if not mod:
-            return        
+            return
         msg_name = self.ui.LetMsgName.text().strip()
         msg_comment = self.ui.LetMsgCmt.text().strip()
         msg = mod.getMsg(self.selected_item.text(2))
         if not msg or not msg_name:
             return
         msg.updateMsg(msg_name, msg_comment)
-    
+
     def onBtnDelField(self):
         msg = self.getMsgByFieldItem(self.selected_item)
         field_name = self.selected_item.text(0)
@@ -327,13 +339,13 @@ class ProtoTool(QMainWindow):
             msg.delField(field_name, 'reply')
         if msg_item.text(3) == ItemType.NOTIFY:
             msg.delField(field_name, 'notify')
-    
+
     def onBtnUpdateField(self):
-        
+
         msg = self.getMsgByFieldItem(self.selected_item)
         field_name = self.selected_item.text(0)
         if not msg:
-            return        
+            return
         field = None
         msg_item = self.selected_item.parent()
         if msg_item.text(3) == ItemType.REQ:
@@ -358,9 +370,10 @@ class ProtoTool(QMainWindow):
                 self.modAdd()
             if btn == 'save':
                 self.saveAll()
+                self.ui.BtnSave.setEnabled(False)
             if not self.selected_item:
                 return
-            item_type = self.selected_item.text(3) 
+            item_type = self.selected_item.text(3)
             if item_type == ItemType.MODULE:
                 if btn == 'del':
                     self.onBtnDelMod()
@@ -383,7 +396,7 @@ class ProtoTool(QMainWindow):
                 self.msgAdd()
             if btn == 'field_add':
                 self.fieldAdd()
-            
+
             self.ui.BtnDel.setEnabled(False)
             self.ui.BtnUpdate.setEnabled(False)
             self.ui.WidMsgTree.clearSelection()
@@ -392,25 +405,38 @@ class ProtoTool(QMainWindow):
         except Exception as e:
             print(e)
 
-
     def getMsgByFieldItem(self, item):
         name = item.text(0)
         msg_item = None
-        if name == 'req' or name == 'reply':
+        if item.text(3) != ItemType.FIELD:
+            return None
+        if item.parent().text(3) == ItemType.NOTIFY:
             msg_item = item.parent()
         else:
-            msg_item = item
+            msg_item = item.parent().parent()
         msg_id = msg_item.text(2)
         mod_id = msg_item.parent().text(2)
         msg = self.module_mgr.getMsg(mod_id, msg_id)
         return msg
         pass
 
+    def getMsgByMsgItem(self, item):
+        msg_item = None
+        if item.text(0) == 'req' or item.text(0) == 'reply':
+            msg_item = item.parent()
+        else:
+            msg_item = item
+
+        msg_id = msg_item.text(2)
+        mod_id = msg_item.parent().text(2)
+        msg = self.module_mgr.getMsg(mod_id, msg_id)
+        return msg
+
     def fieldAdd(self):
         if self.ui.LetFieldName == "":
             return
         name = self.selected_item.text(0)
-        msg = self.getMsgByFieldItem(self.selected_item)
+        msg = self.getMsgByMsgItem(self.selected_item)
         if not msg:
             return
         next_tag = 0
@@ -481,7 +507,7 @@ class ProtoTool(QMainWindow):
                 [QStandardItem('comment'), QStandardItem(comment)])
             pass
         if item_type == ItemType.FIELD:
-            msg = self.getMsgByFieldItem(item.parent())
+            msg = self.getMsgByFieldItem(item)
             item_name = item.text(0)
             field = None
             item_parent_name = item.parent().text(0)
