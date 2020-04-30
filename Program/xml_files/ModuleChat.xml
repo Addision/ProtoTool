@@ -1,4 +1,12 @@
-<?xml version='1.0' encoding='utf-8'?>
-<Module comment="聊天模块" id="11" name="Chat"><Import>
-		ClientPublic.proto;ClientPublic2.proto
-	</Import><Message><ReqReplyMsg comment="多人对话消息" id="1102" name="chat_two"><Req><field comment="14" field_name="chat_msg" proto_type="" tag="1" value_type="string" /><field comment="15" field_name="channel" proto_type="" tag="2" value_type="int32" /></Req><Reply><field comment="16" field_name="chat_msg" proto_type="" tag="1" value_type="string" /></Reply></ReqReplyMsg><NotifyMsg><Notify comment="提示1" id="1103" name="notify_chat_one"><field comment="17" field_name="chat_msg" proto_type="" tag="1" value_type="string" /><field comment="18" field_name="chat_msg2" proto_type="" tag="2" value_type="string" /></Notify></NotifyMsg></Message></Module>
+<?xml version="1.0" encoding="utf-8"?>
+<Module comment="聊天模块" id="11" name="Chat">
+	<Import />
+	<Message>
+		<ReqReplyMsg comment="chat to one" id="1101" name="ChatOne">
+			<Req>
+				<field comment="xxxx" field_name="name" proto_type="optional" tag="1" value_type="int32" />
+			</Req>
+			<Reply />
+		</ReqReplyMsg>
+	</Message>
+</Module>

@@ -6,6 +6,7 @@ class MsgType(Enum):
     REQ = 1
     REPLY = 2
     NOTIFY = 3
+    PUBLIC = 4
 
 
 class ItemType():

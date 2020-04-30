@@ -10,6 +10,7 @@ class ModuleMgr(object):
         self.module_dic = {}  # <mod_id, mod>
         self.mod_file_dic = {}  # <mod_id, path>
         self.mod_next_id = '0'
+        self.public_mod_id = '10'
 
     def loadXmls(self, xml_dir):
         if not os.path.exists(xml_dir):
@@ -22,7 +23,11 @@ class ModuleMgr(object):
             if not file.endswith(".xml", 4):
                 continue
             xml_file = os.path.join(xml_dir, file).replace('\\', '/')
-            module = Module()
+            module = None
+            if 'Public' in xml_file:
+                module = ModulePublic()
+            else:
+                module = ModuleMsg()
             module.loadXml(xml_file)
             self.module_dic[module.id] = module
 
@@ -35,6 +40,8 @@ class ModuleMgr(object):
         return xml_file
 
     def saveXmls(self, xml_dir):
+        if not self.module_dic:
+            return
         for mod_id, module in self.module_dic.items():
             xml_file = self.getModFile(xml_dir, module.name)
             module.saveXml(xml_file)

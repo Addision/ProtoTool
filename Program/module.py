@@ -9,18 +9,18 @@ from msg import *
 from common import *
 
 
-class Module(object):
+class ModuleBase(object):
     def __init__(self):
-        super(Module, self).__init__()
+        super(ModuleBase, self).__init__()
         self.xml_file = ""  # 模块保存的xml文件
         self.id = "10"     # 模块id 从11开始
         self.name = ""
         self.comment = ""
-        self.proto_imp = ""  # 模块引用的文件
-        self.type = "module"
+        
         self.req_msg_dic = {}
         self.reply_msg_dic = {}
         self.notify_msg_dic = {}
+        self.public_msg_dic = {}
         self.msg_next_id = "1"
 
     def getNextMsgId(self):
@@ -40,11 +40,13 @@ class Module(object):
             return self.reply_msg_dic
         if msg_type == MsgType.NOTIFY:
             return self.notify_msg_dic
+        if msg_type == MsgType.PUBLIC:
+            return self.public_msg_dic
 
     def existMsg(self, msg_id, msg_type):
         msg_list = self.getMsgList(msg_type)
         if not msg_list:
-            return
+            return False, None
         if msg_id in msg_list.keys():
             return True, msg_list[msg_id]
         return False, None
@@ -66,10 +68,11 @@ class Module(object):
         if is_exist:
             if msg_type == MsgType.NOTIFY:
                 self.notify_msg_dic.pop(msg_id)
+            elif msg_type == MsgType.COMMON:
+                self.public_msg_dic.pop(msg_id)
             else:
                 self.req_msg_dic.pop(msg_id)
                 self.reply_msg_dic.pop(msg_id)
-
 
     def updateMsg(self, msg_id, msg_type, msg_name='', msg_comment=''):
         msg = self.getMsg(msg_id, msg_type)
@@ -79,6 +82,35 @@ class Module(object):
             msg.name = msg_name
         if msg_comment:
             msg.comment = msg_comment
+
+
+    def assignField(self, attrib):
+        if not attrib:
+            return
+        field = Field()
+        field.proto_type = attrib['proto_type']
+        field.value_type = attrib['value_type']
+        field.field_name = attrib['field_name']
+        field.tag = attrib['tag']
+        field.comment = attrib['comment']
+        return field
+
+    def writeField(self, xml_req_reply, field_list):
+        for field in field_list:
+            xml_field = ET.SubElement(xml_req_reply, 'field')
+            xml_field.attrib['proto_type'] = field.proto_type
+            xml_field.attrib['value_type'] = field.value_type
+            xml_field.attrib['field_name'] = field.field_name
+            xml_field.attrib['tag'] = field.tag
+            xml_field.attrib['comment'] = field.comment
+        pass
+
+
+class ModuleMsg(ModuleBase):
+    def __init__(self):
+        super(ModuleMsg, self).__init__()
+        self.proto_imp = ""  # 模块引用的文件
+        self.mod_type = 'msg'
 
     def readXml(self):
         try:
@@ -97,17 +129,6 @@ class Module(object):
             return False, None
         except Exception as e:
             print(e)
-
-    def assignField(self, attrib):
-        if not attrib:
-            return
-        field = Field()
-        field.proto_type = attrib['proto_type']
-        field.value_type = attrib['value_type']
-        field.field_name = attrib['field_name']
-        field.tag = attrib['tag']
-        field.comment = attrib['comment']
-        return field
 
     def loadXml(self, xml_file):
         if not (xml_file and os.path.isfile(xml_file)):
@@ -157,16 +178,6 @@ class Module(object):
 
         return True
 
-    def writeField(self, xml_req_reply, field_list):
-        for field in field_list:
-            xml_field = ET.SubElement(xml_req_reply, 'field')
-            xml_field.attrib['proto_type'] = field.proto_type
-            xml_field.attrib['value_type'] = field.value_type
-            xml_field.attrib['field_name'] = field.field_name
-            xml_field.attrib['tag'] = field.tag
-            xml_field.attrib['comment'] = field.comment
-        pass
-
     def saveXml(self, xml_file):
         if self.xml_file and self.xml_file != xml_file:
             self.xml_file = xml_file
@@ -181,29 +192,97 @@ class Module(object):
         proto_imp.text = self.proto_imp
         xml_msg = ET.SubElement(root, 'Message')
 
-        for id, req_msg in self.req_msg_dic.items():
-            xml_req_reply = ET.SubElement(xml_msg, 'ReqReplyMsg')
-            xml_req_reply.attrib['id'] = req_msg.id
-            xml_req_reply.attrib['name'] = req_msg.name[:-3]
-            xml_req_reply.attrib['comment'] = req_msg.comment
-            # 创建请求
-            xml_req = ET.SubElement(xml_req_reply, 'Req')
-            self.writeField(xml_req, req_msg.field_list)
-            # 创建应答
-            reply_msg = self.reply_msg_dic[id]
-            xml_reply = ET.SubElement(xml_req_reply, 'Reply')
-            self.writeField(xml_reply, reply_msg.field_list)
-            pass
+        if self.req_msg_dic:
+            for id, req_msg in self.req_msg_dic.items():
+                xml_req_reply = ET.SubElement(xml_msg, 'ReqReplyMsg')
+                xml_req_reply.attrib['id'] = req_msg.id
+                xml_req_reply.attrib['name'] = req_msg.name[:-3]
+                xml_req_reply.attrib['comment'] = req_msg.comment
+                # 创建请求
+                xml_req = ET.SubElement(xml_req_reply, 'Req')
+                self.writeField(xml_req, req_msg.field_list)
+                # 创建应答
+                reply_msg = self.reply_msg_dic[id]
+                xml_reply = ET.SubElement(xml_req_reply, 'Reply')
+                self.writeField(xml_reply, reply_msg.field_list)
+                pass
 
-        if not self.notify_msg_dic:
-            return
-        xml_notify_msg = ET.SubElement(xml_msg, 'NotifyMsg')
-        for id, msg in self.notify_msg_dic.items():
-            xml_notify = ET.SubElement(xml_notify_msg, "Notify")
-            xml_notify.attrib['id'] = msg.id
-            xml_notify.attrib['name'] = msg.name[:-6]
-            xml_notify.attrib['comment'] = msg.comment
-            self.writeField(xml_notify, msg.field_list)
+        if self.notify_msg_dic:
+            xml_notify_msg = ET.SubElement(xml_msg, 'NotifyMsg')
+            for id, msg in self.notify_msg_dic.items():
+                xml_notify = ET.SubElement(xml_notify_msg, "Notify")
+                xml_notify.attrib['id'] = msg.id
+                xml_notify.attrib['name'] = msg.name[:-6]
+                xml_notify.attrib['comment'] = msg.comment
+                self.writeField(xml_notify, msg.field_list)
+
+        # 将 xml tree 写入文件
+        tree = ET.ElementTree(root)
+        tree.write(self.xml_file, encoding='utf-8', xml_declaration=True)
+
+
+class ModulePublic(ModuleBase):
+    def __init__(self):
+        super(ModulePublic, self).__init__()
+        self.mod_type = 'public'
+
+    def readXml(self):
+        try:
+            contents = ""
+            with codecs.open(self.xml_file, "r", "utf-8") as f:
+                contents = f.read()
+            if contents == "":
+                return False, None
+            root = ET.fromstring(contents)
+            if root:
+                self.id = root.attrib['id']
+                self.name = root.attrib['name']
+                self.comment = root.attrib['comment']
+                return True, root
+            return False, None
+        except Exception as e:
+            print(e)
+
+    def loadXml(self, xml_file):
+        if not (xml_file and os.path.isfile(xml_file)):
+            return False
+        self.xml_file = xml_file
+        read_ok, root = self.readXml()
+        if not read_ok:
+            return False
+
+        for publics in root.findall("Message/PublicMsg/Public"):
+            public_msg = MsgPublic(self.id)
+            public_msg.id = publics.attrib['id']
+            public_msg.name = publics.attrib['name']
+            public_msg.comment = publics.attrib['comment']
+
+            for public in publics:
+                field = self.assignField(public.attrib)
+                if field:
+                    public_msg.addField(field)
+            self.public_msg_dic[public_msg.id] = public_msg
+
+        return True
+
+    def saveXml(self, xml_file):
+        if self.xml_file and self.xml_file != xml_file:
+            self.xml_file = xml_file
+        else:
+            self.xml_file = xml_file
+
+        root = ET.Element('Module')
+        root.attrib['id'] = self.id
+        root.attrib['name'] = self.name
+        root.attrib['comment'] = self.comment
+        xml_msg = ET.SubElement(root, 'Message')
+        xml_public_msg = ET.SubElement(xml_msg, 'PublicMsg')
+        for id, msg in self.public_msg_dic.items():
+            xml_public = ET.SubElement(xml_public_msg, "Public")
+            xml_public.attrib['id'] = msg.id
+            xml_public.attrib['name'] = msg.name
+            xml_public.attrib['comment'] = msg.comment
+            self.writeField(xml_public, msg.field_list)
 
         # 将 xml tree 写入文件
         tree = ET.ElementTree(root)
@@ -211,6 +290,6 @@ class Module(object):
 
 
 if __name__ == '__main__':
-    module = Module()
+    module = ModuleMsg()
     module.loadXml('D:/ProtoTool/Program/xml_files/ModuleChat.xml')
     module.saveXml('D:/ProtoTool/Program/xml_files/ModuleChat2.xml')

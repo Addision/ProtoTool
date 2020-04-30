@@ -19,7 +19,7 @@ class MsgBase(object):
     def __init__(self, mod_id):
         super(MsgBase, self).__init__()
         self.mod_id = mod_id
-        self.id = 0
+        self.id = "0"
         self.name = ""
         self.comment = ""
         self.next_tag = '1'
@@ -96,3 +96,12 @@ class MsgNotify(MsgBase):
         self.mod_id = mod_id
         self.type = MsgType.NOTIFY
         pass
+
+
+class MsgPublic(MsgBase):
+    def __init__(self, mod_id):
+        super(MsgPublic, self).__init__(mod_id)
+        self.mod_id = mod_id
+        self.type = MsgType.PUBLIC
+        pass
+

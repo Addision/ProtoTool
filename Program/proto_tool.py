@@ -95,7 +95,7 @@ class ProtoTool(QMainWindow):
             addMsgAct = None
             updateMsgAct = None
             delMsgAct = None
-
+            addFieldAct = None
             updateFieldAct = None
             delFieldAct = None
             if not item:
@@ -115,10 +115,13 @@ class ProtoTool(QMainWindow):
             elif item and item.text(3) == ItemType.MSG:
                 updateMsgAct = self.contextMenu.addAction(u'更新消息')
                 delMsgAct = self.contextMenu.addAction(u'删除消息')
+                addFieldAct = self.contextMenu.addAction(u'添加字段')
                 updateMsgAct.triggered.connect(
                     lambda: self.actionHandler('update_msg', item))
                 delMsgAct.triggered.connect(
                     lambda: self.actionHandler('del_msg', item))
+                addFieldAct.triggered.connect(
+                    lambda: self.actionHandler('add_field', item))                    
             elif item and item.text(3) == ItemType.FIELD:
                 updateFieldAct = self.contextMenu.addAction(u'更新字段')
                 delFieldAct = self.contextMenu.addAction(u'删除字段')
@@ -179,6 +182,10 @@ class ProtoTool(QMainWindow):
             self.ui.BtnSave.setEnabled(True)
             self.showModuleMsg()
 
+        if op_flag == 'add_field':
+            self.ui.BtnAdd.setEnabled(True)
+            self.ui.FrameField.setEnabled(True)
+
         if op_flag == 'update_field':
             self.ui.FrameField.setEnabled(True)
             self.ui.BtnUpdate.setEnabled(True)
@@ -191,12 +198,15 @@ class ProtoTool(QMainWindow):
 ####################增删改查操作##############################
 
     def addModule(self, mod_name, mod_comment):
-        module = Module()
+        module = None
+        if not self.module_mgr.module_dic:
+            module = ModulePublic()
+        else:
+            module = ModuleMsg()
+            module.id = self.module_mgr.getNextModId()
         module.name = mod_name.title()  # 首字母大写
         module.comment = mod_comment or ""
-        module.id = self.module_mgr.getNextModId()
         print('module id===', module.id)
-        module.proto_imp = ""
         self.module_mgr.addModule(module)
         pass
 
@@ -220,24 +230,29 @@ class ProtoTool(QMainWindow):
         module = self.module_mgr.getModule(mod_id)
         if not module:
             return
-        if self.ui.BtnReq.isChecked():
-            # add req and reply msg
-            req_msg = MsgReq(mod_id)
-            reply_msg = MsgReply(mod_id)
-            req_msg.id = reply_msg.id = module.getNextMsgId()
-            req_msg.name = msg_name+'Req'
-            reply_msg.name = msg_name+'Reply'
-            req_msg.comment = reply_msg.comment = self.ui.LetMsgCmt.text().strip()
-            module.addMsg(req_msg, MsgType.REQ)
-            module.addMsg(reply_msg, MsgType.REPLY)
-        elif self.ui.BtnNotify.isChecked():
-            # add notify msg
-            notify_msg = MsgNotify(mod_id)
-            notify_msg.id = module.getNextMsgId()
-            notify_msg.name = msg_name+'Notify'
-            notify_msg.comment = self.ui.LetMsgCmt.text().strip()
-            module.addMsg(notify_msg, MsgType.NOTIFY)
-            pass
+        if module.mod_type == 'msg':
+            if self.ui.BtnReq.isChecked():
+                # add req and reply msg
+                req_msg = MsgReq(mod_id)
+                reply_msg = MsgReply(mod_id)
+                req_msg.id = reply_msg.id = module.getNextMsgId()
+                req_msg.name = msg_name+'Req'
+                reply_msg.name = msg_name+'Reply'
+                req_msg.comment = reply_msg.comment = self.ui.LetMsgCmt.text().strip()
+                module.addMsg(req_msg, MsgType.REQ)
+                module.addMsg(reply_msg, MsgType.REPLY)
+            elif self.ui.BtnNotify.isChecked():
+                # add notify msg
+                notify_msg = MsgNotify(mod_id)
+                notify_msg.id = module.getNextMsgId()
+                notify_msg.name = msg_name+'Notify'
+                notify_msg.comment = self.ui.LetMsgCmt.text().strip()
+                module.addMsg(notify_msg, MsgType.NOTIFY)
+        else:
+            public_msg = MsgPublic(mod_id)
+            public_msg.name = msg_name
+            public_msg.comment = self.ui.LetMsgCmt.text().strip()
+            module.addMsg(public_msg, MsgType.PUBLIC)
 
     def updateMsg(self):
         msg_id = self.selected_item.text(2)
@@ -259,7 +274,10 @@ class ProtoTool(QMainWindow):
         pass
 
     def addField(self):
-        msg = self.getMsgByFieldItem(self.selected_item)
+        msg_id = self.selected_item.text(2)
+        module = self.module_mgr.getModule(self.selected_item.parent().text(2))
+        msg_type = self.getMsgTypeByItemName(self.selected_item.text(0))
+        msg = module.getMsg(msg_id, msg_type)
         if not msg:
             return
         field_name = self.ui.LetFieldName.text().strip() or ''
@@ -268,7 +286,7 @@ class ProtoTool(QMainWindow):
             return
         field = Field()
         field.field_name = field_name
-        field.field_comment = field_comment
+        field.comment = field_comment
         field.proto_type = self.ui.CbxProtoType.currentText()
         field.value_type = self.ui.CbxValueType.currentText()
         msg.addField(field)
@@ -352,13 +370,29 @@ class ProtoTool(QMainWindow):
         if not self.module_mgr.module_dic:
             return
         for id, module in self.module_mgr.module_dic.items():
-            QApplication.processEvents()
+            QApplication.processEvents()            
             # add module
             item_module = QTreeWidgetItem(self.ui.WidMsgTree)
             item_module.setText(0, module.name)
             item_module.setText(1, module.comment)
             item_module.setText(2, module.id)
             item_module.setText(3, ItemType.MODULE)
+
+            for msg_id, msg in module.public_msg_dic.items():
+                item_msg = QTreeWidgetItem()
+                item_module.addChild(item_msg)
+                item_msg.setText(0, msg.name)
+                item_msg.setText(1, msg.comment)
+                item_msg.setText(2, msg.id)
+                item_msg.setText(3, ItemType.MSG)
+                # add field
+                for field in msg.field_list:
+                    item_field = QTreeWidgetItem()
+                    item_msg.addChild(item_field)
+                    item_field.setText(0, field.field_name)
+                    item_field.setText(1, field.comment)
+                    item_field.setText(2, msg.id)
+                    item_field.setText(3, ItemType.FIELD)            
             # add msg
             for msg_id, req_msg in module.req_msg_dic.items():
                 # add req
@@ -368,7 +402,6 @@ class ProtoTool(QMainWindow):
                 item_req_msg.setText(1, req_msg.comment)
                 item_req_msg.setText(2, req_msg.id)
                 item_req_msg.setText(3, ItemType.MSG)
-                # add field
                 for field in req_msg.field_list:
                     item_field = QTreeWidgetItem()
                     item_req_msg.addChild(item_field)
@@ -410,7 +443,6 @@ class ProtoTool(QMainWindow):
 
             self.ui.WidMsgTree.expandToDepth(1)
 
-
     def onTreeItemClicked(self, idx):
         self.selected_item = self.ui.WidMsgTree.currentItem()
         self.showItemDetail(self.selected_item)
@@ -439,6 +471,8 @@ class ProtoTool(QMainWindow):
             return MsgType.REPLY
         if item_name.endswith('Notify', 6):
             return MsgType.NOTIFY
+        else:
+            return MsgType.PUBLIC
 
     def getMsgByFieldItem(self, item):
         if not item:
