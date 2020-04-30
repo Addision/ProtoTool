@@ -35,7 +35,6 @@ class ProtoTool(QMainWindow):
         # widget 设置
         self.ui.WidMsgTree.setHeaderLabels(['模块消息', '说明'])
         self.ui.WidMsgTree.setStyle(QStyleFactory.create('windows'))
-        self.ui.WidMsgTree.clicked.connect(self.onTreeClicked)
         self.ui.WidMsgTree.itemClicked.connect(self.onTreeItemClicked)
         # 右键菜单
         self.ui.WidMsgTree.setContextMenuPolicy(Qt.CustomContextMenu)
@@ -138,25 +137,30 @@ class ProtoTool(QMainWindow):
             if not is_ok:
                 return
             self.addModule(mod_name, mod_comment)
-            pass
+            self.ui.BtnSave.setEnabled(True)
+            self.showModuleMsg()
+
         if op_flag == 'update_mod':  # update mod
             is_ok, mod_name, mod_comment = ModGui.getModInfo()
             if not is_ok:
                 return
             self.updateModule(item.text(2), mod_name, mod_comment)
-            pass
+            self.ui.BtnSave.setEnabled(True)
+            self.showModuleMsg()
+
         if op_flag == 'del_mod':  # del mod
             reply = QMessageBox.information(
                 self, "warning", "是否删除模块?", QMessageBox.Yes | QMessageBox.No)
             if reply == QMessageBox.Yes:
                 self.delModule(item.text(2))
-                pass
-            pass
+            self.ui.BtnSave.setEnabled(True)
+            self.showModuleMsg()
 
         if op_flag == 'add_msg':
             self.ui.FrameMsg.setEnabled(True)
             self.ui.BtnAdd.setEnabled(True)
-            pass
+            self.ui.BtnSave.setEnabled(False)
+            self.ui.BtnUpdate.setEnabled(False)
 
         if op_flag == 'update_msg':
             self.ui.FrameMsg.setEnabled(True)
@@ -169,22 +173,20 @@ class ProtoTool(QMainWindow):
                 self.ui.BtnReq.setChecked(True)
             else:
                 self.ui.BtnNotify.setChecked(True)
-            pass
 
         if op_flag == 'del_msg':
             self.delMsg()
-            pass
+            self.ui.BtnSave.setEnabled(True)
+            self.showModuleMsg()
 
         if op_flag == 'update_field':
             self.ui.FrameField.setEnabled(True)
             self.ui.BtnUpdate.setEnabled(True)
-            pass
 
         if op_flag == 'del_field':
             self.delField()
-            pass
-        self.ui.BtnSave.setEnabled(True)
-        self.showModuleMsg()
+            self.ui.BtnSave.setEnabled(True)
+            self.showModuleMsg()
 
 ####################增删改查操作##############################
 
@@ -223,7 +225,8 @@ class ProtoTool(QMainWindow):
             req_msg = MsgReq(mod_id)
             reply_msg = MsgReply(mod_id)
             req_msg.id = reply_msg.id = module.getNextMsgId()
-            req_msg.name = reply_msg.name = msg_name
+            req_msg.name = msg_name+'Req'
+            reply_msg.name = msg_name+'Reply'
             req_msg.comment = reply_msg.comment = self.ui.LetMsgCmt.text().strip()
             module.addMsg(req_msg, MsgType.REQ)
             module.addMsg(reply_msg, MsgType.REPLY)
@@ -231,14 +234,14 @@ class ProtoTool(QMainWindow):
             # add notify msg
             notify_msg = MsgNotify(mod_id)
             notify_msg.id = module.getNextMsgId()
-            notify_msg.name = msg_name
+            notify_msg.name = msg_name+'Notify'
             notify_msg.comment = self.ui.LetMsgCmt.text().strip()
             module.addMsg(notify_msg, MsgType.NOTIFY)
             pass
 
     def updateMsg(self):
         msg_id = self.selected_item.text(2)
-        module = self.module_mgr.getModule(self.selected_item.parent().text(0))
+        module = self.module_mgr.getModule(self.selected_item.parent().text(2))
         if not module:
             return
         msg_type = self.getMsgTypeByItemName(self.selected_item.text(0))
@@ -407,15 +410,11 @@ class ProtoTool(QMainWindow):
 
             self.ui.WidMsgTree.expandToDepth(0)
 
-    def onTreeClicked(self, item_idx):
-        tree_item = self.ui.WidMsgTree.currentItem()
-        pass
 
     def onTreeItemClicked(self, idx):
         self.selected_item = self.ui.WidMsgTree.currentItem()
         self.showItemDetail(self.selected_item)
-        item_type = self.selected_item.text(3)
-
+        print(self.selected_item.text(0))
         # clear edit
         self.ui.LetMsgName.clear()
         self.ui.LetMsgCmt.clear()
@@ -434,7 +433,7 @@ class ProtoTool(QMainWindow):
         self.ui.WidMsgTree.clearSelection()
         self.selected_item = None
 
-    def getMsgTypeByItemName(self, item_name):
+    def getMsgTypeByItemName(self, item_name):  # msg item name
         if item_name.endswith('Req', 3):
             return MsgType.REQ
         if item_name.endswith('Reply', 5):
@@ -448,38 +447,38 @@ class ProtoTool(QMainWindow):
         mod_item = item.parent().parent()
         msg_item = item.parent()
         module = self.module_mgr.getModule(mod_item.text(2))
-        # TODO 错误
-        msg_type = self.getMsgTypeByItemName(item.text(0))
+        msg_type = self.getMsgTypeByItemName(msg_item.text(0))
         msg = module.getMsg(msg_item.text(2), msg_type)
         return msg
 
     def onBtnClicked(self, btn):
         try:
+            if btn == 'save':
+                self.saveAll()
+                self.ui.BtnSave.setEnabled(False)
+                return
+            if not self.selected_item:
+                return
+            item_type = self.selected_item.text(3)
             if btn == 'add':
-                if self.selected_item.text(3) == ItemType.MODULE:
-                    # add msg
+                if item_type == ItemType.MODULE:
                     self.addMsg()
                 else:
                     self.addField()
             if btn == 'del':
-                if self.selected_item.text(3) == ItemType.MSG:
+                if item_type == ItemType.MSG:
                     self.delMsg()
                 else:
                     self.delField()
                 pass
             if btn == 'update':
-                if self.selected_item.text(3) == ItemType.MODULE:
-                    # add msg
+                if item_type == ItemType.MSG:
                     self.updateMsg()
                 else:
                     self.updateField()
-            if btn == 'save':
-                self.saveAll()
-                self.ui.BtnSave.setEnabled(False)
-                pass
+
             self.ui.BtnSave.setEnabled(True)
-            if btn != 'save':
-                self.showModuleMsg()
+            self.showModuleMsg()
         except Exception as e:
             print(e)
 
@@ -488,26 +487,26 @@ class ProtoTool(QMainWindow):
             return
         item_type = item.text(3)
         self.model.clear()
-        self.model.setHorizontalHeaderLabels(['名称', '说明'])
+        self.model.setHorizontalHeaderLabels([u'名称', u'说明'])
         if item_type == ItemType.MODULE:
             self.model.appendRow(
-                [QStandardItem('module id'), QStandardItem(item.text(2))])
+                [QStandardItem(u'模块ID'), QStandardItem(item.text(2))])
             self.model.appendRow(
-                [QStandardItem('module name'), QStandardItem(item.text(0))])
+                [QStandardItem(u'模块名称'), QStandardItem(item.text(0))])
             self.model.appendRow(
-                [QStandardItem('comment'), QStandardItem(item.text(1))])
+                [QStandardItem(u'说明'), QStandardItem(item.text(1))])
             pass
 
         if item_type == ItemType.MSG:
             module = self.module_mgr.getModule(item.parent().text(2))
             self.model.appendRow(
-                [QStandardItem('msg id'), QStandardItem(item.text(2))])
+                [QStandardItem(u'消息ID'), QStandardItem(item.text(2))])
             self.model.appendRow(
-                [QStandardItem('msg name'), QStandardItem(item.text(0))])
+                [QStandardItem(u'消息名称'), QStandardItem(item.text(0))])
             self.model.appendRow(
-                [QStandardItem('belong module'), QStandardItem(module.name)])
+                [QStandardItem(u'所属模块'), QStandardItem(module.name)])
             self.model.appendRow(
-                [QStandardItem('comment'), QStandardItem(item.text(1))])
+                [QStandardItem(u'说明'), QStandardItem(item.text(1))])
             pass
 
         if item_type == ItemType.FIELD:
@@ -516,15 +515,15 @@ class ProtoTool(QMainWindow):
             msg = module.getMsg(item.parent().text(2), msg_type)
             field = msg.getFieldByName(item.text(0))
             self.model.appendRow(
-                [QStandardItem('name'), QStandardItem(field.field_name)])
+                [QStandardItem(u'字段名称'), QStandardItem(field.field_name)])
             self.model.appendRow(
-                [QStandardItem('tag'), QStandardItem(field.tag)])
+                [QStandardItem(u'标签'), QStandardItem(field.tag)])
             self.model.appendRow(
-                [QStandardItem('value type'), QStandardItem(field.value_type)])
+                [QStandardItem(u'数值类型'), QStandardItem(field.value_type)])
             self.model.appendRow(
-                [QStandardItem('belong name'), QStandardItem(msg.name)])
+                [QStandardItem(u'所属消息'), QStandardItem(msg.name)])
             self.model.appendRow(
-                [QStandardItem('comment'), QStandardItem(field.comment)])
+                [QStandardItem(u'说明'), QStandardItem(field.comment)])
             pass
 
 

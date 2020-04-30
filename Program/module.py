@@ -64,8 +64,12 @@ class Module(object):
     def delMsg(self, msg_id, msg_type):
         is_exist, msg = self.existMsg(msg_id, msg_type)
         if is_exist:
-            msg_list = self.getMsgList(msg_type)
-            msg_list.pop(msg_id)
+            if msg_type == MsgType.NOTIFY:
+                self.notify_msg_dic.pop(msg_id)
+            else:
+                self.req_msg_dic.pop(msg_id)
+                self.reply_msg_dic.pop(msg_id)
+
 
     def updateMsg(self, msg_id, msg_type, msg_name='', msg_comment=''):
         msg = self.getMsg(msg_id, msg_type)
