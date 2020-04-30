@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file '../Designer/tool.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -37,7 +39,7 @@ class Ui_MainWindow(object):
         self.WidMsgTree.headerItem().setText(3, "4")
         self.WidMsgTree.header().setDefaultSectionSize(280)
         self.FrameMsg = QtWidgets.QFrame(self.centralwidget)
-        self.FrameMsg.setGeometry(QtCore.QRect(630, 10, 191, 171))
+        self.FrameMsg.setGeometry(QtCore.QRect(630, 10, 191, 141))
         self.FrameMsg.setAutoFillBackground(True)
         self.FrameMsg.setStyleSheet("")
         self.FrameMsg.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -63,23 +65,20 @@ class Ui_MainWindow(object):
         self.LetMsgName = QtWidgets.QLineEdit(self.FrameMsg)
         self.LetMsgName.setGeometry(QtCore.QRect(70, 50, 111, 31))
         self.LetMsgName.setObjectName("LetMsgName")
-        self.BtnMsgAdd = QtWidgets.QPushButton(self.FrameMsg)
-        self.BtnMsgAdd.setGeometry(QtCore.QRect(60, 130, 71, 31))
-        self.BtnMsgAdd.setObjectName("BtnMsgAdd")
         self.BtnDel = QtWidgets.QPushButton(self.centralwidget)
-        self.BtnDel.setGeometry(QtCore.QRect(520, 140, 81, 41))
+        self.BtnDel.setGeometry(QtCore.QRect(520, 190, 81, 41))
         self.BtnDel.setObjectName("BtnDel")
         self.BtnUpdate = QtWidgets.QPushButton(self.centralwidget)
-        self.BtnUpdate.setGeometry(QtCore.QRect(520, 240, 81, 41))
+        self.BtnUpdate.setGeometry(QtCore.QRect(520, 290, 81, 41))
         self.BtnUpdate.setObjectName("BtnUpdate")
         self.BtnSave = QtWidgets.QPushButton(self.centralwidget)
-        self.BtnSave.setGeometry(QtCore.QRect(520, 340, 81, 41))
+        self.BtnSave.setGeometry(QtCore.QRect(520, 390, 81, 41))
         self.BtnSave.setObjectName("BtnSave")
         self.BbvInfo = QtWidgets.QTableView(self.centralwidget)
         self.BbvInfo.setGeometry(QtCore.QRect(520, 530, 301, 191))
         self.BbvInfo.setObjectName("BbvInfo")
         self.FrameField = QtWidgets.QFrame(self.centralwidget)
-        self.FrameField.setGeometry(QtCore.QRect(630, 190, 191, 331))
+        self.FrameField.setGeometry(QtCore.QRect(630, 190, 191, 291))
         self.FrameField.setAutoFillBackground(True)
         self.FrameField.setStyleSheet("")
         self.FrameField.setFrameShape(QtWidgets.QFrame.StyledPanel)
@@ -105,9 +104,6 @@ class Ui_MainWindow(object):
         self.label_3 = QtWidgets.QLabel(self.FrameField)
         self.label_3.setGeometry(QtCore.QRect(10, 160, 81, 16))
         self.label_3.setObjectName("label_3")
-        self.BtnFieldAdd = QtWidgets.QPushButton(self.FrameField)
-        self.BtnFieldAdd.setGeometry(QtCore.QRect(50, 280, 81, 41))
-        self.BtnFieldAdd.setObjectName("BtnFieldAdd")
         self.label_2 = QtWidgets.QLabel(self.FrameField)
         self.label_2.setGeometry(QtCore.QRect(10, 90, 91, 21))
         self.label_2.setObjectName("label_2")
@@ -126,6 +122,9 @@ class Ui_MainWindow(object):
         self.label_4 = QtWidgets.QLabel(self.FrameField)
         self.label_4.setGeometry(QtCore.QRect(10, 220, 81, 16))
         self.label_4.setObjectName("label_4")
+        self.BtnAdd = QtWidgets.QPushButton(self.centralwidget)
+        self.BtnAdd.setGeometry(QtCore.QRect(520, 90, 81, 41))
+        self.BtnAdd.setObjectName("BtnAdd")
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 836, 23))
@@ -193,7 +192,6 @@ class Ui_MainWindow(object):
         self.BtnNotify.setText(_translate("MainWindow", "通知消息"))
         self.label_5.setText(_translate("MainWindow", "消息名称"))
         self.label_10.setText(_translate("MainWindow", "消息说明"))
-        self.BtnMsgAdd.setText(_translate("MainWindow", "确定"))
         self.BtnDel.setText(_translate("MainWindow", "删除"))
         self.BtnUpdate.setText(_translate("MainWindow", "修改"))
         self.BtnSave.setText(_translate("MainWindow", "保存"))
@@ -208,12 +206,12 @@ class Ui_MainWindow(object):
         self.CbxValueType.setItemText(8, _translate("MainWindow", "uint64"))
         self.label.setText(_translate("MainWindow", "proto可选类型"))
         self.label_3.setText(_translate("MainWindow", "字段名称"))
-        self.BtnFieldAdd.setText(_translate("MainWindow", "确定"))
         self.label_2.setText(_translate("MainWindow", "数据类型"))
         self.CbxProtoType.setItemText(0, _translate("MainWindow", "optional"))
         self.CbxProtoType.setItemText(1, _translate("MainWindow", "required"))
         self.CbxProtoType.setItemText(2, _translate("MainWindow", "repeated"))
         self.label_4.setText(_translate("MainWindow", "字段说明"))
+        self.BtnAdd.setText(_translate("MainWindow", "增加"))
         self.menuFile.setTitle(_translate("MainWindow", "文件"))
         self.menuTool.setTitle(_translate("MainWindow", "工具"))
         self.menuProto.setTitle(_translate("MainWindow", "导出协议"))
@@ -238,4 +236,3 @@ class Ui_MainWindow(object):
         self.menuTableClient.setShortcut(_translate("MainWindow", "Ctrl+Shift+D"))
         self.menuTable.setText(_translate("MainWindow", "导出数据表"))
         self.menuSetting.setText(_translate("MainWindow", "设置选项"))
-

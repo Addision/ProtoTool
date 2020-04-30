@@ -48,13 +48,11 @@ class ProtoTool(QMainWindow):
         self.ui.FrameField.setStyleSheet(
             'background-color: rgb(200, 200, 200);')
         # button 设置
-        self.ui.BtnSave.setEnabled(False)
-        self.ui.BtnDel.clicked.connect(lambda: self.onBtnClicked('del'))
+        self.ui.BtnAdd.clicked.connect(lambda: self.onBtnClicked('add'))
         self.ui.BtnUpdate.clicked.connect(lambda: self.onBtnClicked('update'))
+        self.ui.BtnDel.clicked.connect(lambda: self.onBtnClicked('del'))
         self.ui.BtnSave.clicked.connect(lambda: self.onBtnClicked('save'))
-        self.ui.BtnMsgAdd.clicked.connect(lambda: self.onBtnClicked('msg_add'))
-        self.ui.BtnFieldAdd.clicked.connect(
-            lambda: self.onBtnClicked('field_add'))
+        self.ui.BtnAdd.setEnabled(False)
         self.ui.BtnDel.setEnabled(False)
         self.ui.BtnUpdate.setEnabled(False)
         self.ui.BtnSave.setEnabled(False)
@@ -81,77 +79,221 @@ class ProtoTool(QMainWindow):
         self.openProto()
     pass
 
-    def rightClickMenu(self, pos):
-        try:
-            self.contextMenu = QMenu(self.ui.WidMsgTree)  # 创建对象
-            item = self.ui.WidMsgTree.itemAt(pos)
-            add_menu = None
-            del_menu = None
-            update_menu = None
-            if not item:
-                add_menu = self.contextMenu.addAction(u'添加模块')  # 添加动作
-                update_menu = self.contextMenu.addAction(u'更新模块')
-                del_menu = self.contextMenu.addAction(u'删除模块')
-            elif item.text(3) == ItemType.MODULE:
-                add_menu = self.contextMenu.addAction(u'添加消息')
-                update_menu = self.contextMenu.addAction(u'更新消息')
-                del_menu = self.contextMenu.addAction(u'删除消息')
-            add_menu.triggered.connect(lambda: self.actionHandler('add', item))
-            update_menu.triggered.connect(
-                lambda: self.actionHandler('update', item))
-            del_menu.triggered.connect(lambda: self.actionHandler('del', item))
-            self.contextMenu.exec_(QCursor.pos())  # 随指针的位置显示菜单
-        except Exception as e:
-            print(e)
-            pass
-        pass
-
-    def addModule(self):
-        
-        pass
-
-    def updateModule(self):
-        pass
-
-    def delModule(self):
-        pass
-
-    def addMsg(self):
-        pass
-
-    def updateMsg(self):
-        pass
-
-    def delMsg(self):
-        pass
-
-    def addField(self):
-        pass
-
-    def updateField(self):
-        pass
-
-    def delField(self):
-        pass
-
-    def actionHandler(self, op_flag, item=None):
-        if not item:
-            if op_flag == 'add':  # add mod
-                pass
-            if op_flag == 'update':  # update mod
-                pass
-            if op_flag == 'del':  # del mod
-                pass
-        if not item and op_flag == 'add':
-            self.mod_form = ModGui()
-            self.mod_form.show()
-
     def openProto(self):
         msg_path = self.config.getConfOne('msg_path')
         if msg_path:
             self.module_mgr.loadXmls(msg_path)
             self.showModuleMsg()
 
+#########################右键菜单操作#########################
+    def rightClickMenu(self, pos):
+        try:
+            self.contextMenu = QMenu(self.ui.WidMsgTree)  # 创建对象
+            item = self.ui.WidMsgTree.itemAt(pos)
+            addModAct = None
+            updateModAct = None
+            delDodAct = None
+            addMsgAct = None
+            updateMsgAct = None
+            delMsgAct = None
+
+            updateFieldAct = None
+            delFieldAct = None
+            if not item:
+                addModAct = self.contextMenu.addAction(u'添加模块')  # 添加动作
+                addModAct.triggered.connect(
+                    lambda: self.actionHandler('add_mod'))
+            elif item and item.text(3) == ItemType.MODULE:
+                updateModAct = self.contextMenu.addAction(u'更新模块')
+                delDodAct = self.contextMenu.addAction(u'删除模块')
+                addMsgAct = self.contextMenu.addAction(u'添加消息')
+                updateModAct.triggered.connect(
+                    lambda: self.actionHandler('update_mod', item))
+                delDodAct.triggered.connect(
+                    lambda: self.actionHandler('del_mod', item))
+                addMsgAct.triggered.connect(
+                    lambda: self.actionHandler('add_msg', item))
+            elif item and item.text(3) == ItemType.MSG:
+                updateMsgAct = self.contextMenu.addAction(u'更新消息')
+                delMsgAct = self.contextMenu.addAction(u'删除消息')
+                updateMsgAct.triggered.connect(
+                    lambda: self.actionHandler('update_msg', item))
+                delMsgAct.triggered.connect(
+                    lambda: self.actionHandler('del_msg', item))
+            elif item and item.text(3) == ItemType.FIELD:
+                updateFieldAct = self.contextMenu.addAction(u'更新字段')
+                delFieldAct = self.contextMenu.addAction(u'删除字段')
+                updateFieldAct.triggered.connect(
+                    lambda: self.actionHandler('update_field', item))
+                delFieldAct.triggered.connect(
+                    lambda: self.actionHandler('del_field', item))
+            self.contextMenu.exec_(QCursor.pos())  # 随指针的位置显示菜单
+        except Exception as e:
+            print(e)
+        pass
+
+    def actionHandler(self, op_flag, item=None):
+        if not item and op_flag == 'add_mod':  # add mod
+            is_ok, mod_name, mod_comment = ModGui.getModInfo()
+            if not is_ok:
+                return
+            self.addModule(mod_name, mod_comment)
+            pass
+        if op_flag == 'update_mod':  # update mod
+            is_ok, mod_name, mod_comment = ModGui.getModInfo()
+            if not is_ok:
+                return
+            self.updateModule(item.text(2), mod_name, mod_comment)
+            pass
+        if op_flag == 'del_mod':  # del mod
+            reply = QMessageBox.information(
+                self, "warning", "是否删除模块?", QMessageBox.Yes | QMessageBox.No)
+            if reply == QMessageBox.Yes:
+                self.delModule(item.text(2))
+                pass
+            pass
+
+        if op_flag == 'add_msg':
+            self.ui.FrameMsg.setEnabled(True)
+            self.ui.BtnAdd.setEnabled(True)
+            pass
+
+        if op_flag == 'update_msg':
+            self.ui.FrameMsg.setEnabled(True)
+            self.ui.FrameField.setEnabled(False)
+            self.ui.BtnUpdate.setEnabled(True)
+            self.ui.BtnAdd.setEnabled(False)
+            self.ui.BtnDel.setEnabled(False)
+            msg_type = self.getMsgTypeByItemName(item.text(0))
+            if msg_type == MsgType.REQ:
+                self.ui.BtnReq.setChecked(True)
+            else:
+                self.ui.BtnNotify.setChecked(True)
+            pass
+
+        if op_flag == 'del_msg':
+            self.delMsg()
+            pass
+
+        if op_flag == 'update_field':
+            self.ui.FrameField.setEnabled(True)
+            self.ui.BtnUpdate.setEnabled(True)
+            pass
+
+        if op_flag == 'del_field':
+            self.delField()
+            pass
+        self.ui.BtnSave.setEnabled(True)
+        self.showModuleMsg()
+
+####################增删改查操作##############################
+
+    def addModule(self, mod_name, mod_comment):
+        module = Module()
+        module.name = mod_name.title()  # 首字母大写
+        module.comment = mod_comment or ""
+        module.id = self.module_mgr.getNextModId()
+        print('module id===', module.id)
+        module.proto_imp = ""
+        self.module_mgr.addModule(module)
+        pass
+
+    def updateModule(self, mod_id, mod_name, mod_comment):
+        module = self.module_mgr.getModule(mod_id)
+        if mod_name != "":
+            module.name = mod_name
+        if mod_comment != "":
+            module.comment = mod_comment
+        pass
+
+    def delModule(self, mod_id):
+        self.module_mgr.delModule(mod_id)
+        pass
+
+    def addMsg(self):
+        msg_name = self.ui.LetMsgName.text().strip()
+        if msg_name == '':
+            return
+        mod_id = self.selected_item.text(2)
+        module = self.module_mgr.getModule(mod_id)
+        if not module:
+            return
+        if self.ui.BtnReq.isChecked():
+            # add req and reply msg
+            req_msg = MsgReq(mod_id)
+            reply_msg = MsgReply(mod_id)
+            req_msg.id = reply_msg.id = module.getNextMsgId()
+            req_msg.name = reply_msg.name = msg_name
+            req_msg.comment = reply_msg.comment = self.ui.LetMsgCmt.text().strip()
+            module.addMsg(req_msg, MsgType.REQ)
+            module.addMsg(reply_msg, MsgType.REPLY)
+        elif self.ui.BtnNotify.isChecked():
+            # add notify msg
+            notify_msg = MsgNotify(mod_id)
+            notify_msg.id = module.getNextMsgId()
+            notify_msg.name = msg_name
+            notify_msg.comment = self.ui.LetMsgCmt.text().strip()
+            module.addMsg(notify_msg, MsgType.NOTIFY)
+            pass
+
+    def updateMsg(self):
+        msg_id = self.selected_item.text(2)
+        module = self.module_mgr.getModule(self.selected_item.parent().text(0))
+        if not module:
+            return
+        msg_type = self.getMsgTypeByItemName(self.selected_item.text(0))
+        msg_name = self.ui.LetMsgName.text().strip()
+        msg_comment = self.ui.LetMsgCmt.text().strip()
+        module.updateMsg(msg_id, msg_type, msg_name, msg_comment)
+
+    def delMsg(self):
+        msg_id = self.selected_item.text(2)
+        module = self.module_mgr.getModule(self.selected_item.parent().text(2))
+        if not module:
+            return
+        msg_type = self.getMsgTypeByItemName(self.selected_item.text(0))
+        module.delMsg(msg_id, msg_type)
+        pass
+
+    def addField(self):
+        msg = self.getMsgByFieldItem(self.selected_item)
+        if not msg:
+            return
+        field_name = self.ui.LetFieldName.text().strip() or ''
+        field_comment = self.ui.LetFieldCmt.text().strip() or ''
+        if not field_name:
+            return
+        field = Field()
+        field.field_name = field_name
+        field.field_comment = field_comment
+        field.proto_type = self.ui.CbxProtoType.currentText()
+        field.value_type = self.ui.CbxValueType.currentText()
+        msg.addField(field)
+        pass
+
+    def updateField(self):
+        msg = self.getMsgByFieldItem(self.selected_item)
+        if not msg:
+            return
+        field = msg.getFieldByName(self.selected_item.text(0))
+        field_name = self.ui.LetFieldName.text().strip() or ''
+        field_comment = self.ui.LetFieldCmt.text().strip() or ''
+        if not field_name:
+            return
+        field.field_name = field_name
+        field.field_comment = field_comment
+        field.proto_type = self.ui.CbxProtoType.currentText()
+        field.value_type = self.ui.CbxValueType.currentText()
+        pass
+
+    def delField(self):
+        msg = self.getMsgByFieldItem(self.selected_item)
+        if not msg:
+            return
+        msg.delField(self.selected_item.text(0))
+        pass
+
+##################菜单操作###############################
     def onMenuTrigger(self, menu):
         if menu == self.ui.menuOpen:
             self.menuBarOpen()
@@ -200,13 +342,7 @@ class ProtoTool(QMainWindow):
 
         pass
 
-    def getMsgTypeByItemName(self, item_name):
-        if item_name.endswith('Req', 3):
-            return MsgType.REQ
-        if item_name.endswith('Reply', 5):
-            return MsgType.REPLY
-        if item_name.endswith('Notify', 6):
-            return MsgType.NOTIFY
+###################################################
 
     def showModuleMsg(self):
         self.ui.WidMsgTree.clear()
@@ -273,39 +409,13 @@ class ProtoTool(QMainWindow):
 
     def onTreeClicked(self, item_idx):
         tree_item = self.ui.WidMsgTree.currentItem()
-        if tree_item.text(3) == ItemType.MODULE:
-            self.ui.FrameMsg.setEnabled(True)
-
-            pass
         pass
 
     def onTreeItemClicked(self, idx):
         self.selected_item = self.ui.WidMsgTree.currentItem()
         self.showItemDetail(self.selected_item)
         item_type = self.selected_item.text(3)
-        self.setFrameEnable(item_type)
 
-    def setFrameEnable(self, item_type):
-        if item_type == ItemType.MODULE:  # add msg
-            self.ui.FrameMsg.setEnabled(True)
-            self.ui.BtnUpdate.setEnabled(False)
-            self.ui.BtnDel.setEnabled(False)
-            pass
-
-        if item_type == ItemType.MSG:   # modify del msg  or add Field
-            self.ui.FrameMsg.setEnabled(True)
-            self.ui.BtnMsgAdd.setEnabled(False)
-            self.ui.FrameField.setEnabled(True)
-            self.ui.BtnFieldAdd.setEnabled(True)
-            self.ui.BtnUpdate.setEnabled(True)
-            self.ui.BtnDel.setEnabled(True)
-            pass
-
-        if item_type == ItemType.FIELD:   # modify del Field
-            self.ui.FrameMsg.setEnabled(False)
-            self.ui.FrameField.setEnabled(True)
-            self.ui.BtnFieldAdd.setEnabled(False)
-            pass
         # clear edit
         self.ui.LetMsgName.clear()
         self.ui.LetMsgCmt.clear()
@@ -314,9 +424,9 @@ class ProtoTool(QMainWindow):
 
     def saveAll(self):
         save_dir = self.config.getConfOne('msg_path')
-        self.module_mgr.writeXmls(save_dir)
+        self.module_mgr.saveXmls(save_dir)
         self.clearTreeWidgetSelect()
-        # 生成proto 文件
+        # TODO 生成proto 文件
 
         pass
 
@@ -324,115 +434,13 @@ class ProtoTool(QMainWindow):
         self.ui.WidMsgTree.clearSelection()
         self.selected_item = None
 
-    def onBtnDelMod(self):
-        mod_id = self.selected_item.text(2)
-        self.module_mgr.delModule(mod_id)
-
-    def onBtnUpdateMod(self):
-        mod_id = self.selected_item.text(2)
-        mod_name = self.ui.LetModName.text().strip()
-        mod_comment = self.ui.LetModCmt.text().strip()
-        mod = self.module_mgr.getMod(mod_id)
-        if not mod or not mod_name:
-            return
-        mod.update(mod_name, mod_comment)
-
-    def onBtnDelMsg(self):
-        mod_id = self.selected_item.parent().text(2)
-        mod = self.module_mgr.getMod(mod_id)
-        if not mod:
-            return
-        msg_id = self.selected_item.text(2)
-        mod.delMsg(msg_id)
-
-    def onBtnUpdateMsg(self):
-        mod_id = self.selected_item.parent().text(2)
-        mod = self.module_mgr.getMod(mod_id)
-        if not mod:
-            return
-        msg_name = self.ui.LetMsgName.text().strip()
-        msg_comment = self.ui.LetMsgCmt.text().strip()
-        msg = mod.getMsg(self.selected_item.text(2))
-        if not msg or not msg_name:
-            return
-        msg.updateMsg(msg_name, msg_comment)
-
-    def onBtnDelField(self):
-        msg = self.getMsgByFieldItem(self.selected_item)
-        field_name = self.selected_item.text(0)
-        if not msg:
-            return
-        msg_item = self.selected_item.parent()
-        if msg_item.text(3) == ItemType.REQ:
-            msg.delField(field_name, 'req')
-        if msg_item.text(3) == ItemType.REPLY:
-            msg.delField(field_name, 'reply')
-        if msg_item.text(3) == ItemType.NOTIFY:
-            msg.delField(field_name, 'notify')
-
-    def onBtnUpdateField(self):
-        msg = self.getMsgByFieldItem(self.selected_item)
-        field_name = self.selected_item.text(0)
-        if not msg:
-            return
-        field = None
-        msg_item = self.selected_item.parent()
-        if msg_item.text(3) == ItemType.REQ:
-            field = msg.findField(field_name, 'req')
-        if msg_item.text(3) == ItemType.REPLY:
-            field = msg.findField(field_name, 'reply')
-        if msg_item.text(3) == ItemType.NOTIFY:
-            field = msg.findField(field_name, 'notify')
-        field['proto_type'] = self.ui.CbxProtoType
-        field['proto_value'] = self.ui.CbxValueType
-        field_name = self.ui.LetFieldName.text().strip()
-        field_comment = self.ui.LetFieldCmt.text().strip()
-        if field_name != "":
-            field['field_name'] = field_name
-        if field_comment != "":
-            field['comment'] = field_comment
-
-    def onBtnClicked(self, btn):
-        try:
-            self.ui.BtnSave.setEnabled(True)
-            if btn == 'mod_add':
-                self.modAdd()
-            if btn == 'save':
-                self.saveAll()
-                self.ui.BtnSave.setEnabled(False)
-            if not self.selected_item:
-                return
-            item_type = self.selected_item.text(3)
-            if item_type == ItemType.MODULE:
-                if btn == 'del':
-                    self.onBtnDelMod()
-                if btn == 'update':
-                    self.onBtnUpdateMod()
-                pass
-            if item_type == ItemType.MSG or item_type == ItemType.NOTIFY:
-                if btn == 'del':
-                    self.onBtnDelMsg()
-                if btn == 'update':
-                    self.onBtnUpdateMsg()
-                pass
-            if item_type == ItemType.FIELD:
-                if btn == 'del':
-                    self.onBtnDelField()
-                if btn == 'update':
-                    self.onBtnUpdateField()
-
-            if btn == 'msg_add':
-                self.msgAdd()
-            if btn == 'field_add':
-                self.fieldAdd()
-
-            self.ui.BtnDel.setEnabled(False)
-            self.ui.BtnUpdate.setEnabled(False)
-            self.ui.WidMsgTree.clearSelection()
-            self.selected_item = None
-            self.showModuleMsg()
-        except Exception as e:
-            print(e)
+    def getMsgTypeByItemName(self, item_name):
+        if item_name.endswith('Req', 3):
+            return MsgType.REQ
+        if item_name.endswith('Reply', 5):
+            return MsgType.REPLY
+        if item_name.endswith('Notify', 6):
+            return MsgType.NOTIFY
 
     def getMsgByFieldItem(self, item):
         if not item:
@@ -440,80 +448,40 @@ class ProtoTool(QMainWindow):
         mod_item = item.parent().parent()
         msg_item = item.parent()
         module = self.module_mgr.getModule(mod_item.text(2))
-        msg = module.getMsg(msg_item.text(2), int(msg_item.text(3)))
+        # TODO 错误
+        msg_type = self.getMsgTypeByItemName(item.text(0))
+        msg = module.getMsg(msg_item.text(2), msg_type)
         return msg
 
-    def getMsgByMsgItem(self, item):
-        msg_item = None
-        if item.text(0) == 'req' or item.text(0) == 'reply':
-            msg_item = item.parent()
-        else:
-            msg_item = item
-
-        msg_id = msg_item.text(2)
-        mod_id = msg_item.parent().text(2)
-        msg = self.module_mgr.getMsg(mod_id, msg_id)
-        return msg
-
-    def fieldAdd(self):
-        if self.ui.LetFieldName == "":
-            return
-        name = self.selected_item.text(0)
-        msg = self.getMsgByMsgItem(self.selected_item)
-        if not msg:
-            return
-        next_tag = 0
-        if name == 'req' or name == 'reply':
-            next_tag = msg.getNextTag(name)
-        else:
-            next_tag = msg.getNextTag('notify')
-        field = {}
-        field['proto_type'] = self.ui.CbxProtoType.currentText()
-        field['value_type'] = self.ui.CbxValueType.currentText()
-        field['field_name'] = self.ui.LetFieldName.text().strip()
-        field['tag'] = str(next_tag)
-        field['comment'] = self.ui.LetFieldCmt.text().strip()
-        if name == 'req' or name == 'reply':
-            msg.addField(field, name)
-        else:
-            msg.addField(field, 'notify')
-            pass
-
-    def msgAdd(self):
-        mod_id = self.selected_item.text(2)
-        msg = Msg(mod_id)
-        msg.name = self.ui.LetMsgName.text().strip()
-        if msg.name == "":
-            return
-        msg.comment = self.ui.LetMsgCmt.text().strip()
-        mod = self.module_mgr.getMod(mod_id)
-        if not mod:
-            return
-        msg.id = mod.nextMsgId()
-        if self.ui.BtnReq.isChecked():
-            # add req msg
-            msg.type = "ReqReplyMsg"
-        if self.ui.BtnNotify.isChecked():
-            # add notify msg
-            msg.type = "NotifyMsg"
-        mod.addMsg(msg)
-        pass
-
-    def modAdd(self):
-        mod = Module()
-        mod.name = self.ui.LetModName.text().strip()
-        if mod.name == "":
-            return
-        mod.name = mod.name.title()  # 首字母大写
-        mod.id = self.module_mgr.nextModId()
-        mod.comment = self.ui.LetModCmt.text().strip() or ""
-        mod.proto_imp = ""
-        self.module_mgr.addModule(mod)
-        # clear
-        self.ui.LetModCmt.clear()
-        self.ui.LetModName.clear()
-        self.showModuleMsg()
-        self.clearTreeWidgetSelect()
+    def onBtnClicked(self, btn):
+        try:
+            if btn == 'add':
+                if self.selected_item.text(3) == ItemType.MODULE:
+                    # add msg
+                    self.addMsg()
+                else:
+                    self.addField()
+            if btn == 'del':
+                if self.selected_item.text(3) == ItemType.MSG:
+                    self.delMsg()
+                else:
+                    self.delField()
+                pass
+            if btn == 'update':
+                if self.selected_item.text(3) == ItemType.MODULE:
+                    # add msg
+                    self.updateMsg()
+                else:
+                    self.updateField()
+            if btn == 'save':
+                self.saveAll()
+                self.ui.BtnSave.setEnabled(False)
+                pass
+            self.ui.BtnSave.setEnabled(True)
+            if btn != 'save':
+                self.showModuleMsg()
+        except Exception as e:
+            print(e)
 
     def showItemDetail(self, item):
         if not item:
