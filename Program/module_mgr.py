@@ -53,17 +53,19 @@ class ModuleMgr(object):
         return None
 
     def addModule(self, module):
-        is_exist, module = self.existModule(module.id)
+        is_exist, _ = self.existModule(module.id)
         if not is_exist:
             self.module_dic[module.id] = module
 
     def delModule(self, mod_id):
-        is_exist, module = self.existModule(mod_id)
+        is_exist, _ = self.existModule(mod_id)
         if is_exist:
-            os.remove(self.modules[mod_id].xml_file)
+            print(self.module_dic[mod_id].xml_file)
+            # TODO test
+            os.remove(self.module_dic[mod_id].xml_file)
             self.module_dic.pop(mod_id)
 
     def getNextModId(self):
         next_id = self.mod_next_id
-        self.mod_next_id = self.mod_next_id + 1
+        self.mod_next_id = str(int(self.mod_next_id) + 1)
         return next_id

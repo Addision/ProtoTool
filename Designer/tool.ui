@@ -88,7 +88,7 @@
       <x>630</x>
       <y>10</y>
       <width>191</width>
-      <height>171</height>
+      <height>141</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -181,25 +181,12 @@
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="BtnMsgAdd">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>130</y>
-       <width>71</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>确定</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QPushButton" name="BtnDel">
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>140</y>
+      <y>190</y>
       <width>81</width>
       <height>41</height>
      </rect>
@@ -212,7 +199,7 @@
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>240</y>
+      <y>290</y>
       <width>81</width>
       <height>41</height>
      </rect>
@@ -225,7 +212,7 @@
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>340</y>
+      <y>390</y>
       <width>81</width>
       <height>41</height>
      </rect>
@@ -250,7 +237,7 @@
       <x>630</x>
       <y>190</y>
       <width>191</width>
-      <height>331</height>
+      <height>291</height>
      </rect>
     </property>
     <property name="autoFillBackground">
@@ -352,19 +339,6 @@
       <string>字段名称</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="BtnFieldAdd">
-     <property name="geometry">
-      <rect>
-       <x>50</x>
-       <y>280</y>
-       <width>81</width>
-       <height>41</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>确定</string>
-     </property>
-    </widget>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
       <rect>
@@ -436,6 +410,19 @@
       <string>字段说明</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="BtnAdd">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>90</y>
+      <width>81</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>增加</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

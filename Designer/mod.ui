@@ -1,27 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>FormMod</class>
- <widget class="QWidget" name="FormMod">
-  <property name="windowModality">
-   <enum>Qt::NonModal</enum>
-  </property>
+ <class>DialogMod</class>
+ <widget class="QDialog" name="DialogMod">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>250</width>
-    <height>159</height>
+    <width>246</width>
+    <height>152</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>模块</string>
+  <property name="contextMenuPolicy">
+   <enum>Qt::ActionsContextMenu</enum>
   </property>
-  <widget class="QPushButton" name="BtnMod">
+  <property name="windowTitle">
+   <string>模块信息</string>
+  </property>
+  <widget class="QPushButton" name="BtnModCancel">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>110</y>
+     <width>81</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>取消</string>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="LetModCmt">
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>120</y>
-     <width>111</width>
+     <y>60</y>
+     <width>161</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="BtnModOk">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>110</y>
+     <width>81</width>
      <height>31</height>
     </rect>
    </property>
@@ -29,34 +52,11 @@
     <string>确定</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="LetModCmt">
-   <property name="geometry">
-    <rect>
-     <x>70</x>
-     <y>70</y>
-     <width>161</width>
-     <height>31</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_7">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>70</y>
-     <width>51</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>模块说明</string>
-   </property>
-  </widget>
   <widget class="QLabel" name="label_6">
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>20</y>
+     <y>10</y>
      <width>51</width>
      <height>21</height>
     </rect>
@@ -65,11 +65,24 @@
     <string>模块名称</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>51</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>模块说明</string>
+   </property>
+  </widget>
   <widget class="QLineEdit" name="LetModName">
    <property name="geometry">
     <rect>
      <x>70</x>
-     <y>20</y>
+     <y>10</y>
      <width>161</width>
      <height>31</height>
     </rect>

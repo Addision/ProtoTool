@@ -65,6 +65,15 @@ class Module(object):
             msg_list = self.getMsgList(msg_type)
             del msg_list[msg_id]
 
+    def updateMsg(self, msg_id, msg_type, msg_name='', msg_comment=''):
+        msg = self.getMsg(msg_id, msg_type)
+        if not msg:
+            return
+        if msg_name:
+            msg.name = msg_name
+        if msg_comment:
+            msg.comment = msg_comment
+
     def readXml(self):
         try:
             contents = ""
