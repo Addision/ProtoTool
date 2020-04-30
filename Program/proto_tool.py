@@ -408,13 +408,12 @@ class ProtoTool(QMainWindow):
                     item_field.setText(2, msg.id)
                     item_field.setText(3, ItemType.FIELD)
 
-            self.ui.WidMsgTree.expandToDepth(0)
+            self.ui.WidMsgTree.expandToDepth(1)
 
 
     def onTreeItemClicked(self, idx):
         self.selected_item = self.ui.WidMsgTree.currentItem()
         self.showItemDetail(self.selected_item)
-        print(self.selected_item.text(0))
         # clear edit
         self.ui.LetMsgName.clear()
         self.ui.LetMsgCmt.clear()
