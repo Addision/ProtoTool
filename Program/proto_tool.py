@@ -84,7 +84,7 @@ class ProtoTool(QMainWindow):
         if msg_path:
             self.module_mgr.loadXmls(msg_path)
             self.showModuleMsg()
-            
+
 #########################右键菜单操作#########################
     def rightClickMenu(self, pos):
         try:
@@ -164,6 +164,11 @@ class ProtoTool(QMainWindow):
             self.ui.BtnUpdate.setEnabled(True)
             self.ui.BtnAdd.setEnabled(False)
             self.ui.BtnDel.setEnabled(False)
+            msg_type = self.getMsgTypeByItemName(item.text(0))
+            if msg_type == MsgType.REQ:
+                self.ui.BtnReq.setChecked(True)
+            else:
+                self.ui.BtnNotify.setChecked(True)
             pass
 
         if op_flag == 'del_msg':
@@ -178,7 +183,7 @@ class ProtoTool(QMainWindow):
         if op_flag == 'del_field':
             self.delField()
             pass
-        self.ui.BtnSave.setEnabled(True)    
+        self.ui.BtnSave.setEnabled(True)
         self.showModuleMsg()
 
 ####################增删改查操作##############################
@@ -243,7 +248,7 @@ class ProtoTool(QMainWindow):
 
     def delMsg(self):
         msg_id = self.selected_item.text(2)
-        module = self.module_mgr.getModule(self.selected_item.parent().text(0))
+        module = self.module_mgr.getModule(self.selected_item.parent().text(2))
         if not module:
             return
         msg_type = self.getMsgTypeByItemName(self.selected_item.text(0))
@@ -419,9 +424,9 @@ class ProtoTool(QMainWindow):
 
     def saveAll(self):
         save_dir = self.config.getConfOne('msg_path')
-        self.module_mgr.writeXmls(save_dir)
+        self.module_mgr.saveXmls(save_dir)
         self.clearTreeWidgetSelect()
-        # 生成proto 文件
+        # TODO 生成proto 文件
 
         pass
 
@@ -443,7 +448,9 @@ class ProtoTool(QMainWindow):
         mod_item = item.parent().parent()
         msg_item = item.parent()
         module = self.module_mgr.getModule(mod_item.text(2))
-        msg = module.getMsg(msg_item.text(2), int(msg_item.text(3)))
+        # TODO 错误
+        msg_type = self.getMsgTypeByItemName(item.text(0))
+        msg = module.getMsg(msg_item.text(2), msg_type)
         return msg
 
     def onBtnClicked(self, btn):
@@ -471,7 +478,8 @@ class ProtoTool(QMainWindow):
                 self.ui.BtnSave.setEnabled(False)
                 pass
             self.ui.BtnSave.setEnabled(True)
-            self.showModuleMsg()
+            if btn != 'save':
+                self.showModuleMsg()
         except Exception as e:
             print(e)
 

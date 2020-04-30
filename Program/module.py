@@ -43,6 +43,8 @@ class Module(object):
 
     def existMsg(self, msg_id, msg_type):
         msg_list = self.getMsgList(msg_type)
+        if not msg_list:
+            return
         if msg_id in msg_list.keys():
             return True, msg_list[msg_id]
         return False, None
@@ -60,10 +62,10 @@ class Module(object):
         return None
 
     def delMsg(self, msg_id, msg_type):
-        is_exist, msg = self.existMsg(msg_id)
+        is_exist, msg = self.existMsg(msg_id, msg_type)
         if is_exist:
             msg_list = self.getMsgList(msg_type)
-            del msg_list[msg_id]
+            msg_list.pop(msg_id)
 
     def updateMsg(self, msg_id, msg_type, msg_name='', msg_comment=''):
         msg = self.getMsg(msg_id, msg_type)
