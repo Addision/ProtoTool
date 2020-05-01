@@ -89,6 +89,7 @@ class ProtoTool(QMainWindow):
         try:
             self.contextMenu = QMenu(self.ui.WidMsgTree)  # 创建对象
             item = self.ui.WidMsgTree.itemAt(pos)
+            addPublicModAct = None
             addModAct = None
             updateModAct = None
             delDodAct = None
@@ -99,9 +100,12 @@ class ProtoTool(QMainWindow):
             updateFieldAct = None
             delFieldAct = None
             if not item:
-                addModAct = self.contextMenu.addAction(u'添加模块')  # 添加动作
+                addPublicModAct = self.contextMenu.addAction(u'添加公共模块')  # 添加动作
+                addPublicModAct.triggered.connect(
+                    lambda: self.actionHandler('add_public_mod'))
+                addModAct = self.contextMenu.addAction(u'添加客户端模块')  # 添加动作
                 addModAct.triggered.connect(
-                    lambda: self.actionHandler('add_mod'))
+                    lambda: self.actionHandler('add_mod'))                    
             elif item and item.text(3) == ItemType.MODULE:
                 updateModAct = self.contextMenu.addAction(u'更新模块')
                 delDodAct = self.contextMenu.addAction(u'删除模块')
@@ -135,11 +139,20 @@ class ProtoTool(QMainWindow):
         pass
 
     def actionHandler(self, op_flag, item=None):
+        if not item and op_flag == 'add_public_mod':  # add mod
+            is_ok, mod_name, mod_comment = ModGui.getModInfo()
+            if not is_ok or not mod_name:
+                return
+            mod_name = 'Public'+mod_name
+            self.addModule(mod_name.title(), mod_comment, 'public')
+            self.ui.BtnSave.setEnabled(True)
+            self.showModuleMsg()
+        
         if not item and op_flag == 'add_mod':  # add mod
             is_ok, mod_name, mod_comment = ModGui.getModInfo()
-            if not is_ok:
+            if not is_ok or not mod_name:
                 return
-            self.addModule(mod_name, mod_comment)
+            self.addModule(mod_name.title(), mod_comment, 'client')
             self.ui.BtnSave.setEnabled(True)
             self.showModuleMsg()
 
@@ -197,13 +210,13 @@ class ProtoTool(QMainWindow):
 
 ####################增删改查操作##############################
 
-    def addModule(self, mod_name, mod_comment):
+    def addModule(self, mod_name, mod_comment, add_flag):
         module = None
-        if not self.module_mgr.module_dic:
+        if add_flag == 'public':
             module = ModulePublic()
         else:
             module = ModuleMsg()
-            module.id = self.module_mgr.getNextModId()
+        module.id = self.module_mgr.getNextModId(module.mod_type)
         module.name = mod_name.title()  # 首字母大写
         module.comment = mod_comment or ""
         print('module id===', module.id)
@@ -220,6 +233,7 @@ class ProtoTool(QMainWindow):
 
     def delModule(self, mod_id):
         self.module_mgr.delModule(mod_id)
+        self.clearModel()
         pass
 
     def addMsg(self):
@@ -230,7 +244,7 @@ class ProtoTool(QMainWindow):
         module = self.module_mgr.getModule(mod_id)
         if not module:
             return
-        if module.mod_type == 'msg':
+        if module.mod_type == 'client':
             if self.ui.BtnReq.isChecked():
                 # add req and reply msg
                 req_msg = MsgReq(mod_id)
@@ -271,6 +285,7 @@ class ProtoTool(QMainWindow):
             return
         msg_type = self.getMsgTypeByItemName(self.selected_item.text(0))
         module.delMsg(msg_id, msg_type)
+        self.clearModel()
         pass
 
     def addField(self):
@@ -312,6 +327,7 @@ class ProtoTool(QMainWindow):
         if not msg:
             return
         msg.delField(self.selected_item.text(0))
+        self.clearModel()
         pass
 
 ##################菜单操作###############################
@@ -498,6 +514,7 @@ class ProtoTool(QMainWindow):
                     self.addMsg()
                 else:
                     self.addField()
+                self.ui.FrameMsg.setEnabled(False)
             if btn == 'del':
                 if item_type == ItemType.MSG:
                     self.delMsg()
@@ -509,18 +526,22 @@ class ProtoTool(QMainWindow):
                     self.updateMsg()
                 else:
                     self.updateField()
+                self.ui.FrameField.setEnabled(False)
 
             self.ui.BtnSave.setEnabled(True)
             self.showModuleMsg()
         except Exception as e:
             print(e)
 
+    def clearModel(self):
+        self.model.clear()
+        self.model.setHorizontalHeaderLabels([u'名称', u'说明'])
+
     def showItemDetail(self, item):
         if not item:
             return
+        self.clearModel()
         item_type = item.text(3)
-        self.model.clear()
-        self.model.setHorizontalHeaderLabels([u'名称', u'说明'])
         if item_type == ItemType.MODULE:
             self.model.appendRow(
                 [QStandardItem(u'模块ID'), QStandardItem(item.text(2))])

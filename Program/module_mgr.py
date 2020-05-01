@@ -9,8 +9,11 @@ class ModuleMgr(object):
         super(ModuleMgr, self).__init__()
         self.module_dic = {}  # <mod_id, mod>
         self.mod_file_dic = {}  # <mod_id, path>
-        self.mod_next_id = '0'
-        self.public_mod_id = '10'
+        self.public_next_id = '1'
+        self.client_next_id = '11'
+
+        # 公共文件
+        self.public_messages = {} # <mod_name, msg_name>
 
     def loadXmls(self, xml_dir):
         if not os.path.exists(xml_dir):
@@ -26,14 +29,18 @@ class ModuleMgr(object):
             module = None
             if 'Public' in xml_file:
                 module = ModulePublic()
+                if int(module.id) > int(self.public_next_id):
+                    self.public_next_id = module.id                
             else:
                 module = ModuleMsg()
+                if int(module.id) > int(self.client_next_id):
+                    self.client_next_id = module.id                
             module.loadXml(xml_file)
             self.module_dic[module.id] = module
 
-            if int(module.id) > int(self.mod_next_id):
-                self.mod_next_id = module.id
-        self.mod_next_id = str(int(self.mod_next_id)+1)
+        self.public_next_id = str(int(self.public_next_id)+1)
+        self.client_next_id = str(int(self.client_next_id)+1)
+        
 
     def getModFile(self, xml_dir, mod_name):
         xml_file = xml_dir + "/Module" + mod_name+".xml"
@@ -72,7 +79,13 @@ class ModuleMgr(object):
             os.remove(self.module_dic[mod_id].xml_file)
             self.module_dic.pop(mod_id)
 
-    def getNextModId(self):
-        next_id = self.mod_next_id
-        self.mod_next_id = str(int(self.mod_next_id) + 1)
+    def getNextModId(self, mod_type):
+        next_id = '0'
+        if mod_type == 'client':
+            next_id = self.client_next_id
+            self.client_next_id = str(int(self.client_next_id) + 1)
+        else:
+            next_id = self.public_next_id
+            self.public_next_id = str(int(self.public_next_id) + 1)
+
         return next_id

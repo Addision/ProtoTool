@@ -13,10 +13,10 @@ class ModuleBase(object):
     def __init__(self):
         super(ModuleBase, self).__init__()
         self.xml_file = ""  # 模块保存的xml文件
-        self.id = "10"     # 模块id 从11开始
+        self.id = "1"     # 公共模块从1-9  协议模块从11开始
         self.name = ""
         self.comment = ""
-        
+
         self.req_msg_dic = {}
         self.reply_msg_dic = {}
         self.notify_msg_dic = {}
@@ -83,7 +83,6 @@ class ModuleBase(object):
         if msg_comment:
             msg.comment = msg_comment
 
-
     def assignField(self, attrib):
         if not attrib:
             return
@@ -110,7 +109,8 @@ class ModuleMsg(ModuleBase):
     def __init__(self):
         super(ModuleMsg, self).__init__()
         self.proto_imp = ""  # 模块引用的文件
-        self.mod_type = 'msg'
+        self.mod_type = 'client'
+        self.id = "11"
 
     def readXml(self):
         try:
@@ -225,6 +225,7 @@ class ModulePublic(ModuleBase):
     def __init__(self):
         super(ModulePublic, self).__init__()
         self.mod_type = 'public'
+        self.id = "1"
 
     def readXml(self):
         try:

@@ -1,10 +1,2 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Module comment="公共模块" id="10" name="Publicstruct">
-	<Message>
-		<PublicMsg>
-			<Public comment="x z pos" id="0" name="Vector2">
-				<field comment="fbeadfb" field_name="ergagr" proto_type="optional" tag="1" value_type="int32" />
-			</Public>
-		</PublicMsg>
-	</Message>
-</Module>
+<?xml version='1.0' encoding='utf-8'?>
+<Module comment="common model" id="1" name="Publicstruct"><Message><PublicMsg><Public comment="pos" id="0" name="Vector2"><field comment="x" field_name="x" proto_type="optional" tag="1" value_type="int32" /></Public></PublicMsg></Message></Module>
