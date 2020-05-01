@@ -267,51 +267,6 @@
        <height>31</height>
       </rect>
      </property>
-     <item>
-      <property name="text">
-       <string>int32</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>int64</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>string</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>float</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>double</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>bytes</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>bool</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>uint32</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>uint64</string>
-      </property>
-     </item>
     </widget>
     <widget class="QLabel" name="label">
      <property name="geometry">
@@ -419,51 +374,6 @@
        <height>31</height>
       </rect>
      </property>
-     <item>
-      <property name="text">
-       <string>int32</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>int64</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>string</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>float</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>double</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>bytes</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>bool</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>uint32</string>
-      </property>
-     </item>
-     <item>
-      <property name="text">
-       <string>uint64</string>
-      </property>
-     </item>
     </widget>
    </widget>
    <widget class="QPushButton" name="BtnAdd">

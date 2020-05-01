@@ -71,11 +71,17 @@ class ProtoTool(QMainWindow):
         self.ui.BbvInfo.setSelectionMode(QAbstractItemView.NoSelection)
         self.ui.BbvInfo.setModel(self.model)
         # other 设置
+        self.ui.CbxValueMod.activated.connect(self.selectModChange)
+        self.ui.CbxValueType.activated.connect(self.selectTypeChange)
+
         self.ui.BtnReq.setChecked(True)
         self.selected_item = None
         self.config = Config()
         self.module_mgr = ModuleMgr()
+        self.value_types = ['int32', 'int64', 'string', 'float',
+                            'double', 'bytes', 'bool', 'uint32', 'uint64']
         self.openProto()
+        self.updateCbxValues()
     pass
 
     def openProto(self):
@@ -83,6 +89,34 @@ class ProtoTool(QMainWindow):
         if msg_path:
             self.module_mgr.loadXmls(msg_path)
             self.showModuleMsg()
+
+    def updateCbxValues(self):
+        modules = self.module_mgr.getPublicModules()
+        if not modules:
+            return
+        self.ui.CbxValueMod.clear()
+        for mod in modules:
+            self.ui.CbxValueMod.addItem(mod.name)
+        mod = modules[0]
+        msg_names = mod.getMsgNames()
+        value_types = self.value_types + msg_names
+        self.ui.CbxValueType.addItems(value_types)
+
+    def selectModChange(self):
+        mod_name = self.ui.CbxValueMod.currentText()
+        print(mod_name)
+        mod = self.module_mgr.getModuleByName(mod_name)
+        if not mod:
+            return
+        self.ui.CbxValueType.clear()
+        msg_names = mod.getMsgNames()
+        value_types = self.value_types + msg_names
+        self.ui.CbxValueType.addItems(value_types)
+
+    def selectTypeChange(self):
+        mod_name = self.ui.CbxValueMod.currentText()
+        mod = self.module_mgr.getModuleByName(mod_name)
+        # TODO update import
 
 #########################右键菜单操作#########################
     def rightClickMenu(self, pos):
@@ -105,7 +139,7 @@ class ProtoTool(QMainWindow):
                     lambda: self.actionHandler('add_public_mod'))
                 addModAct = self.contextMenu.addAction(u'添加客户端模块')  # 添加动作
                 addModAct.triggered.connect(
-                    lambda: self.actionHandler('add_mod'))                    
+                    lambda: self.actionHandler('add_mod'))
             elif item and item.text(3) == ItemType.MODULE:
                 updateModAct = self.contextMenu.addAction(u'更新模块')
                 delDodAct = self.contextMenu.addAction(u'删除模块')
@@ -125,7 +159,7 @@ class ProtoTool(QMainWindow):
                 delMsgAct.triggered.connect(
                     lambda: self.actionHandler('del_msg', item))
                 addFieldAct.triggered.connect(
-                    lambda: self.actionHandler('add_field', item))                    
+                    lambda: self.actionHandler('add_field', item))
             elif item and item.text(3) == ItemType.FIELD:
                 updateFieldAct = self.contextMenu.addAction(u'更新字段')
                 delFieldAct = self.contextMenu.addAction(u'删除字段')
@@ -147,7 +181,7 @@ class ProtoTool(QMainWindow):
             self.addModule(mod_name.title(), mod_comment, 'public')
             self.ui.BtnSave.setEnabled(True)
             self.showModuleMsg()
-        
+
         if not item and op_flag == 'add_mod':  # add mod
             is_ok, mod_name, mod_comment = ModGui.getModInfo()
             if not is_ok or not mod_name:
@@ -386,7 +420,7 @@ class ProtoTool(QMainWindow):
         if not self.module_mgr.module_dic:
             return
         for id, module in self.module_mgr.module_dic.items():
-            QApplication.processEvents()            
+            QApplication.processEvents()
             # add module
             item_module = QTreeWidgetItem(self.ui.WidMsgTree)
             item_module.setText(0, module.name)
@@ -408,7 +442,7 @@ class ProtoTool(QMainWindow):
                     item_field.setText(0, field.field_name)
                     item_field.setText(1, field.comment)
                     item_field.setText(2, msg.id)
-                    item_field.setText(3, ItemType.FIELD)            
+                    item_field.setText(3, ItemType.FIELD)
             # add msg
             for msg_id, req_msg in module.req_msg_dic.items():
                 # add req
@@ -467,6 +501,9 @@ class ProtoTool(QMainWindow):
         self.ui.LetMsgCmt.clear()
         self.ui.LetFieldName.clear()
         self.ui.LetFieldCmt.clear()
+
+        self.ui.CbxValueType.clear()
+        self.ui.CbxValueType.setItems(self.value_types)
 
     def saveAll(self):
         save_dir = self.config.getConfOne('msg_path')

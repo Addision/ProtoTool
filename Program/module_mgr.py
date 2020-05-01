@@ -4,6 +4,7 @@ import sys
 import codecs
 from module import *
 
+
 class ModuleMgr(object):
     def __init__(self):
         super(ModuleMgr, self).__init__()
@@ -11,9 +12,6 @@ class ModuleMgr(object):
         self.mod_file_dic = {}  # <mod_id, path>
         self.public_next_id = '1'
         self.client_next_id = '11'
-
-        # 公共文件
-        self.public_messages = {} # <mod_name, msg_name>
 
     def loadXmls(self, xml_dir):
         if not os.path.exists(xml_dir):
@@ -30,17 +28,23 @@ class ModuleMgr(object):
             if 'Public' in xml_file:
                 module = ModulePublic()
                 if int(module.id) > int(self.public_next_id):
-                    self.public_next_id = module.id                
+                    self.public_next_id = module.id
             else:
                 module = ModuleMsg()
                 if int(module.id) > int(self.client_next_id):
-                    self.client_next_id = module.id                
+                    self.client_next_id = module.id
             module.loadXml(xml_file)
             self.module_dic[module.id] = module
 
         self.public_next_id = str(int(self.public_next_id)+1)
         self.client_next_id = str(int(self.client_next_id)+1)
-        
+
+    def getPublicModules(self):
+        modules = []
+        for mod_id, mod in self.module_dic.items():
+            if mod.mod_type == 'public':
+                modules.append(mod)
+        return modules
 
     def getModFile(self, xml_dir, mod_name):
         xml_file = xml_dir + "/Module" + mod_name+".xml"
@@ -64,6 +68,12 @@ class ModuleMgr(object):
         is_exist, module = self.existModule(mod_id)
         if is_exist:
             return module
+        return None
+
+    def getModuleByName(self, mod_name):
+        for mod_id, mod in self.module_dic.items():
+            if mod.name == mod_name:
+                return mod
         return None
 
     def addModule(self, module):

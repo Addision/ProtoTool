@@ -227,6 +227,12 @@ class ModulePublic(ModuleBase):
         self.mod_type = 'public'
         self.id = "1"
 
+    def getMsgNames(self):
+        msg_names = []
+        for msg_id, msg in self.public_msg_dic.items():
+            msg_names.append(msg.name)
+        return msg_names
+
     def readXml(self):
         try:
             contents = ""
