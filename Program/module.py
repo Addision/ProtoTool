@@ -23,6 +23,7 @@ class ModuleBase(object):
         self.public_msg_dic = {}
         self.msg_next_id = "1"
 
+
     def getNextMsgId(self):
         msg_id = int(self.msg_next_id)
         str_msg_id = ""

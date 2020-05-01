@@ -74,6 +74,7 @@ class ProtoTool(QMainWindow):
         self.ui.CbxValueMod.activated.connect(self.selectModChange)
         self.ui.CbxValueType.activated.connect(self.selectTypeChange)
 
+        self.selected_item_text = ''
         self.ui.BtnReq.setChecked(True)
         self.selected_item = None
         self.config = Config()
@@ -111,12 +112,21 @@ class ProtoTool(QMainWindow):
         self.ui.CbxValueType.clear()
         msg_names = mod.getMsgNames()
         value_types = self.value_types + msg_names
+        if self.selected_item_text in value_types:
+            value_types.remove(self.selected_item_text)
         self.ui.CbxValueType.addItems(value_types)
 
     def selectTypeChange(self):
-        mod_name = self.ui.CbxValueMod.currentText()
-        mod = self.module_mgr.getModuleByName(mod_name)
-        # TODO update import
+        pass
+        # value_type = self.ui.CbxValueType.currentText()
+        # if value_type in self.value_types:
+        #     return
+        # mod_name = self.ui.CbxValueMod.currentText()
+        # mod = self.module_mgr.getModuleByName(mod_name)
+        # if not mod:
+        #     return
+        # if mod.mod_type == 'public':
+        #     self.proto_imp = mod.name
 
 #########################右键菜单操作#########################
     def rightClickMenu(self, pos):
@@ -307,7 +317,7 @@ class ProtoTool(QMainWindow):
         module = self.module_mgr.getModule(self.selected_item.parent().text(2))
         if not module:
             return
-        msg_type = self.getMsgTypeByItemName(self.selected_item.text(0))
+        msg_type = self.getMsgTypeByItemName(self.selected_item_text)
         msg_name = self.ui.LetMsgName.text().strip()
         msg_comment = self.ui.LetMsgCmt.text().strip()
         module.updateMsg(msg_id, msg_type, msg_name, msg_comment)
@@ -317,7 +327,7 @@ class ProtoTool(QMainWindow):
         module = self.module_mgr.getModule(self.selected_item.parent().text(2))
         if not module:
             return
-        msg_type = self.getMsgTypeByItemName(self.selected_item.text(0))
+        msg_type = self.getMsgTypeByItemName(self.selected_item_text)
         module.delMsg(msg_id, msg_type)
         self.clearModel()
         pass
@@ -325,7 +335,7 @@ class ProtoTool(QMainWindow):
     def addField(self):
         msg_id = self.selected_item.text(2)
         module = self.module_mgr.getModule(self.selected_item.parent().text(2))
-        msg_type = self.getMsgTypeByItemName(self.selected_item.text(0))
+        msg_type = self.getMsgTypeByItemName(self.selected_item_text)
         msg = module.getMsg(msg_id, msg_type)
         if not msg:
             return
@@ -345,7 +355,7 @@ class ProtoTool(QMainWindow):
         msg = self.getMsgByFieldItem(self.selected_item)
         if not msg:
             return
-        field = msg.getFieldByName(self.selected_item.text(0))
+        field = msg.getFieldByName(self.selected_item_text)
         field_name = self.ui.LetFieldName.text().strip() or ''
         field_comment = self.ui.LetFieldCmt.text().strip() or ''
         if not field_name:
@@ -360,7 +370,7 @@ class ProtoTool(QMainWindow):
         msg = self.getMsgByFieldItem(self.selected_item)
         if not msg:
             return
-        msg.delField(self.selected_item.text(0))
+        msg.delField(self.selected_item_text)
         self.clearModel()
         pass
 
@@ -493,9 +503,27 @@ class ProtoTool(QMainWindow):
 
             self.ui.WidMsgTree.expandToDepth(1)
 
+    def getModBySelectedItem(self):
+        mod_id = None
+        if self.selected_item.text(3) == ItemType.FIELD:
+            mod_id = self.selected_item.parent().parent().text(2)
+        elif self.selected_item.text(3) == ItemType.MSG:
+            mod_id = self.selected_item.parent().text(2)
+        else:
+            mod_id = self.selected_item.text(2)
+        mod = self.module_mgr.getModule(mod_id)
+        return mod
+
     def onTreeItemClicked(self, idx):
         self.selected_item = self.ui.WidMsgTree.currentItem()
         self.showItemDetail(self.selected_item)
+        self.selected_item_text = self.selected_item.text(0)
+
+        mod = self.getModBySelectedItem()
+        if mod and mod.mod_type == 'public':
+            self.ui.CbxValueMod.setEnabled(False)
+        else:
+            self.ui.CbxValueMod.setEnabled(True)
         # clear edit
         self.ui.LetMsgName.clear()
         self.ui.LetMsgCmt.clear()
@@ -503,7 +531,7 @@ class ProtoTool(QMainWindow):
         self.ui.LetFieldCmt.clear()
 
         self.ui.CbxValueType.clear()
-        self.ui.CbxValueType.setItems(self.value_types)
+        self.ui.CbxValueType.addItems(self.value_types)
 
     def saveAll(self):
         save_dir = self.config.getConfOne('msg_path')

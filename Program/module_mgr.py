@@ -12,6 +12,7 @@ class ModuleMgr(object):
         self.mod_file_dic = {}  # <mod_id, path>
         self.public_next_id = '1'
         self.client_next_id = '11'
+        self.proto_imp = ''
 
     def loadXmls(self, xml_dir):
         if not os.path.exists(xml_dir):
@@ -27,17 +28,27 @@ class ModuleMgr(object):
             module = None
             if 'Public' in xml_file:
                 module = ModulePublic()
-                if int(module.id) > int(self.public_next_id):
+                module.loadXml(xml_file)
+                if int(module.id) >= int(self.public_next_id):
                     self.public_next_id = module.id
+                    self.public_next_id = str(int(self.public_next_id)+1)
             else:
                 module = ModuleMsg()
-                if int(module.id) > int(self.client_next_id):
+                module.loadXml(xml_file)
+                if int(module.id) >= int(self.client_next_id):
                     self.client_next_id = module.id
-            module.loadXml(xml_file)
+                    self.client_next_id = str(int(self.client_next_id)+1)
+                module.proto_imp = self.proto_imp
+
+            if module.mod_type == 'public':
+                self.proto_imp = self.proto_imp + module.name+'.proto;'
+                self.changeProtoImp()
             self.module_dic[module.id] = module
 
-        self.public_next_id = str(int(self.public_next_id)+1)
-        self.client_next_id = str(int(self.client_next_id)+1)
+    def changeProtoImp(self):
+        for mod_id, module in self.module_dic.items():
+            if module.mod_type == 'client':
+                module.proto_imp = self.proto_imp
 
     def getPublicModules(self):
         modules = []
@@ -80,14 +91,24 @@ class ModuleMgr(object):
         is_exist, _ = self.existModule(module.id)
         if not is_exist:
             self.module_dic[module.id] = module
+            if module.mod_type == 'public':
+                self.proto_imp = self.proto_imp + module.name+'.proto;'
+                self.changeProtoImp()
+            else:
+                module.proto_imp = self.proto_imp
 
     def delModule(self, mod_id):
         is_exist, _ = self.existModule(mod_id)
         if is_exist:
-            print(self.module_dic[mod_id].xml_file)
-            # TODO test
-            os.remove(self.module_dic[mod_id].xml_file)
+            module = self.module_dic[mod_id]
+            if module.mod_type == 'public':
+                proto_imp = module.name+'.proto;'
+                if proto_imp in self.proto_imp:
+                    self.proto_imp = self.proto_imp.replace(proto_imp, '')
+                # TODO 如果删除公共模块,其他模块引用公共模块的字段自动删除
+            os.remove(module.xml_file)
             self.module_dic.pop(mod_id)
+            self.changeProtoImp()
 
     def getNextModId(self, mod_type):
         next_id = '0'
