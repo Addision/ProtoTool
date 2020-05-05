@@ -391,12 +391,12 @@ class ProtoTool(QMainWindow):
             self.menuBarSaveAs()
         if menu == self.ui.menuClose:
             self.menuBarClose()
-        if menu == self.ui.menuProtoServer:
-            self.menuBarProtoServer()
-        if menu == self.ui.menuProtoClient:
-            self.menuBarProtoClient()
+        if menu == self.ui.menuProto:
+            self.menuBarProto()
         if menu == self.ui.menuSetting:
             self.menuSetting()
+        if menu == self.ui.menuGenCode:
+            self.menuGenCode()
 
     def menuSetting(self):
         self.setting = SettingGui()
@@ -424,7 +424,7 @@ class ProtoTool(QMainWindow):
         os._exit(0)
         pass
 
-    def menuBarProtoClient(self):
+    def menuBarProto(self):
         proto_gen_dir = self.config.getConfOne('proto_gen_path')
         save_proto_dir = self.config.getConfOne('proto_path')
         for proto in os.listdir(save_proto_dir):
@@ -437,8 +437,12 @@ class ProtoTool(QMainWindow):
                     save_proto_dir+' --cpp_out='+protobuf_dir+'  ' + proto
                 os.system(cmd_str)
 
-    def menuBarProtoServer(self):
-
+    def menuGenCode(self):
+        # 生成服务器代码
+        save_xml_dir = self.config.getConfOne('msg_path')
+        save_proto_dir = self.config.getConfOne('proto_path')
+        self.gen_mgr.loadXmls(save_xml_dir)
+        self.gen_mgr.genCpp(save_proto_dir)
         pass
 
 ###################################################
@@ -558,6 +562,7 @@ class ProtoTool(QMainWindow):
         save_proto_dir = self.config.getConfOne('proto_path')
         self.gen_mgr.loadXmls(save_xml_dir)
         self.gen_mgr.genProto(save_proto_dir)
+        self.gen_mgr.genCpp(save_proto_dir)
         self.ui.BtnSave.setEnabled(False)
         self.clearTreeWidgetSelect()
 

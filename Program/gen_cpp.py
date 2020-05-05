@@ -24,7 +24,8 @@ class GenCpp(object):
         pass
 
     def write_cpp(self, cpp_dir):
-        self.parse_xml()
+        if not self.parse_xml():
+            return
         s = ""
         with codecs.open("./proto_cpp.tmpl", "r", "utf-8") as f:
             s = f.read()
@@ -45,6 +46,8 @@ class GenCpp(object):
 
     def parse_xml(self):
         self.module_id = self.root.attrib['id']
+        if self.root.findall('Message/PublicMsg'):
+            return False
         for req_reply in self.root.findall("Message/ReqReplyMsg"):
             msg_id = req_reply.attrib["id"]
             msg_name = req_reply.attrib["name"]
@@ -64,4 +67,4 @@ class GenCpp(object):
         self.enum_fields = self.enum_fields[:-3]
         self.handle_fields = self.handle_fields[:-3]
         self.func_fields = self.func_fields[:-2]
-        pass
+        return True

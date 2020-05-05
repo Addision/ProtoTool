@@ -1,6 +1,7 @@
-ui ת py ����
+ui 转 py 命令
 
 pyuic5  -o  ProtoTool.py   ProtoUI.ui
 
-��Դ�ļ� qrc�ļ�
-pyrcc5 -o Ŀ���ļ��� Դ�ļ���
+资源文件 qrc文件
+pyrcc5 -o 目标文件名 源文件名
+

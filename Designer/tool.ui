@@ -413,17 +413,10 @@
     <property name="title">
      <string>工具</string>
     </property>
-    <widget class="QMenu" name="menuProto">
-     <property name="title">
-      <string>导出协议</string>
-     </property>
-     <addaction name="menuProtoServer"/>
-     <addaction name="separator"/>
-     <addaction name="menuProtoClient"/>
-    </widget>
     <addaction name="menuProto"/>
     <addaction name="menuTable"/>
     <addaction name="separator"/>
+    <addaction name="menuGenCode"/>
    </widget>
    <widget class="QMenu" name="menuSet">
     <property name="title">
@@ -478,22 +471,6 @@
     <string>Ctrl+Shift+S</string>
    </property>
   </action>
-  <action name="menuProtoServer">
-   <property name="text">
-    <string>服务器协议</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+P</string>
-   </property>
-  </action>
-  <action name="menuProtoClient">
-   <property name="text">
-    <string>客户端协议</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+D</string>
-   </property>
-  </action>
   <action name="menuTableServer">
    <property name="text">
     <string>服务器</string>
@@ -518,6 +495,16 @@
   <action name="menuSetting">
    <property name="text">
     <string>设置选项</string>
+   </property>
+  </action>
+  <action name="menuGenCode">
+   <property name="text">
+    <string>生成服务器代码</string>
+   </property>
+  </action>
+  <action name="menuProto">
+   <property name="text">
+    <string>导出协议</string>
    </property>
   </action>
  </widget>
