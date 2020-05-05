@@ -352,6 +352,8 @@ class ProtoTool(QMainWindow):
         field.field_name = field_name
         field.comment = field_comment
         field.proto_type = self.ui.CbxProtoType.currentText()
+        if field.proto_type == 'optional':
+            field.proto_type = ''
         field.value_type = self.ui.CbxValueType.currentText()
         msg.addField(field)
         pass
@@ -423,7 +425,17 @@ class ProtoTool(QMainWindow):
         pass
 
     def menuBarProtoClient(self):
-        pass
+        proto_gen_dir = self.config.getConfOne('proto_gen_path')
+        save_proto_dir = self.config.getConfOne('proto_path')
+        for proto in os.listdir(save_proto_dir):
+            if proto.endswith('.proto'):
+                proto_name = proto[:-6]
+                protobuf_dir = proto_gen_dir+'/' + proto_name
+                if not os.path.exists(protobuf_dir):
+                    os.makedirs(protobuf_dir)
+                cmd_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
+                    save_proto_dir+' --cpp_out='+protobuf_dir+'  ' + proto
+                os.system(cmd_str)
 
     def menuBarProtoServer(self):
 
