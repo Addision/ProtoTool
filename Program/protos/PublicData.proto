@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+message PublicData_Vector
+{
+optional float x = 1;
+
+}
+
+
+message PublicData_PublicTwoMsg
+{
+optional string haa = 1;
+
+}
+
+

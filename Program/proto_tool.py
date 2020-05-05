@@ -19,6 +19,7 @@ from module_mgr import *
 from setting_gui import *
 from mod_gui import *
 from common import *
+from gen_mgr import *
 import configparser
 
 
@@ -83,6 +84,9 @@ class ProtoTool(QMainWindow):
                             'double', 'bytes', 'bool', 'uint32', 'uint64']
         self.openProto()
         self.updateCbxValues()
+
+        # 生成 proto文件和cpp文件
+        self.gen_mgr = GenMgr()
     pass
 
     def openProto(self):
@@ -187,8 +191,8 @@ class ProtoTool(QMainWindow):
             is_ok, mod_name, mod_comment = ModGui.getModInfo()
             if not is_ok or not mod_name:
                 return
-            mod_name = 'Public'+mod_name
-            self.addModule(mod_name.title(), mod_comment, 'public')
+            mod_name = 'Public'+mod_name.title()
+            self.addModule(mod_name, mod_comment, 'public')
             self.ui.BtnSave.setEnabled(True)
             self.showModuleMsg()
 
@@ -204,7 +208,7 @@ class ProtoTool(QMainWindow):
             is_ok, mod_name, mod_comment = ModGui.getModInfo()
             if not is_ok:
                 return
-            self.updateModule(item.text(2), mod_name, mod_comment)
+            self.updateModule(item.text(2), mod_name.title(), mod_comment)
             self.ui.BtnSave.setEnabled(True)
             self.showModuleMsg()
 
@@ -261,7 +265,7 @@ class ProtoTool(QMainWindow):
         else:
             module = ModuleMsg()
         module.id = self.module_mgr.getNextModId(module.mod_type)
-        module.name = mod_name.title()  # 首字母大写
+        module.name = mod_name  # 首字母大写
         module.comment = mod_comment or ""
         print('module id===', module.id)
         self.module_mgr.addModule(module)
@@ -308,6 +312,7 @@ class ProtoTool(QMainWindow):
                 module.addMsg(notify_msg, MsgType.NOTIFY)
         else:
             public_msg = MsgPublic(mod_id)
+            public_msg.id = module.getNextMsgId()
             public_msg.name = msg_name
             public_msg.comment = self.ui.LetMsgCmt.text().strip()
             module.addMsg(public_msg, MsgType.PUBLIC)
@@ -407,6 +412,7 @@ class ProtoTool(QMainWindow):
         pass
 
     def menuBarSave(self):
+        self.saveProto()
         pass
 
     def menuBarSaveAs(self):
@@ -533,13 +539,15 @@ class ProtoTool(QMainWindow):
         self.ui.CbxValueType.clear()
         self.ui.CbxValueType.addItems(self.value_types)
 
-    def saveAll(self):
-        save_dir = self.config.getConfOne('msg_path')
-        self.module_mgr.saveXmls(save_dir)
+    def saveProto(self):
+        save_xml_dir = self.config.getConfOne('msg_path')
+        self.module_mgr.saveXmls(save_xml_dir)
+        # 生成proto文件
+        save_proto_dir = self.config.getConfOne('proto_path')
+        self.gen_mgr.loadXmls(save_xml_dir)
+        self.gen_mgr.genProto(save_proto_dir)
+        self.ui.BtnSave.setEnabled(False)
         self.clearTreeWidgetSelect()
-        # TODO 生成proto 文件
-
-        pass
 
     def clearTreeWidgetSelect(self):
         self.ui.WidMsgTree.clearSelection()
@@ -568,8 +576,7 @@ class ProtoTool(QMainWindow):
     def onBtnClicked(self, btn):
         try:
             if btn == 'save':
-                self.saveAll()
-                self.ui.BtnSave.setEnabled(False)
+                self.saveProto()
                 return
             if not self.selected_item:
                 return
@@ -580,6 +587,7 @@ class ProtoTool(QMainWindow):
                 else:
                     self.addField()
                 self.ui.FrameMsg.setEnabled(False)
+                self.ui.FrameField.setEnabled(False)
             if btn == 'del':
                 if item_type == ItemType.MSG:
                     self.delMsg()

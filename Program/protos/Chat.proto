@@ -1,0 +1,25 @@
+syntax = "proto3";
+import "PublicData.proto";
+
+message Chat_chat_twoReq
+{
+ string chat_msg = 1;
+
+}
+
+
+message Chat_chat_twoReply
+{
+ string chat_msg = 1;
+
+}
+
+
+message Chat_notify_chat_oneNotify
+{
+ string chat_msg = 1;
+ string chat_msg2 = 2;
+
+}
+
+

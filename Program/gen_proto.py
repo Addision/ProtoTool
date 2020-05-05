@@ -16,24 +16,33 @@ message %(module)s_%(msg_name)s%(msg_type)s
 tmpl_field = '%s %s %s = %s;'
 ############################################################################
 
+
 class GenProto(object):
     def __init__(self, root, module):
         self.import_files = []
         self.root = root
         self.module = module
         pass
-    
+
     def make_message(self, msg_name, msg, msg_type):
         field_str = ""
         for field in msg:
-            field_str += tmpl_field % (field.attrib["proto_type"],field.attrib["value_type"],field.attrib["field_name"],field.attrib["tag"])
-            field_str +='\n'
+            field_str += tmpl_field % (field.attrib["proto_type"], field.attrib["value_type"],
+                                       field.attrib["field_name"], field.attrib["tag"])
+            field_str += '\n'
         if msg_type == 1:
-            message = proto_msg % {"module":self.module, "msg_name":msg_name, "fields":field_str, "msg_type":"Req"}    
+            message = proto_msg % {
+                "module": self.module, "msg_name": msg_name, "fields": field_str, "msg_type": "Req"}
         elif msg_type == 2:
-            message = proto_msg % {"module":self.module, "msg_name":msg_name, "fields":field_str, "msg_type":"Reply"}    
+            message = proto_msg % {
+                "module": self.module, "msg_name": msg_name, "fields": field_str, "msg_type": "Reply"}
         elif msg_type == 3:
-            message = proto_msg % {"module":self.module, "msg_name":msg_name, "fields":field_str, "msg_type":"Notify"}    
+            message = proto_msg % {
+                "module": self.module, "msg_name": msg_name, "fields": field_str, "msg_type": "Notify"}
+        elif msg_type == 4:
+            message = proto_msg % {
+                "module": self.module, "msg_name": msg_name, "fields": field_str, "msg_type": ""}            
+            pass
         return message
 
     def get_proto_contents(self):
@@ -45,25 +54,33 @@ class GenProto(object):
             message_contents += self.make_message(msg_name, req, 1)
             # get reply message
             reply = req_reply[1]
-            message_contents += self.make_message(msg_name, reply, 2)           
-        
+            message_contents += self.make_message(msg_name, reply, 2)
+
         for notify_msg in self.root.findall("Message/NotifyMsg"):
             for notify in notify_msg:
                 notify_name = notify.attrib["name"]
-                message_contents += self.make_message(notify_name, notify, 3)         
-        
+                message_contents += self.make_message(notify_name, notify, 3)
+
+        for public_msg in self.root.findall("Message/PublicMsg"):
+            for public in public_msg:
+                public_name = public.attrib["name"]
+                message_contents += self.make_message(public_name, public, 4)        
+
         return message_contents
 
-    def write_proto(self):
-        import_files = self.root.findall("Import")
-        for files in import_files:
-            self.import_files.append(files.text)
-        
+    def write_proto(self, proto_dir):
+        import_xml = self.root.find("Import")
+
+        if import_xml is not None and import_xml.text:
+            self.import_files = import_xml.text.split(';')
+
         proto_contents = 'syntax = "proto3";\n'
         for imp_file in self.import_files:
-            proto_contents += 'import "%s";\n' % imp_file
+            if imp_file != '':
+                proto_contents += 'import "%s";\n' % imp_file
 
         proto_contents += self.get_proto_contents()
-        with open(self.module+".proto", 'w+') as f:
+        proto_file = proto_dir+"/"+self.module+".proto"
+        with open(proto_file, 'w') as f:
             f.write(proto_contents + '\n')
         pass
