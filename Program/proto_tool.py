@@ -186,23 +186,23 @@ class ProtoTool(QMainWindow):
 
     def actionHandler(self, op_flag, item=None):
         if not item and op_flag == 'add_public_mod':  # add mod
-            is_ok, mod_name, mod_comment = ModGui.getModInfo('public')
+            is_ok, mod_name, mod_comment = ModGui.getModInfo(ModType.PUBLIC)
             if not is_ok or not mod_name:
                 return
-            self.addModule(mod_name, mod_comment, 'public')
+            self.addModule(mod_name, mod_comment, ModType.PUBLIC)
             self.ui.BtnSave.setEnabled(True)
             self.showModuleMsg()
 
         if not item and op_flag == 'add_mod':  # add mod
-            is_ok, mod_name, mod_comment = ModGui.getModInfo('client')
+            is_ok, mod_name, mod_comment = ModGui.getModInfo(ModType.CLIENT)
             if not is_ok or not mod_name:
                 return
-            self.addModule(mod_name.title(), mod_comment, 'client')
+            self.addModule(mod_name.title(), mod_comment, ModType.CLIENT)
             self.ui.BtnSave.setEnabled(True)
             self.showModuleMsg()
 
         if op_flag == 'update_mod':  # update mod
-            is_ok, mod_name, mod_comment = ModGui.getModInfo('')
+            is_ok, mod_name, mod_comment = ModGui.getModInfo(ModType.VOID)
             if not is_ok:
                 return
             self.updateModule(item.text(2), mod_name.title(), mod_comment)
@@ -254,9 +254,9 @@ class ProtoTool(QMainWindow):
 
 ####################增删改查操作##############################
 
-    def addModule(self, mod_name, mod_comment, add_flag):
+    def addModule(self, mod_name, mod_comment, mod_type):
         module = None
-        if add_flag == 'public':
+        if mod_type == ModType.PUBLIC:
             module = ModulePublic()
         else:
             module = ModuleMsg()
@@ -288,7 +288,7 @@ class ProtoTool(QMainWindow):
         module = self.module_mgr.getModule(mod_id)
         if not module:
             return
-        if module.mod_type == 'client':
+        if module.mod_type == ModType.CLIENT:
             if self.ui.BtnReq.isChecked():
                 # add req and reply msg
                 req_msg = MsgReq(mod_id)
@@ -546,7 +546,7 @@ class ProtoTool(QMainWindow):
         self.selected_item_text = self.selected_item.text(0)
 
         mod = self.getModBySelectedItem()
-        if mod and mod.mod_type == 'public':
+        if mod and mod.mod_type == ModType.PUBLIC:
             self.ui.CbxValueMod.setEnabled(False)
         else:
             self.ui.CbxValueMod.setEnabled(True)

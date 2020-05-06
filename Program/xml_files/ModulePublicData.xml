@@ -1,2 +1,2 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Module comment="xcx" id="1" name="PublicData"><Message><PublicMsg><Public comment="sdsdsd" id="101" name="Vector"><field comment="dfdef" field_name="x" proto_type="optional" tag="1" value_type="float" /></Public><Public comment="sdgweag" id="102" name="PublicTwoMsg"><field comment="rger" field_name="haa" proto_type="optional" tag="1" value_type="string" /></Public></PublicMsg></Message></Module>
+<Module comment="xxx" id="1" name="PublicData"><Message><PublicMsg><Public comment="pos" id="101" name="Vector"><field comment="x pos" field_name="x" proto_type="" tag="1" value_type="int32" /><field comment="z pos" field_name="z" proto_type="" tag="2" value_type="float" /></Public></PublicMsg></Message></Module>

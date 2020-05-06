@@ -4,7 +4,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from mod_ui import *
-
+from common import *
 
 class ModGui(QDialog):
     def __init__(self, mod_type):
@@ -22,14 +22,15 @@ class ModGui(QDialog):
         self.ui.BtnModOk.clicked.connect(self.accept)
         self.ui.BtnModCancel.clicked.connect(self.reject)
         self.ui.LetModName.editingFinished.connect(self.handleText)
-        if self.mod_type == 'public':
+        if self.mod_type == ModType.PUBLIC:
             self.ui.LetModName.setPlaceholderText('PublicXxxxx')
         self.btn_ok = False
 
     def handleText(self):
         mod_name = self.ui.LetModName.text().strip()
-        if self.mod_type == 'public':
-            self.ui.LetModName.setText('Public'+mod_name.title())
+        if self.mod_type == ModType.PUBLIC:
+            if 'Public' not in mod_name.title():
+                self.ui.LetModName.setText('Public'+mod_name.title())
         else:
             self.ui.LetModName.setText(mod_name.title())
         pass

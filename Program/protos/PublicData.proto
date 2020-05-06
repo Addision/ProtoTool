@@ -2,14 +2,8 @@ syntax = "proto3";
 
 message PublicData_Vector
 {
- float x = 1;
-
-}
-
-
-message PublicData_PublicTwoMsg
-{
- string haa = 1;
+ int32 x = 1;
+ float z = 2;
 
 }
 

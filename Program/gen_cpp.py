@@ -27,7 +27,9 @@ class GenCpp(object):
         if not self.parse_xml():
             return
         s = ""
-        with codecs.open("./proto_cpp.tmpl", "r", "utf-8") as f:
+        tmpl_file = os.path.split(os.path.realpath(__file__))[0]+'/proto_cpp.tmpl'
+        tmpl_file = tmpl_file.replace('\\','/')
+        with codecs.open(tmpl_file, "r", "utf-8") as f:
             s = f.read()
         s = s % {
             "module": self.module,
@@ -68,3 +70,7 @@ class GenCpp(object):
         self.handle_fields = self.handle_fields[:-3]
         self.func_fields = self.func_fields[:-2]
         return True
+
+if __name__ == '__main__':
+    pass
+    # print()

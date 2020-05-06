@@ -1,24 +1,23 @@
 syntax = "proto3";
 import "PublicData.proto";
 
-message Chat_chat_twoReq
+message Chat_ChatToOneReq
 {
- string chat_msg = 1;
+ string name = 1;
 
 }
 
 
-message Chat_chat_twoReply
+message Chat_ChatToOneReply
 {
- string chat_msg = 1;
+ string name = 1;
 
 }
 
 
-message Chat_notify_chat_oneNotify
+message Chat_ChatToAllNotify
 {
- string chat_msg = 1;
- string chat_msg2 = 2;
+repeated string name = 1;
 
 }
 

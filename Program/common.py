@@ -13,3 +13,9 @@ class ItemType():
     MODULE = '1'
     MSG = '2'
     FIELD = '3'
+
+
+class ModType(Enum):
+    VOID = 0
+    PUBLIC = 1
+    CLIENT = 2

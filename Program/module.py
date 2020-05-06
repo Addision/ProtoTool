@@ -110,7 +110,7 @@ class ModuleMsg(ModuleBase):
     def __init__(self):
         super(ModuleMsg, self).__init__()
         self.proto_imp = ""  # 模块引用的文件
-        self.mod_type = 'client'
+        self.mod_type = ModType.CLIENT
         self.id = "11"
 
     def readXml(self):
@@ -225,7 +225,7 @@ class ModuleMsg(ModuleBase):
 class ModulePublic(ModuleBase):
     def __init__(self):
         super(ModulePublic, self).__init__()
-        self.mod_type = 'public'
+        self.mod_type = ModType.PUBLIC
         self.id = "1"
 
     def getMsgNames(self):

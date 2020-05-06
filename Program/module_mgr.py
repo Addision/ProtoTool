@@ -3,7 +3,7 @@ import os
 import sys
 import codecs
 from module import *
-
+from common import *
 
 class ModuleMgr(object):
     def __init__(self):
@@ -40,20 +40,20 @@ class ModuleMgr(object):
                     self.client_next_id = str(int(self.client_next_id)+1)
                 module.proto_imp = self.proto_imp
 
-            if module.mod_type == 'public':
+            if module.mod_type == ModType.PUBLIC:
                 self.proto_imp = self.proto_imp + module.name+'.proto;'
                 self.changeProtoImp()
             self.module_dic[module.id] = module
 
     def changeProtoImp(self):
         for mod_id, module in self.module_dic.items():
-            if module.mod_type == 'client':
+            if module.mod_type == ModType.CLIENT:
                 module.proto_imp = self.proto_imp
 
     def getPublicModules(self):
         modules = []
         for mod_id, mod in self.module_dic.items():
-            if mod.mod_type == 'public':
+            if mod.mod_type == ModType.PUBLIC:
                 modules.append(mod)
         return modules
 
@@ -91,7 +91,7 @@ class ModuleMgr(object):
         is_exist, _ = self.existModule(module.id)
         if not is_exist:
             self.module_dic[module.id] = module
-            if module.mod_type == 'public':
+            if module.mod_type == ModType.PUBLIC:
                 self.proto_imp = self.proto_imp + module.name+'.proto;'
                 self.changeProtoImp()
             else:
@@ -101,7 +101,7 @@ class ModuleMgr(object):
         is_exist, _ = self.existModule(mod_id)
         if is_exist:
             module = self.module_dic[mod_id]
-            if module.mod_type == 'public':
+            if module.mod_type == ModType.PUBLIC:
                 proto_imp = module.name+'.proto;'
                 if proto_imp in self.proto_imp:
                     self.proto_imp = self.proto_imp.replace(proto_imp, '')
@@ -113,7 +113,7 @@ class ModuleMgr(object):
 
     def getNextModId(self, mod_type):
         next_id = '0'
-        if mod_type == 'client':
+        if mod_type == ModType.CLIENT:
             next_id = self.client_next_id
             self.client_next_id = str(int(self.client_next_id) + 1)
         else:
