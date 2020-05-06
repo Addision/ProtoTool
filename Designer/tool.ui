@@ -182,24 +182,11 @@
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="BtnDel">
-    <property name="geometry">
-     <rect>
-      <x>520</x>
-      <y>190</y>
-      <width>81</width>
-      <height>41</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>删除</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="BtnUpdate">
     <property name="geometry">
      <rect>
       <x>520</x>
-      <y>290</y>
+      <y>240</y>
       <width>81</width>
       <height>41</height>
      </rect>

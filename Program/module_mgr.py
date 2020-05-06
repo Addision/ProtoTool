@@ -106,7 +106,8 @@ class ModuleMgr(object):
                 if proto_imp in self.proto_imp:
                     self.proto_imp = self.proto_imp.replace(proto_imp, '')
                 # TODO 如果删除公共模块,其他模块引用公共模块的字段自动删除
-            os.remove(module.xml_file)
+            if os.path.exists(module.xml_file):
+                os.remove(module.xml_file)
             self.module_dic.pop(mod_id)
             self.changeProtoImp()
 

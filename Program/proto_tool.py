@@ -29,7 +29,7 @@ class ProtoTool(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         self.setWindowOpacity(0.96)
-        self.setStyleSheet('background-color: rgb(230, 230, 230);')
+        # self.setStyleSheet('background-color: rgb(230, 230, 230);')
         # 禁用窗口最大化 拉伸
         self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
         self.setFixedSize(self.width(), self.height())
@@ -186,16 +186,15 @@ class ProtoTool(QMainWindow):
 
     def actionHandler(self, op_flag, item=None):
         if not item and op_flag == 'add_public_mod':  # add mod
-            is_ok, mod_name, mod_comment = ModGui.getModInfo()
+            is_ok, mod_name, mod_comment = ModGui.getModInfo('public')
             if not is_ok or not mod_name:
                 return
-            mod_name = 'Public'+mod_name.title()
             self.addModule(mod_name, mod_comment, 'public')
             self.ui.BtnSave.setEnabled(True)
             self.showModuleMsg()
 
         if not item and op_flag == 'add_mod':  # add mod
-            is_ok, mod_name, mod_comment = ModGui.getModInfo()
+            is_ok, mod_name, mod_comment = ModGui.getModInfo('client')
             if not is_ok or not mod_name:
                 return
             self.addModule(mod_name.title(), mod_comment, 'client')
@@ -203,7 +202,7 @@ class ProtoTool(QMainWindow):
             self.showModuleMsg()
 
         if op_flag == 'update_mod':  # update mod
-            is_ok, mod_name, mod_comment = ModGui.getModInfo()
+            is_ok, mod_name, mod_comment = ModGui.getModInfo('')
             if not is_ok:
                 return
             self.updateModule(item.text(2), mod_name.title(), mod_comment)
