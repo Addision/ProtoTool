@@ -52,7 +52,6 @@ class ProtoTool(QMainWindow):
         self.ui.BtnUpdate.clicked.connect(lambda: self.onBtnClicked('update'))
         self.ui.BtnSave.clicked.connect(lambda: self.onBtnClicked('save'))
         self.ui.BtnAdd.setEnabled(False)
-        self.ui.BtnDel.setEnabled(False)
         self.ui.BtnUpdate.setEnabled(False)
         self.ui.BtnSave.setEnabled(False)
         # menu 设置
@@ -230,7 +229,6 @@ class ProtoTool(QMainWindow):
             self.ui.FrameField.setEnabled(False)
             self.ui.BtnUpdate.setEnabled(True)
             self.ui.BtnAdd.setEnabled(False)
-            self.ui.BtnDel.setEnabled(False)
             msg_type = self.getMsgTypeByItemName(item.text(0))
             if msg_type == MsgType.REQ:
                 self.ui.BtnReq.setChecked(True)
