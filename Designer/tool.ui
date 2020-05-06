@@ -424,9 +424,6 @@
    <property name="text">
     <string>打开</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
-   </property>
   </action>
   <action name="menuRecentOen">
    <property name="text">
@@ -439,9 +436,6 @@
   <action name="menuSave">
    <property name="text">
     <string>保存</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="menuClose">
