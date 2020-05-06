@@ -58,7 +58,6 @@ class ProtoTool(QMainWindow):
         # menu 设置
         self.ui.menuOpen.setEnabled(True)
         self.ui.menuSave.setEnabled(False)
-        self.ui.menuSaveAs.setEnabled(False)
         self.ui.menuClose.setEnabled(True)
         self.ui.menuFile.triggered[QAction].connect(self.onMenuTrigger)
         self.ui.menuTool.triggered[QAction].connect(self.onMenuTrigger)
@@ -191,37 +190,34 @@ class ProtoTool(QMainWindow):
             if not is_ok or not mod_name:
                 return
             self.addModule(mod_name, mod_comment, ModType.PUBLIC)
-            self.ui.BtnSave.setEnabled(True)
-            self.showModuleMsg()
+            self.setSaveOk()
 
         if not item and op_flag == 'add_mod':  # add mod
             is_ok, mod_name, mod_comment = ModGui.getModInfo(ModType.CLIENT)
             if not is_ok or not mod_name:
                 return
             self.addModule(mod_name.title(), mod_comment, ModType.CLIENT)
-            self.ui.BtnSave.setEnabled(True)
-            self.showModuleMsg()
+            self.setSaveOk()
 
         if op_flag == 'update_mod':  # update mod
             is_ok, mod_name, mod_comment = ModGui.getModInfo(ModType.VOID)
             if not is_ok:
                 return
             self.updateModule(item.text(2), mod_name.title(), mod_comment)
-            self.ui.BtnSave.setEnabled(True)
-            self.showModuleMsg()
+            self.setSaveOk()
 
         if op_flag == 'del_mod':  # del mod
             reply = QMessageBox.information(
                 self, "warning", "是否删除模块?", QMessageBox.Yes | QMessageBox.No)
             if reply == QMessageBox.Yes:
                 self.delModule(item.text(2))
-            self.ui.BtnSave.setEnabled(True)
-            self.showModuleMsg()
+            self.setSaveOk()
 
         if op_flag == 'add_msg':
             self.ui.FrameMsg.setEnabled(True)
             self.ui.BtnAdd.setEnabled(True)
             self.ui.BtnSave.setEnabled(False)
+            self.ui.menuSave.setEnabled(False)
             self.ui.BtnUpdate.setEnabled(False)
 
         if op_flag == 'update_msg':
@@ -237,8 +233,7 @@ class ProtoTool(QMainWindow):
 
         if op_flag == 'del_msg':
             self.delMsg()
-            self.ui.BtnSave.setEnabled(True)
-            self.showModuleMsg()
+            self.setSaveOk()
 
         if op_flag == 'add_field':
             self.ui.BtnAdd.setEnabled(True)
@@ -250,8 +245,12 @@ class ProtoTool(QMainWindow):
 
         if op_flag == 'del_field':
             self.delField()
+            self.setSaveOk()
+
+    def setSaveOk(self):
             self.ui.BtnSave.setEnabled(True)
-            self.showModuleMsg()
+            self.ui.menuSave.setEnabled(True)
+            self.showModuleMsg()        
 
 ####################增删改查操作##############################
 
@@ -384,8 +383,6 @@ class ProtoTool(QMainWindow):
             self.menuBarOpen()
         if menu == self.ui.menuSave:
             self.menuBarSave()
-        if menu == self.ui.menuSaveAs:
-            self.menuBarSaveAs()
         if menu == self.ui.menuClose:
             self.menuBarClose()
         if menu == self.ui.menuProto:
@@ -412,9 +409,6 @@ class ProtoTool(QMainWindow):
 
     def menuBarSave(self):
         self.saveProto()
-        pass
-
-    def menuBarSaveAs(self):
         pass
 
     def menuBarClose(self):
@@ -582,6 +576,7 @@ class ProtoTool(QMainWindow):
         self.gen_mgr.genProto(save_proto_dir)
         self.gen_mgr.genCpp(save_proto_dir)
         self.ui.BtnSave.setEnabled(False)
+        self.ui.menuSave.setEnabled(False)
         self.clearTreeWidgetSelect()
 
     def clearTreeWidgetSelect(self):
@@ -632,6 +627,7 @@ class ProtoTool(QMainWindow):
                 self.ui.FrameField.setEnabled(False)
 
             self.ui.BtnSave.setEnabled(True)
+            self.ui.menuSave.setEnabled(True)
             self.showModuleMsg()
         except Exception as e:
             print(e)

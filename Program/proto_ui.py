@@ -157,7 +157,6 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.menuOpen)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.menuSave)
-        self.menuFile.addAction(self.menuSaveAs)
         self.menuFile.addAction(self.menuClose)
         self.menuTool.addAction(self.menuProto)
         self.menuTool.addAction(self.menuTable)
@@ -210,3 +209,4 @@ class Ui_MainWindow(object):
         self.menuSetting.setText(_translate("MainWindow", "设置选项"))
         self.menuGenCode.setText(_translate("MainWindow", "生成服务器代码"))
         self.menuProto.setText(_translate("MainWindow", "导出协议"))
+import res_rc

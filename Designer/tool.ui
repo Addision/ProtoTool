@@ -393,7 +393,6 @@
     <addaction name="menuOpen"/>
     <addaction name="separator"/>
     <addaction name="menuSave"/>
-    <addaction name="menuSaveAs"/>
     <addaction name="menuClose"/>
    </widget>
    <widget class="QMenu" name="menuTool">
@@ -495,6 +494,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../icons/res.qrc"/>
+ </resources>
  <connections/>
 </ui>
