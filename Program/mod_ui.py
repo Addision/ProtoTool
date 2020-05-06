@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file '../Designer/mod.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_DialogMod(object):
     def setupUi(self, DialogMod):
@@ -42,4 +44,3 @@ class Ui_DialogMod(object):
         self.BtnModOk.setText(_translate("DialogMod", "确定"))
         self.label_6.setText(_translate("DialogMod", "模块名称"))
         self.label_7.setText(_translate("DialogMod", "模块说明"))
-

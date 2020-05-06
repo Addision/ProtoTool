@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file '../Designer/tool.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -63,11 +65,8 @@ class Ui_MainWindow(object):
         self.LetMsgName = QtWidgets.QLineEdit(self.FrameMsg)
         self.LetMsgName.setGeometry(QtCore.QRect(70, 50, 111, 31))
         self.LetMsgName.setObjectName("LetMsgName")
-        self.BtnDel = QtWidgets.QPushButton(self.centralwidget)
-        self.BtnDel.setGeometry(QtCore.QRect(520, 190, 81, 41))
-        self.BtnDel.setObjectName("BtnDel")
         self.BtnUpdate = QtWidgets.QPushButton(self.centralwidget)
-        self.BtnUpdate.setGeometry(QtCore.QRect(520, 290, 81, 41))
+        self.BtnUpdate.setGeometry(QtCore.QRect(520, 240, 81, 41))
         self.BtnUpdate.setObjectName("BtnUpdate")
         self.BtnSave = QtWidgets.QPushButton(self.centralwidget)
         self.BtnSave.setGeometry(QtCore.QRect(520, 390, 81, 41))
@@ -180,7 +179,6 @@ class Ui_MainWindow(object):
         self.BtnNotify.setText(_translate("MainWindow", "通知消息"))
         self.label_5.setText(_translate("MainWindow", "消息名称"))
         self.label_10.setText(_translate("MainWindow", "消息说明"))
-        self.BtnDel.setText(_translate("MainWindow", "删除"))
         self.BtnUpdate.setText(_translate("MainWindow", "修改"))
         self.BtnSave.setText(_translate("MainWindow", "保存"))
         self.label.setText(_translate("MainWindow", "proto可选类型"))
@@ -212,4 +210,3 @@ class Ui_MainWindow(object):
         self.menuSetting.setText(_translate("MainWindow", "设置选项"))
         self.menuGenCode.setText(_translate("MainWindow", "生成服务器代码"))
         self.menuProto.setText(_translate("MainWindow", "导出协议"))
-

@@ -2,11 +2,13 @@
 
 # Form implementation generated from reading ui file '../Designer/setting.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_SettingWindow(object):
     def setupUi(self, SettingWindow):
@@ -70,4 +72,3 @@ class Ui_SettingWindow(object):
         self.label_3.setText(_translate("SettingWindow", "导表路径："))
         self.BtnProto.setText(_translate("SettingWindow", "..."))
         self.label_4.setText(_translate("SettingWindow", "proto文件保存路径："))
-

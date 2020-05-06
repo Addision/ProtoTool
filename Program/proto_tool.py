@@ -50,7 +50,6 @@ class ProtoTool(QMainWindow):
         # button 设置
         self.ui.BtnAdd.clicked.connect(lambda: self.onBtnClicked('add'))
         self.ui.BtnUpdate.clicked.connect(lambda: self.onBtnClicked('update'))
-        self.ui.BtnDel.clicked.connect(lambda: self.onBtnClicked('del'))
         self.ui.BtnSave.clicked.connect(lambda: self.onBtnClicked('save'))
         self.ui.BtnAdd.setEnabled(False)
         self.ui.BtnDel.setEnabled(False)
@@ -613,12 +612,7 @@ class ProtoTool(QMainWindow):
                     self.addField()
                 self.ui.FrameMsg.setEnabled(False)
                 self.ui.FrameField.setEnabled(False)
-            if btn == 'del':
-                if item_type == ItemType.MSG:
-                    self.delMsg()
-                else:
-                    self.delField()
-                pass
+
             if btn == 'update':
                 if item_type == ItemType.MSG:
                     self.updateMsg()
