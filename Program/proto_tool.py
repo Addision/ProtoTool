@@ -420,7 +420,7 @@ class ProtoTool(QMainWindow):
         self.gen_mgr.loadXmls(save_xml_dir)
         proto_gen_dir = self.config.getConfOne('proto_gen_path')
         if not os.path.exists(proto_gen_dir):
-            QMessageBox.warning(self,"警告","请重新设置路径",QMessageBox.Yes)
+            QMessageBox.warning(self,u"警告",u"请重新设置路径",QMessageBox.Yes)
             return
         save_proto_dir = self.config.getConfOne('proto_path')
         for proto in os.listdir(save_proto_dir):
