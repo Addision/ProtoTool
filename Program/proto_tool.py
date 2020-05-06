@@ -21,7 +21,7 @@ from mod_gui import *
 from common import *
 from gen_mgr import *
 import configparser
-
+from res_rc import *
 
 class ProtoTool(QMainWindow):
     def __init__(self, parent=None):
@@ -30,11 +30,12 @@ class ProtoTool(QMainWindow):
         self.ui.setupUi(self)
         self.setWindowOpacity(0.96)
         # self.setStyleSheet('background-color: rgb(230, 230, 230);')
+        self.setWindowIcon(QtGui.QIcon('./icons/Icon_.ico'))
         # 禁用窗口最大化 拉伸
         self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
         self.setFixedSize(self.width(), self.height())
         # widget 设置
-        self.ui.WidMsgTree.setHeaderLabels(['模块消息', '说明'])
+        self.ui.WidMsgTree.setHeaderLabels([u'模块消息', u'说明'])
         self.ui.WidMsgTree.setStyle(QStyleFactory.create('windows'))
         self.ui.WidMsgTree.itemClicked.connect(self.onTreeItemClicked)
         # 右键菜单
@@ -64,7 +65,7 @@ class ProtoTool(QMainWindow):
         self.ui.menuSet.triggered[QAction].connect(self.onMenuTrigger)
         # tableview 设置
         self.model = QStandardItemModel()
-        self.model.setHorizontalHeaderLabels(['名称', '说明'])
+        self.model.setHorizontalHeaderLabels([u'名称', u'说明'])
         self.ui.BbvInfo.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
         self.ui.BbvInfo.setEditTriggers(QTableView.NoEditTriggers)
         self.ui.BbvInfo.setSelectionMode(QAbstractItemView.NoSelection)
@@ -455,7 +456,7 @@ class ProtoTool(QMainWindow):
         self.ui.WidMsgTree.clear()
         if not self.module_mgr.module_dic:
             return
-        for id, module in self.module_mgr.module_dic.items():
+        for _, module in self.module_mgr.module_dic.items():
             QApplication.processEvents()
             # add module
             item_module = QTreeWidgetItem(self.ui.WidMsgTree)
@@ -463,6 +464,11 @@ class ProtoTool(QMainWindow):
             item_module.setText(1, module.comment)
             item_module.setText(2, module.id)
             item_module.setText(3, ItemType.MODULE)
+            if 'Public' in module.name:
+                item_module.setIcon(0, QIcon('./icons/Montreal.ico'))
+            else:
+                item_module.setIcon(0, QIcon('./icons/Milwaukee.ico'))
+                pass
 
             for msg_id, msg in module.public_msg_dic.items():
                 item_msg = QTreeWidgetItem()
@@ -471,6 +477,7 @@ class ProtoTool(QMainWindow):
                 item_msg.setText(1, msg.comment)
                 item_msg.setText(2, msg.id)
                 item_msg.setText(3, ItemType.MSG)
+                item_msg.setIcon(0, QIcon('./icons/Toronto.ico'))
                 # add field
                 for field in msg.field_list:
                     item_field = QTreeWidgetItem()
@@ -479,6 +486,7 @@ class ProtoTool(QMainWindow):
                     item_field.setText(1, field.comment)
                     item_field.setText(2, msg.id)
                     item_field.setText(3, ItemType.FIELD)
+                    item_field.setIcon(0, QIcon('./icons/Tampa Bay.ico'))
             # add msg
             for msg_id, req_msg in module.req_msg_dic.items():
                 # add req
@@ -488,6 +496,7 @@ class ProtoTool(QMainWindow):
                 item_req_msg.setText(1, req_msg.comment)
                 item_req_msg.setText(2, req_msg.id)
                 item_req_msg.setText(3, ItemType.MSG)
+                item_req_msg.setIcon(0, QIcon('./icons/Cleveland.ico'))
                 for field in req_msg.field_list:
                     item_field = QTreeWidgetItem()
                     item_req_msg.addChild(item_field)
@@ -495,6 +504,7 @@ class ProtoTool(QMainWindow):
                     item_field.setText(1, field.comment)
                     item_field.setText(2, req_msg.id)
                     item_field.setText(3, ItemType.FIELD)
+                    item_field.setIcon(0, QIcon('./icons/Tampa Bay.ico'))
                 # add reply
                 reply_msg = module.reply_msg_dic[msg_id]
                 item_reply_msg = QTreeWidgetItem()
@@ -503,6 +513,7 @@ class ProtoTool(QMainWindow):
                 item_reply_msg.setText(1, reply_msg.comment)
                 item_reply_msg.setText(2, reply_msg.id)
                 item_reply_msg.setText(3, ItemType.MSG)
+                item_reply_msg.setIcon(0, QIcon('./icons/Cleveland.ico'))
                 for field in reply_msg.field_list:
                     item_field = QTreeWidgetItem()
                     item_reply_msg.addChild(item_field)
@@ -510,6 +521,7 @@ class ProtoTool(QMainWindow):
                     item_field.setText(1, field.comment)
                     item_field.setText(2, reply_msg.id)
                     item_field.setText(3, ItemType.FIELD)
+                    item_field.setIcon(0, QIcon('./icons/Tampa Bay.ico'))
 
             for msg_id, msg in module.notify_msg_dic.items():
                 item_msg = QTreeWidgetItem()
@@ -518,6 +530,7 @@ class ProtoTool(QMainWindow):
                 item_msg.setText(1, msg.comment)
                 item_msg.setText(2, msg.id)
                 item_msg.setText(3, ItemType.MSG)
+                item_msg.setIcon(0, QIcon('./icons/New York.ico'))
                 # add field
                 for field in msg.field_list:
                     item_field = QTreeWidgetItem()
@@ -526,6 +539,7 @@ class ProtoTool(QMainWindow):
                     item_field.setText(1, field.comment)
                     item_field.setText(2, msg.id)
                     item_field.setText(3, ItemType.FIELD)
+                    item_field.setIcon(0, QIcon('./icons/Tampa Bay.ico'))
 
             self.ui.WidMsgTree.expandToDepth(1)
 

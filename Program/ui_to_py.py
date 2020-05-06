@@ -18,7 +18,7 @@ def UiToPy():
     os.system("pyuic5 -o setting_ui.py ../Designer/setting.ui")
     os.system("pyuic5 -o mod_ui.py ../Designer/mod.ui")
 
-    #os.system("pyrcc5 -o resource_rc.py ./res/resource.qrc")
+    os.system("pyrcc5 -o res_rc.py icons/res.qrc")
 
     print("transport ui to py ok...")
 
