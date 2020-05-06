@@ -1,4 +1,5 @@
 from gen import *
+from gen_csharp import *
 
 
 class GenMgr(object):
@@ -23,3 +24,23 @@ class GenMgr(object):
     def genCpp(self, cpp_dir):
         for gen in self.gen_list:
             gen.gen_cpp_file(cpp_dir)
+
+    def genCsharp(self):
+        proto_enums = ''
+        for gen in self.gen_list:
+            gen_str = gen.gen_csharp_file() or ''
+            proto_enums += gen_str
+        proto_namespace = '''
+using system;
+namespace Protocal
+{
+    %(protos)s
+}
+        '''
+        proto_namespace = proto_namespace % {
+            "protos": proto_enums
+        }
+        csharp_file = 'ProtoEnums.cs'
+        with codecs.open(csharp_file, "w", 'utf-8') as f:
+            f.write(proto_namespace)
+            f.flush()

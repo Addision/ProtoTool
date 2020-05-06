@@ -29,7 +29,8 @@ class SettingGui(QMainWindow):
     def showConf(self):
         self.ui.LetMsgPath.setText(self.config.getConfOne('msg_path'))
         self.ui.LetProtoPath.setText(self.config.getConfOne('proto_path'))
-        self.ui.LetProtoGenPath.setText(self.config.getConfOne('proto_gen_path'))
+        self.ui.LetProtoGenPath.setText(
+            self.config.getConfOne('proto_gen_path'))
         self.ui.LetTablePath.setText(self.config.getConfOne('table_path'))
 
     def onBtnClicked(self, btn):
@@ -46,4 +47,5 @@ class SettingGui(QMainWindow):
             self.ui.LetProtoGenPath.setText(path)
         if btn == 'table_path':
             self.ui.LetTablePath.setText(path)
+
         self.config.updateConfOne(btn, path)

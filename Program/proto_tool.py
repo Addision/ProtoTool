@@ -425,7 +425,12 @@ class ProtoTool(QMainWindow):
         pass
 
     def menuBarProto(self):
+        save_xml_dir = self.config.getConfOne('msg_path')
+        self.gen_mgr.loadXmls(save_xml_dir)
         proto_gen_dir = self.config.getConfOne('proto_gen_path')
+        if not os.path.exists(proto_gen_dir):
+            QMessageBox.warning(self,"警告","请重新设置路径",QMessageBox.Yes)
+            return
         save_proto_dir = self.config.getConfOne('proto_path')
         for proto in os.listdir(save_proto_dir):
             if proto.endswith('.proto'):
@@ -436,6 +441,9 @@ class ProtoTool(QMainWindow):
                 cmd_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
                     save_proto_dir+' --cpp_out='+protobuf_dir+'  ' + proto
                 os.system(cmd_str)
+
+        # 生成 csharp 协议枚举文件
+        self.gen_mgr.genCsharp()
 
     def menuGenCode(self):
         # 生成服务器代码

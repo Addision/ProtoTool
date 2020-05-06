@@ -6,14 +6,13 @@ import codecs
 import xml.etree.ElementTree as ET
 from gen_cpp import GenCpp
 from gen_proto import GenProto
+from gen_csharp import *
 
 
 class Gen(object):
     def __init__(self):
         self.root = None
         self.module = ""
-        self.gen_cpp = None
-        self.gen_proto = None
         pass
 
     def load_xml(self, xml_file):
@@ -30,14 +29,19 @@ class Gen(object):
         pass
 
     def gen_cpp_file(self, cpp_dir):
-        self.gen_cpp = GenCpp(self.root, self.module)
-        self.gen_cpp.write_cpp(cpp_dir)
+        gen_cpp = GenCpp(self.root, self.module)
+        gen_cpp.write_cpp(cpp_dir)
         pass
 
     def gen_proto_file(self, proto_dir):
-        self.gen_proto = GenProto(self.root, self.module)
-        self.gen_proto.write_proto(proto_dir)
+        gen_proto = GenProto(self.root, self.module)
+        gen_proto.write_proto(proto_dir)
         pass
+
+    def gen_csharp_file(self):
+        gen_csharp = GenCsharp(self.root, self.module)
+        return gen_csharp.write_csharp()
+
 
 
 if __name__ == "__main__":
