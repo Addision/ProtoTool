@@ -349,6 +349,8 @@ class ProtoTool(QMainWindow):
         field.field_name = field_name
         field.comment = field_comment
         field.proto_type = self.ui.CbxProtoType.currentText()
+        if field.proto_type == 'optional':
+            field.proto_type = ''
         field.value_type = self.ui.CbxValueType.currentText()
         msg.addField(field)
         pass
@@ -420,6 +422,7 @@ class ProtoTool(QMainWindow):
 
     # 导出proto文件    
     def menuBarProto(self):
+        self.saveProtoXml()
         # 生成proto文件
         self.status.showMessage(u'开始生成protobuffer')
         xml_dir = self.config.getConfOne('msg_path')

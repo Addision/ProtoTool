@@ -22,9 +22,15 @@ class MsgBase(object):
         self.id = "0"
         self.name = ""
         self.comment = ""
-        self.next_tag = '1'
         # 保存属性值列表
         self.field_list = []
+
+    def resetFieldTag(self):
+        idx = 1
+        for field in self.field_list:
+            field.tag = str(idx)
+            idx = idx + 1
+        pass
 
     def existField(self, field_name):
         if not field_name:
@@ -40,12 +46,6 @@ class MsgBase(object):
                 return field
         return None
 
-    def getFieldByTag(self, tag):
-        for field in self.field_list:
-            if field.tag == tag:
-                return field
-        return None
-
     def addField(self, field):
         is_exist, _ = self.existField(field.field_name)
         if not is_exist:
@@ -57,6 +57,7 @@ class MsgBase(object):
         is_exist, item = self.existField(field_name)
         if is_exist:
             self.field_list.remove(item)
+            self.resetFieldTag()
         pass
 
     def updateField(self, old_name, name, comment):
@@ -69,9 +70,11 @@ class MsgBase(object):
         pass
 
     def getNextTag(self):
-        next_tag = self.next_tag
-        self.next_tag = str(int(self.next_tag)+1)
-        return next_tag
+        idx = 0
+        for field in self.field_list:
+            if idx <= int(field.tag):
+                idx = int(field.tag)
+        return str(idx+1)
 
 
 class MsgReq(MsgBase):

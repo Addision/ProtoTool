@@ -20,6 +20,9 @@ class ModuleMgr(object):
         listFiles = os.listdir(xml_dir)
         if not listFiles:
             return False
+        
+        self.module_dic.clear()
+        self.mod_file_dic.clear()
 
         for file in listFiles:
             if not file.endswith(".xml", 4):
