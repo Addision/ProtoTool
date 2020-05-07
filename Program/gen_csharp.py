@@ -5,8 +5,8 @@ import sys
 import codecs
 import xml.etree.ElementTree as ET
 #############################################
-rpc_id = 'RPC_%(module)s_%(msg_name)s_REQ'
- 
+rpc_req_id = 'RPC_%(module)s_%(msg_name)s_REQ'
+rpc_notify_id = 'RPC_%(module)s_%(msg_name)s_NOTIFY'
 #############################################
 
 class GenCsharp(object):
@@ -42,7 +42,15 @@ enum E%(module)s
         for req_reply in self.root.findall("Message/ReqReplyMsg"):
             msg_id = req_reply.attrib["id"]
             msg_name = req_reply.attrib["name"]
-            id_field = rpc_id % {"module": self.module, "msg_name": msg_name}
+            id_field = rpc_req_id % {"module": self.module, "msg_name": msg_name}
+            id_field = id_field.upper()
+            enum_field = id_field + " = "+msg_id+",\n\t\t"
+            self.enum_fields += enum_field
+
+        for notify in self.root.findall("Message/NotifyMsg/Notify"):
+            msg_id = notify.attrib["id"]
+            msg_name = notify.attrib["name"]
+            id_field = rpc_notify_id % {"module": self.module, "msg_name": msg_name}
             id_field = id_field.upper()
             enum_field = id_field + " = "+msg_id+",\n\t\t"
             self.enum_fields += enum_field

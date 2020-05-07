@@ -348,8 +348,6 @@ class ProtoTool(QMainWindow):
         field.field_name = field_name
         field.comment = field_comment
         field.proto_type = self.ui.CbxProtoType.currentText()
-        if field.proto_type == 'optional':
-            field.proto_type = ''
         field.value_type = self.ui.CbxValueType.currentText()
         msg.addField(field)
         pass

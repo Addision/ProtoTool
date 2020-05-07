@@ -6,10 +6,12 @@ import codecs
 import xml.etree.ElementTree as ET
 
 ############################################################################
-rpc_id = 'RPC_%(module)s_%(msg_name)s_REQ'
+rpc_req_id = 'RPC_%(module)s_%(msg_name)s_REQ'
+rpc_notify_id = 'RPC_%(module)s_%(msg_name)s_NOTIFY'
 handle_field = 'g_pPacketMgr->RegisterHandle(%(msg_id)s, Handle%(module)s::%(msg_name)sReq);'
 packet_field = 'g_pPacketMgr->RegisterPacket(%(msg_id)s, new CPacket<%(module)s_%(msg_name)sReq>());'
-func_field = 'static int %(msg_name)sReq(Player* player, Packet* packet);'
+func_field_req = 'static int %(msg_name)sReq(Player* player, Packet* packet);'
+func_field_notify = 'static int %(msg_name)sNotify(Player* player, Packet* packet);'
 ############################################################################
 
 
@@ -53,7 +55,7 @@ class GenCpp(object):
         for req_reply in self.root.findall("Message/ReqReplyMsg"):
             msg_id = req_reply.attrib["id"]
             msg_name = req_reply.attrib["name"]
-            id_field = rpc_id % {"module": self.module, "msg_name": msg_name}
+            id_field = rpc_req_id % {"module": self.module, "msg_name": msg_name}
             id_field = id_field.upper()
             enum_field = id_field + " = "+msg_id+",\n\t\t"
             self.enum_fields += enum_field
@@ -63,8 +65,24 @@ class GenCpp(object):
             self.handle_fields += packet_field % {
                 "msg_id": id_field, "module": self.module, "msg_name": msg_name}
             self.handle_fields += '\n\t\t'
-            self.func_fields += func_field % {"msg_name": msg_name}
+            self.func_fields += func_field_req % {"msg_name": msg_name}
             self.func_fields += '\n\t'
+
+        for notify in self.root.findall("Message/NotifyMsg/Notify"):
+            msg_id = notify.attrib["id"]
+            msg_name = notify.attrib["name"]
+            id_field = rpc_notify_id % {"module": self.module, "msg_name": msg_name}
+            id_field = id_field.upper()
+            enum_field = id_field + " = "+msg_id+",\n\t\t"
+            self.enum_fields += enum_field
+            self.handle_fields += handle_field % {
+                "msg_id": id_field, "module": self.module, "msg_name": msg_name}
+            self.handle_fields += '\n\t\t'
+            self.handle_fields += packet_field % {
+                "msg_id": id_field, "module": self.module, "msg_name": msg_name}
+            self.handle_fields += '\n\t\t'
+            self.func_fields += func_field_notify % {"msg_name": msg_name}
+            self.func_fields += '\n\t'            
 
         self.enum_fields = self.enum_fields[:-3]
         self.handle_fields = self.handle_fields[:-3]
