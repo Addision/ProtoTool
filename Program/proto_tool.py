@@ -21,6 +21,7 @@ from mod_gui import *
 from common import *
 from gen_mgr import *
 import configparser
+from subprocess import *
 
 
 class ProtoTool(QMainWindow):
@@ -445,8 +446,8 @@ class ProtoTool(QMainWindow):
                 cmd_csharp_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
                     save_proto_dir+' --csharp_out='+protobuf_dir+'  ' + proto
                 self.status.showMessage(u'正在生成('+proto_name+')'+'消息协议')
-                os.system(cmd_cpp_str)
-                os.system(cmd_csharp_str)
+                run(cmd_cpp_str, shell=True)
+                run(cmd_csharp_str, shell=True)
         
         self.status.showMessage(u'消息协议生成完成')
     # 导出数据表

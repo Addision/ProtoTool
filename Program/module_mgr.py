@@ -23,6 +23,7 @@ class ModuleMgr(object):
         
         self.module_dic.clear()
         self.mod_file_dic.clear()
+        self.proto_imp = ''
 
         for file in listFiles:
             if not file.endswith(".xml", 4):
@@ -94,7 +95,7 @@ class ModuleMgr(object):
         is_exist, _ = self.existModule(module.id)
         if not is_exist:
             self.module_dic[module.id] = module
-            if module.mod_type == ModType.PUBLIC:
+            if module.mod_type == ModType.PUBLIC and module.name not in self.proto_imp:
                 self.proto_imp = self.proto_imp + module.name+'.proto;'
                 self.changeProtoImp()
             else:
