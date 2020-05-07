@@ -21,7 +21,7 @@ from mod_gui import *
 from common import *
 from gen_mgr import *
 import configparser
-from res_rc import *
+
 
 class ProtoTool(QMainWindow):
     def __init__(self, parent=None):

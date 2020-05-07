@@ -213,4 +213,4 @@ class Ui_MainWindow(object):
         self.menuServer.setText(_translate("MainWindow", "导出服务器"))
         self.menuProto.setText(_translate("MainWindow", "导出协议(proto)"))
         self.menuClient.setText(_translate("MainWindow", "导出客户端"))
-import res_rc
+
