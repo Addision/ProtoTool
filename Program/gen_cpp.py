@@ -42,7 +42,7 @@ class GenCpp(object):
             "func_fields": self.func_fields
         }
 
-        cpp_file = cpp_dir+'/' + "Handle"+self.module+".h"
+        cpp_file = cpp_dir+"/Handle"+self.module+".h"
         with codecs.open(cpp_file, "w", 'utf-8') as f:
             f.write(s)
             f.flush()

@@ -26,5 +26,5 @@ public:
 	}
 public:
 	static int ChatToOneReq(Player* player, Packet* packet);
-	static int ChatToAllReq(Player* player, Packet* packet);
+	static int ChatToAllNotify(Player* player, Packet* packet);
 };

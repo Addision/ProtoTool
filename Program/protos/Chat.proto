@@ -19,7 +19,6 @@ message Chat_ChatToAllNotify
 {
 repeated string name = 1;
  string haha = 2;
-optional int32 DD = 3;
 
 }
 

@@ -385,10 +385,14 @@ class ProtoTool(QMainWindow):
             self.menuBarClose()
         if menu == self.ui.menuProto:
             self.menuBarProto()
+        if menu == self.ui.menuTable:
+            self.menuBarTable()
+        if menu == self.ui.menuServer:
+            self.menuBarServer()
+        if menu == self.ui.menuClient:
+            self.menuBarClient()        
         if menu == self.ui.menuSetting:
             self.menuSetting()
-        if menu == self.ui.menuGenCode:
-            self.menuGenCode()
 
     def menuSetting(self):
         self.setting = SettingGui()
@@ -406,21 +410,25 @@ class ProtoTool(QMainWindow):
         pass
 
     def menuBarSave(self):
-        self.saveProto()
+        self.saveProtoXml()
         pass
 
     def menuBarClose(self):
         os._exit(0)
         pass
 
+    # 导出proto文件    
     def menuBarProto(self):
-        save_xml_dir = self.config.getConfOne('msg_path')
-        self.gen_mgr.loadXmls(save_xml_dir)
+        # 生成proto文件
+        xml_dir = self.config.getConfOne('msg_path')
+        self.gen_mgr.loadXmls(xml_dir)
+        save_proto_dir = self.config.getConfOne('proto_path')
+        self.gen_mgr.genProto(save_proto_dir)
+        # 生成protobuffer 代码
         proto_gen_dir = self.config.getConfOne('proto_gen_path')
         if not os.path.exists(proto_gen_dir):
             QMessageBox.warning(self,u"警告",u"请重新设置路径",QMessageBox.Yes)
             return
-        save_proto_dir = self.config.getConfOne('proto_path')
         for proto in os.listdir(save_proto_dir):
             if proto.endswith('.proto'):
                 proto_name = proto[:-6]
@@ -431,16 +439,22 @@ class ProtoTool(QMainWindow):
                     save_proto_dir+' --cpp_out='+protobuf_dir+'  ' + proto
                 os.system(cmd_str)
 
-        # 生成 csharp 协议枚举文件
-        self.gen_mgr.genCsharp()
-
-    def menuGenCode(self):
-        # 生成服务器代码
-        save_xml_dir = self.config.getConfOne('msg_path')
-        save_proto_dir = self.config.getConfOne('proto_path')
-        self.gen_mgr.loadXmls(save_xml_dir)
-        self.gen_mgr.genCpp(save_proto_dir)
+    # 导出数据表
+    def menuBarTable(self):
         pass
+
+    # 生成服务器代码    
+    def menuBarServer(self):
+        self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
+        self.gen_mgr.genCpp(self.config.getConfOne('proto_path'))    
+        pass
+
+    # 生成客户端代码     
+    def menuBarClient(self):
+        # 生成 csharp 协议枚举文件
+        self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
+        self.gen_mgr.genCsharp(self.config.getConfOne('proto_path'))
+        pass    
 
 ###################################################
 
@@ -571,14 +585,9 @@ class ProtoTool(QMainWindow):
         self.ui.CbxValueType.clear()
         self.ui.CbxValueType.addItems(self.value_types)
 
-    def saveProto(self):
-        save_xml_dir = self.config.getConfOne('msg_path')
-        self.module_mgr.saveXmls(save_xml_dir)
-        # 生成proto文件
-        save_proto_dir = self.config.getConfOne('proto_path')
-        self.gen_mgr.loadXmls(save_xml_dir)
-        self.gen_mgr.genProto(save_proto_dir)
-        self.gen_mgr.genCpp(save_proto_dir)
+    def saveProtoXml(self): 
+        self.module_mgr.saveXmls(self.config.getConfOne('msg_path'))
+
         self.ui.BtnSave.setEnabled(False)
         self.ui.menuSave.setEnabled(False)
         self.clearTreeWidgetSelect()
@@ -610,7 +619,7 @@ class ProtoTool(QMainWindow):
     def onBtnClicked(self, btn):
         try:
             if btn == 'save':
-                self.saveProto()
+                self.saveProtoXml()
                 return
             if not self.selected_item:
                 return

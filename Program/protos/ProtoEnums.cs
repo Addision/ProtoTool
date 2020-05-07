@@ -7,6 +7,7 @@ enum EChat
 {
     MODULE_ID_CHAT = 11,
     RPC_CHAT_CHATTOONE_REQ = 1101,
+		RPC_CHAT_CHATTOALL_NOTIFY = 1102,
 }
 
 enum ERank
