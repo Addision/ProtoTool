@@ -450,19 +450,24 @@ class ProtoTool(QMainWindow):
         self.ui.WidMsgTree.clear()
         if not self.module_mgr.module_dic:
             return
+        item_proto_root = QTreeWidgetItem(self.ui.WidMsgTree)
+        item_proto_root.setText(0, 'Proto')  
+        item_proto_root.setIcon(0, QIcon('./icons/Montreal.ico'))  
         for _, module in self.module_mgr.module_dic.items():
             QApplication.processEvents()
-            # add module
-            item_module = QTreeWidgetItem(self.ui.WidMsgTree)
+            item_module = None
+            if module.mod_type == ModType.PUBLIC:
+                # add module
+                item_module = QTreeWidgetItem(self.ui.WidMsgTree)
+                item_module.setIcon(0, QIcon('./icons/Montreal.ico'))
+            else:
+                item_module = QTreeWidgetItem()
+                item_proto_root.addChild(item_module)
+                item_module.setIcon(0, QIcon('./icons/Milwaukee.ico'))
             item_module.setText(0, module.name)
             item_module.setText(1, module.comment)
             item_module.setText(2, module.id)
             item_module.setText(3, ItemType.MODULE)
-            if 'Public' in module.name:
-                item_module.setIcon(0, QIcon('./icons/Montreal.ico'))
-            else:
-                item_module.setIcon(0, QIcon('./icons/Milwaukee.ico'))
-                pass
 
             for msg_id, msg in module.public_msg_dic.items():
                 item_msg = QTreeWidgetItem()
@@ -481,6 +486,7 @@ class ProtoTool(QMainWindow):
                     item_field.setText(2, msg.id)
                     item_field.setText(3, ItemType.FIELD)
                     item_field.setIcon(0, QIcon('./icons/Tampa Bay.ico'))
+
             # add msg
             for msg_id, req_msg in module.req_msg_dic.items():
                 # add req
@@ -535,7 +541,7 @@ class ProtoTool(QMainWindow):
                     item_field.setText(3, ItemType.FIELD)
                     item_field.setIcon(0, QIcon('./icons/Tampa Bay.ico'))
 
-            self.ui.WidMsgTree.expandToDepth(1)
+            # self.ui.WidMsgTree.expandToDepth(1)
 
     def getModBySelectedItem(self):
         mod_id = None
@@ -637,7 +643,7 @@ class ProtoTool(QMainWindow):
         self.model.setHorizontalHeaderLabels([u'名称', u'说明'])
 
     def showItemDetail(self, item):
-        if not item:
+        if not item or item.text(0)=='Proto':
             return
         self.clearModel()
         item_type = item.text(3)

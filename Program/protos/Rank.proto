@@ -1,3 +1,17 @@
 syntax = "proto3";
 import "PublicData.proto";
 
+message Rank_RankFightReq
+{
+ int32 RankId = 1;
+
+}
+
+
+message Rank_RankFightReply
+{
+repeated int32 RankIds = 1;
+
+}
+
+

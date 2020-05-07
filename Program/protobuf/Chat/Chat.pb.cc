@@ -91,6 +91,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Chat_2eproto::offsets[] PROTOB
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Chat_ChatToAllNotify, name_),
+  PROTOBUF_FIELD_OFFSET(::Chat_ChatToAllNotify, haha_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::Chat_ChatToOneReq)},
@@ -107,8 +108,9 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 const char descriptor_table_protodef_Chat_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\nChat.proto\032\020PublicData.proto\"!\n\021Chat_C"
   "hatToOneReq\022\014\n\004name\030\001 \001(\t\"#\n\023Chat_ChatTo"
-  "OneReply\022\014\n\004name\030\001 \001(\t\"$\n\024Chat_ChatToAll"
-  "Notify\022\014\n\004name\030\001 \003(\tb\006proto3"
+  "OneReply\022\014\n\004name\030\001 \001(\t\"2\n\024Chat_ChatToAll"
+  "Notify\022\014\n\004name\030\001 \003(\t\022\014\n\004haha\030\002 \001(\tb\006prot"
+  "o3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Chat_2eproto_deps[1] = {
   &::descriptor_table_PublicData_2eproto,
@@ -121,14 +123,14 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Cha
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Chat_2eproto_once;
 static bool descriptor_table_Chat_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Chat_2eproto = {
-  &descriptor_table_Chat_2eproto_initialized, descriptor_table_protodef_Chat_2eproto, "Chat.proto", 148,
+  &descriptor_table_Chat_2eproto_initialized, descriptor_table_protodef_Chat_2eproto, "Chat.proto", 162,
   &descriptor_table_Chat_2eproto_once, descriptor_table_Chat_2eproto_sccs, descriptor_table_Chat_2eproto_deps, 3, 1,
   schemas, file_default_instances, TableStruct_Chat_2eproto::offsets,
   file_level_metadata_Chat_2eproto, 3, file_level_enum_descriptors_Chat_2eproto, file_level_service_descriptors_Chat_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_Chat_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_Chat_2eproto), true);
+static bool dynamic_init_dummy_Chat_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_Chat_2eproto)), true);
 
 // ===================================================================
 
@@ -197,7 +199,9 @@ const char* Chat_ChatToOneReq::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
       // string name = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_name(), ptr, ctx, "Chat_ChatToOneReq.name");
+          auto str = _internal_mutable_name();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Chat_ChatToOneReq.name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -221,7 +225,7 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Chat_ChatToOneReq::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* Chat_ChatToOneReq::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Chat_ChatToOneReq)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -394,7 +398,9 @@ const char* Chat_ChatToOneReply::_InternalParse(const char* ptr, ::PROTOBUF_NAME
       // string name = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_mutable_name(), ptr, ctx, "Chat_ChatToOneReply.name");
+          auto str = _internal_mutable_name();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Chat_ChatToOneReply.name"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -418,7 +424,7 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Chat_ChatToOneReply::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* Chat_ChatToOneReply::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Chat_ChatToOneReply)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -542,11 +548,16 @@ Chat_ChatToAllNotify::Chat_ChatToAllNotify(const Chat_ChatToAllNotify& from)
       _internal_metadata_(nullptr),
       name_(from.name_) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
+  haha_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_haha().empty()) {
+    haha_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.haha_);
+  }
   // @@protoc_insertion_point(copy_constructor:Chat_ChatToAllNotify)
 }
 
 void Chat_ChatToAllNotify::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Chat_ChatToAllNotify_Chat_2eproto.base);
+  haha_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 Chat_ChatToAllNotify::~Chat_ChatToAllNotify() {
@@ -555,6 +566,7 @@ Chat_ChatToAllNotify::~Chat_ChatToAllNotify() {
 }
 
 void Chat_ChatToAllNotify::SharedDtor() {
+  haha_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Chat_ChatToAllNotify::SetCachedSize(int size) const {
@@ -573,6 +585,7 @@ void Chat_ChatToAllNotify::Clear() {
   (void) cached_has_bits;
 
   name_.Clear();
+  haha_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
@@ -589,10 +602,21 @@ const char* Chat_ChatToAllNotify::_InternalParse(const char* ptr, ::PROTOBUF_NAM
           ptr -= 1;
           do {
             ptr += 1;
-            ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParserUTF8(_internal_add_name(), ptr, ctx, "Chat_ChatToAllNotify.name");
+            auto str = _internal_add_name();
+            ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+            CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Chat_ChatToAllNotify.name"));
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
+        } else goto handle_unusual;
+        continue;
+      // string haha = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_haha();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Chat_ChatToAllNotify.haha"));
+          CHK_(ptr);
         } else goto handle_unusual;
         continue;
       default: {
@@ -615,7 +639,7 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Chat_ChatToAllNotify::InternalSerializeWithCachedSizesToArray(
+::PROTOBUF_NAMESPACE_ID::uint8* Chat_ChatToAllNotify::_InternalSerialize(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Chat_ChatToAllNotify)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -629,6 +653,16 @@ failure:
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
       "Chat_ChatToAllNotify.name");
     target = stream->WriteString(1, s, target);
+  }
+
+  // string haha = 2;
+  if (this->haha().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_haha().data(), static_cast<int>(this->_internal_haha().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "Chat_ChatToAllNotify.haha");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_haha(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -653,6 +687,13 @@ size_t Chat_ChatToAllNotify::ByteSizeLong() const {
   for (int i = 0, n = name_.size(); i < n; i++) {
     total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
       name_.Get(i));
+  }
+
+  // string haha = 2;
+  if (this->haha().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_haha());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -687,6 +728,10 @@ void Chat_ChatToAllNotify::MergeFrom(const Chat_ChatToAllNotify& from) {
   (void) cached_has_bits;
 
   name_.MergeFrom(from.name_);
+  if (from.haha().size() > 0) {
+
+    haha_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.haha_);
+  }
 }
 
 void Chat_ChatToAllNotify::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -711,6 +756,8 @@ void Chat_ChatToAllNotify::InternalSwap(Chat_ChatToAllNotify* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
   name_.InternalSwap(&other->name_);
+  haha_.Swap(&other->haha_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Chat_ChatToAllNotify::GetMetadata() const {

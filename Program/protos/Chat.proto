@@ -18,6 +18,7 @@ message Chat_ChatToOneReply
 message Chat_ChatToAllNotify
 {
 repeated string name = 1;
+ string haha = 2;
 
 }
 

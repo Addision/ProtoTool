@@ -8,6 +8,7 @@ class GenMgr(object):
         pass
 
     def loadXmls(self, xml_dir):
+        self.gen_list.clear()
         for file in os.listdir(xml_dir):
             xml_file = os.path.join(xml_dir, file).replace('\\', '/')
             if os.path.isdir(xml_file):
