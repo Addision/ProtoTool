@@ -33,7 +33,7 @@ class GenMgr(object):
             proto_enums += gen_str
         proto_namespace = '''
 using system;
-namespace Protocal
+namespace Protocol
 {
     %(protos)s
 }

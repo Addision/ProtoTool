@@ -439,10 +439,13 @@ class ProtoTool(QMainWindow):
                 protobuf_dir = proto_gen_dir+'/' + proto_name
                 if not os.path.exists(protobuf_dir):
                     os.makedirs(protobuf_dir)
-                cmd_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
+                cmd_cpp_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
                     save_proto_dir+' --cpp_out='+protobuf_dir+'  ' + proto
+                cmd_csharp_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
+                    save_proto_dir+' --csharp_out='+protobuf_dir+'  ' + proto
                 self.status.showMessage(u'正在生成('+proto_name+')'+'消息协议')
-                os.system(cmd_str)
+                os.system(cmd_cpp_str)
+                os.system(cmd_csharp_str)
         
         self.status.showMessage(u'消息协议生成完成')
     # 导出数据表
@@ -469,7 +472,8 @@ class ProtoTool(QMainWindow):
         if not self.module_mgr.module_dic:
             return
         item_proto_root = QTreeWidgetItem(self.ui.WidMsgTree)
-        item_proto_root.setText(0, 'Proto')  
+        item_proto_root.setText(0, 'Protocol')
+        item_proto_root.setText(1, u'通信协议')
         item_proto_root.setIcon(0, QIcon('./icons/Montreal.ico'))  
         for _, module in self.module_mgr.module_dic.items():
             QApplication.processEvents()
