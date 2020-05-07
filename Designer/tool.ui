@@ -400,9 +400,11 @@
      <string>工具</string>
     </property>
     <addaction name="menuProto"/>
+    <addaction name="separator"/>
     <addaction name="menuTable"/>
     <addaction name="separator"/>
-    <addaction name="menuGenCode"/>
+    <addaction name="menuServer"/>
+    <addaction name="menuClient"/>
    </widget>
    <widget class="QMenu" name="menuSet">
     <property name="title">
@@ -477,14 +479,19 @@
     <string>设置选项</string>
    </property>
   </action>
-  <action name="menuGenCode">
+  <action name="menuServer">
    <property name="text">
-    <string>生成服务器代码</string>
+    <string>导出服务器</string>
    </property>
   </action>
   <action name="menuProto">
    <property name="text">
-    <string>导出协议</string>
+    <string>导出协议(proto)</string>
+   </property>
+  </action>
+  <action name="menuClient">
+   <property name="text">
+    <string>导出客户端</string>
    </property>
   </action>
  </widget>
