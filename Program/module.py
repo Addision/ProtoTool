@@ -65,11 +65,11 @@ class ModuleBase(object):
         return None
 
     def delMsg(self, msg_id, msg_type):
-        is_exist, msg = self.existMsg(msg_id, msg_type)
+        is_exist, _ = self.existMsg(msg_id, msg_type)
         if is_exist:
             if msg_type == MsgType.NOTIFY:
                 self.notify_msg_dic.pop(msg_id)
-            elif msg_type == MsgType.COMMON:
+            elif msg_type == MsgType.PUBLIC:
                 self.public_msg_dic.pop(msg_id)
             else:
                 self.req_msg_dic.pop(msg_id)
