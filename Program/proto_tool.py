@@ -69,6 +69,9 @@ class ProtoTool(QMainWindow):
         self.ui.BbvInfo.setEditTriggers(QTableView.NoEditTriggers)
         self.ui.BbvInfo.setSelectionMode(QAbstractItemView.NoSelection)
         self.ui.BbvInfo.setModel(self.model)
+        # 状态栏
+        self.status = self.statusBar()
+        self.status.showMessage(u'实时状态信息...')         
         # other 设置
         self.ui.CbxValueMod.activated.connect(self.selectModChange)
         self.ui.CbxValueType.activated.connect(self.selectTypeChange)
@@ -208,7 +211,7 @@ class ProtoTool(QMainWindow):
 
         if op_flag == 'del_mod':  # del mod
             reply = QMessageBox.information(
-                self, "warning", "是否删除模块?", QMessageBox.Yes | QMessageBox.No)
+                self, "warning", u"是否删除模块?", QMessageBox.Yes | QMessageBox.No)
             if reply == QMessageBox.Yes:
                 self.delModule(item.text(2))
             self.setSaveOk()
@@ -420,6 +423,7 @@ class ProtoTool(QMainWindow):
     # 导出proto文件    
     def menuBarProto(self):
         # 生成proto文件
+        self.status.showMessage(u'开始生成protobuffer')
         xml_dir = self.config.getConfOne('msg_path')
         self.gen_mgr.loadXmls(xml_dir)
         save_proto_dir = self.config.getConfOne('proto_path')
@@ -437,8 +441,10 @@ class ProtoTool(QMainWindow):
                     os.makedirs(protobuf_dir)
                 cmd_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
                     save_proto_dir+' --cpp_out='+protobuf_dir+'  ' + proto
+                self.status.showMessage(u'正在生成('+proto_name+')'+'消息协议')
                 os.system(cmd_str)
-
+        
+        self.status.showMessage(u'消息协议生成完成')
     # 导出数据表
     def menuBarTable(self):
         pass
@@ -587,10 +593,10 @@ class ProtoTool(QMainWindow):
 
     def saveProtoXml(self): 
         self.module_mgr.saveXmls(self.config.getConfOne('msg_path'))
-
         self.ui.BtnSave.setEnabled(False)
         self.ui.menuSave.setEnabled(False)
         self.clearTreeWidgetSelect()
+        self.status.showMessage(u'保存信息完成') 
 
     def clearTreeWidgetSelect(self):
         self.ui.WidMsgTree.clearSelection()
