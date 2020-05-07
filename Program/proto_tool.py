@@ -31,8 +31,6 @@ class ProtoTool(QMainWindow):
         self.setWindowOpacity(0.96)
         # self.setStyleSheet('background-color: rgb(230, 230, 230);')
         self.setWindowIcon(QtGui.QIcon('./icons/Icon_.ico'))
-        # 禁用窗口最大化 拉伸
-        self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
         self.setFixedSize(self.width(), self.height())
         # widget 设置
         self.ui.WidMsgTree.setHeaderLabels([u'模块消息', u'说明'])

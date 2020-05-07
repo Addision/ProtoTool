@@ -3,7 +3,7 @@
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
   <property name="windowModality">
-   <enum>Qt::WindowModal</enum>
+   <enum>Qt::NonModal</enum>
   </property>
   <property name="geometry">
    <rect>
@@ -14,7 +14,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>自动化工具</string>
+   <string>协议工具</string>
   </property>
   <property name="autoFillBackground">
    <bool>true</bool>
@@ -498,8 +498,6 @@
    </property>
   </action>
  </widget>
- <resources>
-  <include location="../icons/res.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

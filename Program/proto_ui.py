@@ -13,7 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.setWindowModality(QtCore.Qt.WindowModal)
+        MainWindow.setWindowModality(QtCore.Qt.NonModal)
         MainWindow.resize(828, 776)
         MainWindow.setAutoFillBackground(True)
         MainWindow.setStyleSheet("")
@@ -177,7 +177,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "自动化工具"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "协议工具"))
         self.WidMsgTree.setSortingEnabled(False)
         self.BtnReq.setText(_translate("MainWindow", "请求消息"))
         self.BtnNotify.setText(_translate("MainWindow", "通知消息"))
@@ -213,4 +213,3 @@ class Ui_MainWindow(object):
         self.menuServer.setText(_translate("MainWindow", "导出服务器"))
         self.menuProto.setText(_translate("MainWindow", "导出协议(proto)"))
         self.menuClient.setText(_translate("MainWindow", "导出客户端"))
-
