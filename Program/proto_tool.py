@@ -23,6 +23,7 @@ from gen_mgr import *
 import configparser
 from subprocess import *
 import time
+import PyQt5.sip
 
 
 class ProtoTool(QMainWindow):
@@ -79,21 +80,20 @@ class ProtoTool(QMainWindow):
         self.selected_item_text = ''
         self.ui.BtnReq.setChecked(True)
         self.selected_item = None
-        self.config = Config()
-        self.module_mgr = ModuleMgr()
+
         self.value_types = ['int32', 'int64', 'string', 'float',
                             'double', 'bytes', 'bool', 'uint32', 'uint64']
-        self.openProto()
-        self.updateCbxValues()
-
         # 生成 proto文件和cpp文件
+        self.module_mgr = ModuleMgr()
         self.gen_mgr = GenMgr()
+        self.config = Config()
+        self.openProto(self.config.getConfOne('msg_path'))
     pass
 
-    def openProto(self):
-        msg_path = self.config.getConfOne('msg_path')
+    def openProto(self, msg_path):
         if msg_path:
             self.module_mgr.loadXmls(msg_path)
+            self.updateCbxValues()
             self.showModuleMsg()
 
     def updateCbxValues(self):
@@ -411,7 +411,7 @@ class ProtoTool(QMainWindow):
         if not msg_path:
             return
         self.config.updateConfOne('msg_path', msg_path)
-        self.openProto()
+        self.openProto(msg_path)
         pass
 
     def menuBarSave(self):

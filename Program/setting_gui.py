@@ -49,3 +49,4 @@ class SettingGui(QMainWindow):
             self.ui.LetTablePath.setText(path)
 
         self.config.updateConfOne(btn, path)
+        

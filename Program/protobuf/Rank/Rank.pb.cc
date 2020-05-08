@@ -100,7 +100,7 @@ const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Rank_2
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_Rank_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_Rank_2eproto)), true);
+static bool dynamic_init_dummy_Rank_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_Rank_2eproto), true);
 
 // ===================================================================
 
@@ -164,7 +164,7 @@ const char* Rank_RankFightReq::_InternalParse(const char* ptr, ::PROTOBUF_NAMESP
       // int32 RankId = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
-          rankid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          rankid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -188,7 +188,7 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Rank_RankFightReq::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* Rank_RankFightReq::InternalSerializeWithCachedSizesToArray(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Rank_RankFightReq)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
@@ -352,7 +352,7 @@ const char* Rank_RankFightReply::_InternalParse(const char* ptr, ::PROTOBUF_NAME
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::PackedInt32Parser(_internal_mutable_rankids(), ptr, ctx);
           CHK_(ptr);
         } else if (static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8) {
-          _internal_add_rankids(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr));
+          _internal_add_rankids(::PROTOBUF_NAMESPACE_ID::internal::ReadVarint(&ptr));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -376,7 +376,7 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Rank_RankFightReply::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* Rank_RankFightReply::InternalSerializeWithCachedSizesToArray(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
   // @@protoc_insertion_point(serialize_to_array_start:Rank_RankFightReply)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;

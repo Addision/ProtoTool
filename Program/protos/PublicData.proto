@@ -1,8 +1,9 @@
 syntax = "proto3";
 
-message PublicData_vector
+message PublicData_Vector
 {
-optional float s = 1;
+ int32 x = 1;
+ float z = 2;
 
 }
 
