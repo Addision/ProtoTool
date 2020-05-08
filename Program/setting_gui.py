@@ -15,23 +15,31 @@ class SettingGui(QMainWindow):
         self.setWindowOpacity(0.96)
         self.setStyleSheet('background-color: rgb(230, 230, 230);')
 
-        self.ui.BtnMsg.clicked.connect(
+        self.ui.btnMsg.clicked.connect(
             lambda: self.onBtnClicked('msg_path'))
-        self.ui.BtnProto.clicked.connect(
+        self.ui.btnProto.clicked.connect(
             lambda: self.onBtnClicked('proto_path'))
-        self.ui.BtnProtoGen.clicked.connect(
-            lambda: self.onBtnClicked('proto_gen_path'))
-        self.ui.BtnTable.clicked.connect(
-            lambda: self.onBtnClicked('table_path'))
+        self.ui.btnProtobuf.clicked.connect(
+            lambda: self.onBtnClicked('protobuf_path'))
+        self.ui.btnExcel.clicked.connect(
+            lambda: self.onBtnClicked('excel_path'))
+        self.ui.btnJson.clicked.connect(
+            lambda: self.onBtnClicked('json_path'))
+        self.ui.btnExcelCode.clicked.connect(
+            lambda: self.onBtnClicked('excel_code_path'))
+
         self.config = Config()
         self.showConf()
 
     def showConf(self):
-        self.ui.LetMsgPath.setText(self.config.getConfOne('msg_path'))
-        self.ui.LetProtoPath.setText(self.config.getConfOne('proto_path'))
-        self.ui.LetProtoGenPath.setText(
-            self.config.getConfOne('proto_gen_path'))
-        self.ui.LetTablePath.setText(self.config.getConfOne('table_path'))
+        self.ui.letMsgPath.setText(self.config.getConfOne('msg_path'))
+        self.ui.letProtoPath.setText(self.config.getConfOne('proto_path'))
+        self.ui.letProtobufPath.setText(
+            self.config.getConfOne('protobuf_path'))
+        self.ui.letExcelPath.setText(self.config.getConfOne('excel_path'))
+        self.ui.letJsonPath.setText(self.config.getConfOne('json_path'))
+        self.ui.letExcelCodePath.setText(
+            self.config.getConfOne('excel_code_path'))
 
     def onBtnClicked(self, btn):
         # 打开文件对话框
@@ -40,13 +48,16 @@ class SettingGui(QMainWindow):
         if not path and path == "":
             return
         if btn == 'msg_path':
-            self.ui.LetMsgPath.setText(path)
+            self.ui.letMsgPath.setText(path)
         if btn == 'proto_path':
-            self.ui.LetProtoPath.setText(path)
-        if btn == 'proto_gen_path':
-            self.ui.LetProtoGenPath.setText(path)
-        if btn == 'table_path':
-            self.ui.LetTablePath.setText(path)
+            self.ui.letProtoPath.setText(path)
+        if btn == 'protobuf_path':
+            self.ui.letProtobufPath.setText(path)
+        if btn == 'excel_path':
+            self.ui.letExcelPath.setText(path)
+        if btn == 'json_path':
+            self.ui.letJsonPath.setText(path)
+        if btn == 'excel_code_path':
+            self.ui.letExcelCodePath.setText(path)
 
         self.config.updateConfOne(btn, path)
-        

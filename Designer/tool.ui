@@ -34,8 +34,17 @@
     </property>
     <property name="font">
      <font>
-      <pointsize>10</pointsize>
+      <family>Courier New</family>
+      <pointsize>13</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
      </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::Box</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Sunken</enum>
     </property>
     <property name="verticalScrollBarPolicy">
      <enum>Qt::ScrollBarAsNeeded</enum>
@@ -65,10 +74,26 @@
      <property name="text">
       <string notr="true">1</string>
      </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
     </column>
     <column>
      <property name="text">
       <string notr="true">2</string>
+     </property>
+     <property name="font">
+      <font>
+       <family>微软雅黑</family>
+       <pointsize>11</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
      </property>
     </column>
     <column>
@@ -80,7 +105,18 @@
      <property name="text">
       <string notr="true">4</string>
      </property>
+     <property name="font">
+      <font>
+       <family>黑体</family>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
     </column>
+    <item>
+     <property name="text">
+      <string>test</string>
+     </property>
+    </item>
    </widget>
    <widget class="QFrame" name="FrameMsg">
     <property name="geometry">

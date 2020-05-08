@@ -1,6 +1,8 @@
 # -*-coding:utf-8-*-
 from configparser import ConfigParser
 import os
+
+
 class Config(object):
     def __init__(self):
         super(Config, self).__init__()
@@ -11,13 +13,15 @@ class Config(object):
             with open(self.conf_path, 'w+') as f:
                 self.conf.add_section('project')
                 self.conf.set('project', 'name', "proto tool")
-                self.conf.set('project', 'msg_path', "C:/")
-                self.conf.set('project', 'proto_path', "C:/")
-                self.conf.set('project', 'proto_gen_path', 'C:/')
-                self.conf.set('project', 'table_path', 'C:/')
+                self.conf.set('project', 'msg_path', '')
+                self.conf.set('project', 'proto_path', '')
+                self.conf.set('project', 'protobuf_path', '')
+                self.conf.set('project', 'excel_path', '')
+                self.conf.set('project', 'json_path', '')
+                self.conf.set('project', 'excel_code_path', '')
                 self.conf.write(f)
 
-        self.conf.read(self.conf_path, encoding='utf-8-sig')     
+        self.conf.read(self.conf_path, encoding='utf-8-sig')
 
     def updateConfOne(self, conf_lable, content):
         self.conf.set('project', conf_lable, content)
@@ -28,7 +32,6 @@ class Config(object):
         self.conf.read(self.conf_path, encoding='utf-8-sig')
         config = self.conf.get('project', conf_lable)
         return config
-
 
 
 # if __name__ == '__main__':

@@ -29,12 +29,7 @@ class GenCpp(object):
         if not self.parse_xml():
             return
         s = ""
-
-        # tmpl_file = os.path.split(os.path.realpath(__file__))[0]+'/proto_cpp.tmpl'
-        # tmpl_file = tmpl_file.replace('\\','/')
-        path_dir = os.path.split(os.path.realpath(__file__))[0]
-        tmpl_file = os.path.join(path_dir, 'proto_cpp.tmpl')
-        with codecs.open(tmpl_file, "r", "utf-8") as f:
+        with codecs.open('./proto_cpp.tmpl', "r", "utf-8") as f:
             s = f.read()
         s = s % {
             "module": self.module,

@@ -1,3 +1,10 @@
 {
-    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\python.exe"
+    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\python.exe",
+    "pyqt-integration.qtdesigner.path": "C:\\ProgramData\\Anaconda3\\Library\\bin\\designer.exe",
+    "python.linting.pylintArgs": [
+        "--extension-pkg-whitelist=PyQt5"
+],
+"vsintellicode.java.completionsEnabled": false,
+"vsintellicode.sql.completionsEnabled": false,
+"vsintellicode.typescript.completionsEnabled": false
 }

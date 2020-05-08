@@ -24,6 +24,7 @@ import configparser
 from subprocess import *
 import time
 import PyQt5.sip
+from transtable.trans_table import *
 
 
 class ProtoTool(QMainWindow):
@@ -433,14 +434,14 @@ class ProtoTool(QMainWindow):
             save_proto_dir = self.config.getConfOne('proto_path')
             self.gen_mgr.genProto(save_proto_dir)
             # 生成protobuffer 代码
-            proto_gen_dir = self.config.getConfOne('proto_gen_path')
-            if not os.path.exists(proto_gen_dir):
+            protobuf_dir = self.config.getConfOne('protobuf_path')
+            if not os.path.exists(protobuf_dir):
                 QMessageBox.warning(self, u"警告", u"请重新设置路径", QMessageBox.Yes)
                 return
             for proto in os.listdir(save_proto_dir):
                 if proto.endswith('.proto'):
                     proto_name = proto[:-6]
-                    protobuf_dir = proto_gen_dir+'/' + proto_name
+                    protobuf_dir = protobuf_dir+'/' + proto_name
                     if not os.path.exists(protobuf_dir):
                         os.makedirs(protobuf_dir)
                     cmd_cpp_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
@@ -453,10 +454,16 @@ class ProtoTool(QMainWindow):
 
             self.status.showMessage(u'消息协议生成完成')
         except Exception as e:
-            print(e)
-    # 导出数据表
+                print(now, str(e), file=f)
+                print('traceback.print_exc():', traceback.print_exc())
 
+    # 导出数据表
     def menuBarTable(self):
+        excel_dir = self.config.getConfOne('excel_path')
+        json_dir = self.config.getConfOne('json_path')
+        code_dir = self.config.getConfOne('excel_code_path')
+        if os.path.exists(excel_dir) and os.path.exists(json_dir) and os.path.exists(code_dir):
+            TransTable.transportTable(excel_dir, json_dir, code_dir)
         pass
 
     # 生成服务器代码
@@ -662,7 +669,8 @@ class ProtoTool(QMainWindow):
         except Exception as e:
             with open('proto_log', 'a+') as f:
                 now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-                print(now, e, file=f)
+                print(now, str(e), file=f)
+                print('traceback.print_exc():', traceback.print_exc(), file=f)
 
     def clearModel(self):
         self.model.clear()
