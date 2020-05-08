@@ -423,33 +423,36 @@ class ProtoTool(QMainWindow):
 
     # 导出proto文件    
     def menuBarProto(self):
-        self.saveProtoXml()
-        # 生成proto文件
-        self.status.showMessage(u'开始生成protobuffer')
-        xml_dir = self.config.getConfOne('msg_path')
-        self.gen_mgr.loadXmls(xml_dir)
-        save_proto_dir = self.config.getConfOne('proto_path')
-        self.gen_mgr.genProto(save_proto_dir)
-        # 生成protobuffer 代码
-        proto_gen_dir = self.config.getConfOne('proto_gen_path')
-        if not os.path.exists(proto_gen_dir):
-            QMessageBox.warning(self,u"警告",u"请重新设置路径",QMessageBox.Yes)
-            return
-        for proto in os.listdir(save_proto_dir):
-            if proto.endswith('.proto'):
-                proto_name = proto[:-6]
-                protobuf_dir = proto_gen_dir+'/' + proto_name
-                if not os.path.exists(protobuf_dir):
-                    os.makedirs(protobuf_dir)
-                cmd_cpp_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
-                    save_proto_dir+' --cpp_out='+protobuf_dir+'  ' + proto
-                cmd_csharp_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
-                    save_proto_dir+' --csharp_out='+protobuf_dir+'  ' + proto
-                self.status.showMessage(u'正在生成('+proto_name+')'+'消息协议')
-                run(cmd_cpp_str, shell=True)
-                run(cmd_csharp_str, shell=True)
-        
-        self.status.showMessage(u'消息协议生成完成')
+        try:
+            self.saveProtoXml()
+            # 生成proto文件
+            self.status.showMessage(u'开始生成protobuffer')
+            xml_dir = self.config.getConfOne('msg_path')
+            self.gen_mgr.loadXmls(xml_dir)
+            save_proto_dir = self.config.getConfOne('proto_path')
+            self.gen_mgr.genProto(save_proto_dir)
+            # 生成protobuffer 代码
+            proto_gen_dir = self.config.getConfOne('proto_gen_path')
+            if not os.path.exists(proto_gen_dir):
+                QMessageBox.warning(self,u"警告",u"请重新设置路径",QMessageBox.Yes)
+                return
+            for proto in os.listdir(save_proto_dir):
+                if proto.endswith('.proto'):
+                    proto_name = proto[:-6]
+                    protobuf_dir = proto_gen_dir+'/' + proto_name
+                    if not os.path.exists(protobuf_dir):
+                        os.makedirs(protobuf_dir)
+                    cmd_cpp_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
+                        save_proto_dir+' --cpp_out='+protobuf_dir+'  ' + proto
+                    cmd_csharp_str = 'protoc -I='+save_proto_dir+' --proto_path=' + \
+                        save_proto_dir+' --csharp_out='+protobuf_dir+'  ' + proto
+                    self.status.showMessage(u'正在生成('+proto_name+')'+'消息协议')
+                    run(cmd_cpp_str, shell=True)
+                    run(cmd_csharp_str, shell=True)
+            
+            self.status.showMessage(u'消息协议生成完成')
+        except Exception as e:
+            print(e)
     # 导出数据表
     def menuBarTable(self):
         pass
@@ -655,7 +658,8 @@ class ProtoTool(QMainWindow):
             self.ui.menuSave.setEnabled(True)
             self.showModuleMsg()
         except Exception as e:
-            print(e)
+            with open('proto_log','a+') as f:
+                print("%s : %s", file=f)
 
     def clearModel(self):
         self.model.clear()
