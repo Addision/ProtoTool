@@ -22,6 +22,7 @@ from common import *
 from gen_mgr import *
 import configparser
 from subprocess import *
+import time
 
 
 class ProtoTool(QMainWindow):
@@ -70,7 +71,7 @@ class ProtoTool(QMainWindow):
         self.ui.BbvInfo.setModel(self.model)
         # 状态栏
         self.status = self.statusBar()
-        self.status.showMessage(u'实时状态信息...')         
+        self.status.showMessage(u'实时状态信息...')
         # other 设置
         self.ui.CbxValueMod.activated.connect(self.selectModChange)
         self.ui.CbxValueType.activated.connect(self.selectTypeChange)
@@ -250,9 +251,9 @@ class ProtoTool(QMainWindow):
             self.setSaveOk()
 
     def setSaveOk(self):
-            self.ui.BtnSave.setEnabled(True)
-            self.ui.menuSave.setEnabled(True)
-            self.showModuleMsg()        
+        self.ui.BtnSave.setEnabled(True)
+        self.ui.menuSave.setEnabled(True)
+        self.showModuleMsg()
 
 ####################增删改查操作##############################
 
@@ -394,7 +395,7 @@ class ProtoTool(QMainWindow):
         if menu == self.ui.menuServer:
             self.menuBarServer()
         if menu == self.ui.menuClient:
-            self.menuBarClient()        
+            self.menuBarClient()
         if menu == self.ui.menuSetting:
             self.menuSetting()
 
@@ -421,7 +422,7 @@ class ProtoTool(QMainWindow):
         os._exit(0)
         pass
 
-    # 导出proto文件    
+    # 导出proto文件
     def menuBarProto(self):
         try:
             self.saveProtoXml()
@@ -434,7 +435,7 @@ class ProtoTool(QMainWindow):
             # 生成protobuffer 代码
             proto_gen_dir = self.config.getConfOne('proto_gen_path')
             if not os.path.exists(proto_gen_dir):
-                QMessageBox.warning(self,u"警告",u"请重新设置路径",QMessageBox.Yes)
+                QMessageBox.warning(self, u"警告", u"请重新设置路径", QMessageBox.Yes)
                 return
             for proto in os.listdir(save_proto_dir):
                 if proto.endswith('.proto'):
@@ -449,26 +450,27 @@ class ProtoTool(QMainWindow):
                     self.status.showMessage(u'正在生成('+proto_name+')'+'消息协议')
                     run(cmd_cpp_str, shell=True)
                     run(cmd_csharp_str, shell=True)
-            
+
             self.status.showMessage(u'消息协议生成完成')
         except Exception as e:
             print(e)
     # 导出数据表
+
     def menuBarTable(self):
         pass
 
-    # 生成服务器代码    
+    # 生成服务器代码
     def menuBarServer(self):
         self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
-        self.gen_mgr.genCpp(self.config.getConfOne('proto_path'))    
+        self.gen_mgr.genCpp(self.config.getConfOne('proto_path'))
         pass
 
-    # 生成客户端代码     
+    # 生成客户端代码
     def menuBarClient(self):
         # 生成 csharp 协议枚举文件
         self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
         self.gen_mgr.genCsharp(self.config.getConfOne('proto_path'))
-        pass    
+        pass
 
 ###################################################
 
@@ -479,7 +481,7 @@ class ProtoTool(QMainWindow):
         item_proto_root = QTreeWidgetItem(self.ui.WidMsgTree)
         item_proto_root.setText(0, 'Protocol')
         item_proto_root.setText(1, u'通信协议')
-        item_proto_root.setIcon(0, QIcon('./icons/Montreal.ico'))  
+        item_proto_root.setIcon(0, QIcon('./icons/Montreal.ico'))
         for _, module in self.module_mgr.module_dic.items():
             QApplication.processEvents()
             item_module = None
@@ -600,12 +602,12 @@ class ProtoTool(QMainWindow):
         self.ui.CbxValueType.clear()
         self.ui.CbxValueType.addItems(self.value_types)
 
-    def saveProtoXml(self): 
+    def saveProtoXml(self):
         self.module_mgr.saveXmls(self.config.getConfOne('msg_path'))
         self.ui.BtnSave.setEnabled(False)
         self.ui.menuSave.setEnabled(False)
         self.clearTreeWidgetSelect()
-        self.status.showMessage(u'保存信息完成') 
+        self.status.showMessage(u'保存信息完成')
 
     def clearTreeWidgetSelect(self):
         self.ui.WidMsgTree.clearSelection()
@@ -658,15 +660,16 @@ class ProtoTool(QMainWindow):
             self.ui.menuSave.setEnabled(True)
             self.showModuleMsg()
         except Exception as e:
-            with open('proto_log','a+') as f:
-                print("%s : %s", file=f)
+            with open('proto_log', 'a+') as f:
+                now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                print(now, e, file=f)
 
     def clearModel(self):
         self.model.clear()
         self.model.setHorizontalHeaderLabels([u'名称', u'说明'])
 
     def showItemDetail(self, item):
-        if not item or item.text(0)=='Proto':
+        if not item or item.text(0) == 'Proto':
             return
         self.clearModel()
         item_type = item.text(3)
