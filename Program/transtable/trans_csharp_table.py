@@ -35,7 +35,6 @@ class TransCSharpTable:
     def init_attr(self):
         self.row_fields = ""  # row_fields
         self.classes_name = []  # 表名
-        self.json_logic = ""
         self.key_field = ""
         self.fields = []  # 保存字段信息
         pass
@@ -111,7 +110,7 @@ class TransCSharpTable:
             if "List<string>" == data_type_tuple[0]:
                 row_dict[data_type_tuple[1]] = list(
                     map(str, row_values[i].split('|')))
-        print("=============", row_dict)
+        # print("=============", row_dict)
         return row_dict
         pass
 
@@ -155,7 +154,7 @@ class TransCSharpTable:
 
             self.gen_row_fields(data_row_type, data_desc)
             # 生成json文件
-            self.transport_json(table_name, data_row_type, sheet)
+            # self.transport_json(table_name, data_row_type, sheet)
             self.transport_config_csharp(table_name)
             self.init_attr()
             print("transport table ok!", excel_name)

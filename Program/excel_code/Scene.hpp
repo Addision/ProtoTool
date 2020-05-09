@@ -1,102 +1,120 @@
-using System;
-using System.IO;
-using System.Collections;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+#pragma once
 
-namespace DataTables
+#include <memory>
+#include <vector>
+#include <string>
+#include <unordered_map>
+
+#include "json.h"
+#include "JsonConfig.h"
+#include "LogUtil.h"
+
+class SceneRow
 {
-    public class SceneRow
-    {
-	int id;                                           // ä¸»é”®id åœ°å›¾idä¹Ÿæ˜¯åœºæ™¯id
-	string comment;                                   // æ³¨é‡Š 
-	string name;                                      // åç§° åœºæ™¯çš„åå­—
-	string path;                                      // åœºæ™¯ä¿å­˜è·¯å¾„ 
-	int lines;                                        // åˆ†çº¿ 0ä¸åˆ†çº¿ å…¶ä»–æŒ‰ç…§é…ç½®åˆ†çº¿ï¼Œé»˜è®¤2ä¸ªåˆ†çº¿
-	int ismirror;                                     // åœºæ™¯ç±»å‹ 0ä¸æ˜¯é•œåƒ 1å¯ä»¥æ˜¯é•œåƒ
-	int type;                                         // åœºæ™¯ç±»å‹ 1æ™®é€šåœºæ™¯ 2å‰¯æœ¬ 3é•œåƒ
-	int server;                                       // åœºæ™¯æ‰€åœ¨æ¸¸æˆæœ 
+public:
+	int id;                                           // Ö÷¼üid µØÍ¼idÒ²ÊÇ³¡¾°id
+	std::string comment;                              // ×¢ÊÍ 
+	std::string name;                                 // Ãû³Æ ³¡¾°µÄÃû×Ö
+	std::string path;                                 // ³¡¾°±£´æÂ·¾¶ 
+	int lines;                                        // ·ÖÏß 0²»·ÖÏß ÆäËû°´ÕÕÅäÖÃ·ÖÏß£¬Ä¬ÈÏ2¸ö·ÖÏß
+	int ismirror;                                     // ³¡¾°ÀàĞÍ 0²»ÊÇ¾µÏñ 1¿ÉÒÔÊÇ¾µÏñ
+	int type;                                         // ³¡¾°ÀàĞÍ 1ÆÕÍ¨³¡¾° 2¸±±¾ 3¾µÏñ
+	int server;                                       // ³¡¾°ËùÔÚÓÎÏ··ş 
 	
-    };
+};
 
-    class SceneTable
-    {
-        private Dictionary<int, SceneRow> tableDic = new Dictionary<int, SceneRow>();
-        private ArrayList tableKeys = new ArrayList();
+class SceneTable
+{
+	typedef std::shared_ptr<SceneRow> ptr_row_type;
+	typedef std::unordered_map<int, ptr_row_type> map_table_type;
+	typedef std::vector<int> vec_type;	
+private:
+	vec_type m_keys;
+	map_table_type	m_table;
+public:
+	static SceneTable* Instance()
+	{
+		static SceneTable instance;
+		return &instance;
+	}
 
-        const string TABLE_PATH = ".\\";
+	const SceneRow* GetRow(int key)
+	{
+		map_table_type::iterator it = m_table.find(key);
+		if (it == m_table.end())
+		{
+			return nullptr;
+		}
+		return it->second.get();
+	}
 
-        private static SceneTable instance = new SceneTable();
-        public static SceneTable Instance()
-        {
-            return instance;
-        }
+	bool HasRow(int key)
+	{
+		return m_table.find(key) != m_table.end();
+	}
 
-        private string GetJson(string jsonFile)
-        {
-            using FileStream fsRead = new FileStream(jsonFile, FileMode.Open);
-            int fsLen = (int)fsRead.Length;
-            byte[] heByte = new byte[fsLen];
-            fsRead.Read(heByte, 0, heByte.Length);
-            return System.Text.Encoding.UTF8.GetString(heByte);
-        }
+	const vec_type& Keys() const
+	{
+		return m_keys;
+	}
 
-        public bool GetRow(int key, out SceneRow row)
-        {
-            return tableDic.TryGetValue(key, out row);
-        }
+	const map_table_type& table() const
+	{
+		return m_table;
+	}
 
-        public bool HasRow(int key)
-        {
-            return tableDic.ContainsKey(key);
-        }
+	bool Load()
+	{
+		return LoadJson("Scene.json");
+	}
 
-        public ArrayList Keys()
-        {
-            return tableKeys;
-        }
+	bool ReLoad()
+	{
+		return ReLoadJson("Scene.json");
+	}
 
-        public Dictionary<int, SceneRow> Table()
-        {
-            return tableDic;
-        }
+	bool LoadJson(const std::string& jsonFile)
+	{
+		std::string loadfile = std::string(TABLE_PATH).append(jsonFile.c_str());
+		if (!g_pConfig->Load(loadfile.c_str()))
+		{
+			CLOG_ERR << "load table Scene error" << CLOG_END;
+			return false;
+		}
 
-        public bool Load()
-        {
-            return LoadJson("Scene.json");
-        }
+		for (auto it = g_pConfig->m_Root.begin(); it != g_pConfig->m_Root.end(); ++it)
+		{
+			try
+			{
+				auto& r = (*it);
+				ptr_row_type pRow(new SceneRow);
+				SceneRow& row = *pRow;
+                row.id = r["id"].asInt();
+                row.comment = r["comment"].asString();
+                row.name = r["name"].asString();
+                row.path = r["path"].asString();
+                row.lines = r["lines"].asInt();
+                row.ismirror = r["ismirror"].asInt();
+                row.type = r["type"].asInt();
+                row.server = r["server"].asInt();
 
-        public bool ReLoad()
-        {
-            return ReLoadJson("Scene.json");
-        }
+				m_table.emplace(row.id, pRow);
+				m_keys.emplace_back(row.id);
+			}
+			catch (std::exception const& e)
+			{
+				CLOG_ERR << "read table Scene error," << e.what() << ":" << (*it)["id"].asInt() << CLOG_END;
+				return false;
+			}
+		}
+		return true;
+	}
 
-        private bool LoadJson(string jsonFile)
-        {
-            try
-            {
-                string loadFile = TABLE_PATH + jsonFile;
-                string json = GetJson(loadFile);
-                var tableRows = JsonConvert.DeserializeObject<List<SceneRow>>(json);
-                foreach (var row in tableRows)
-                {
-                    tableDic.Add(row.Id, row);
-                    tableKeys.Add(row.Id);
-                }
-            }
-            catch(Exception e)
-            {
-                Console.WriteLine("{0} First exception.", e.Message);
-                return false;
-            }
-            return true;
-        }
+	bool ReLoadJson(const std::string& jsonFile)
+	{
+		m_keys.clear();
+		m_table.clear();
+		return LoadJson(jsonFile);
+	}
 
-        private bool ReLoadJson(string jsonFile)
-        {
-            tableDic.Clear();
-            tableKeys.Clear();
-            return LoadJson(jsonFile);
-        }
-    }
-}
+};

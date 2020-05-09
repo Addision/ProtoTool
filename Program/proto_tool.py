@@ -24,8 +24,8 @@ import configparser
 from subprocess import *
 import time
 import PyQt5.sip
-from transtable.trans_table import *
-
+from transtable.trans_cpp_table import *
+from transtable.trans_csharp_table import *
 
 class ProtoTool(QMainWindow):
     def __init__(self, parent=None):
@@ -457,22 +457,23 @@ class ProtoTool(QMainWindow):
                 print(now, str(e), file=f)
                 print('traceback.print_exc():', traceback.print_exc())
 
-    # 导出数据表
+    # 导出数据表(cpp\cs 加载表代码)
     def menuBarTable(self):
         excel_dir = self.config.getConfOne('excel_path')
         json_dir = self.config.getConfOne('json_path')
         code_dir = self.config.getConfOne('excel_code_path')
         if os.path.exists(excel_dir) and os.path.exists(json_dir) and os.path.exists(code_dir):
-            TransTable.transportTable(excel_dir, json_dir, code_dir)
+            TransCppTable.transportTable(excel_dir, json_dir, code_dir)
+            TransCSharpTable.transportTable(excel_dir, json_dir, code_dir)
         pass
 
-    # 生成服务器代码
+    # 生成服务器需要的协议代码
     def menuBarServer(self):
         self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
         self.gen_mgr.genCpp(self.config.getConfOne('proto_path'))
         pass
 
-    # 生成客户端代码
+    # 生成客户端需要协议代码
     def menuBarClient(self):
         # 生成 csharp 协议枚举文件
         self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
