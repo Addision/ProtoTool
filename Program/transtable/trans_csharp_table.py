@@ -14,43 +14,15 @@ data_type_dic = {
     "INT": "int",
     "FLOAT": "float",
     "DOUBLE": "double",
-    "STRING": "std::string",
-    "LI": "std::vector<int>",
-    "LD": "std::vector<double>",
-    "LF": "std::vector<float>",
-    "LS": "std::vector<std::string>"
+    "STRING": "string",
+    "LI": "List<int>",
+    "LD": "List<double>",
+    "LF": "List<float>",
+    "LS": "List<string>"
 }
 
-config_dic = {"class_name": "",
-              "row_fields": "",
-              "json_logic": "",
-              "key_field": ""
-              }
 
-data_type_trans = {
-    "int": "asInt()",
-    "float": "asFloat()",
-    "double": "asFloat()",
-    "std::string": "asString()",
-    "std::vector<int>": "asInt()",
-    "std::vector<float>": "asFloat()",
-    "std::vector<double>": "asFloat()",
-    "std::vector<std::string>": "asString()"
-}
-
-single_tmpl = '                row.%(fields)s = r["%(fields)s"].%(asType)s;\n'
-
-vector_tmpl = '''
-                auto end_%(fields)s = r["%(fields)s"].end();
-				auto begin_%(fields)s = r["%(fields)s"].end();
-				for (auto it = begin_%(fields)s; it != end_%(fields)s; ++it)
-				{
-					row.%(fields)s.emplace_back(it->%(asType)s);
-				}
-            '''
-
-
-class TransTable:
+class TransCSharpTable:
     def __init__(self, excel_dir, json_dir, code_dir):
         self.excel_dir = excel_dir
         self.json_dir = json_dir
@@ -90,26 +62,16 @@ class TransTable:
                                 (strlen-len(tmp_field)) + "// "+data_desc[i])
             self.row_fields += "\n\t"
 
-    def gen_json_logic(self, data_row_type):
-        for i in range(len(data_row_type)):
-            x_tuple = data_row_type[i]
-            if "vector" in x_tuple[0]:
-                self.json_logic += (vector_tmpl) % {
-                    "fields": x_tuple[1], "asType": data_type_trans[x_tuple[0]]}
-            elif x_tuple[0] in ["int", "std::string", "float", "double"]:
-                self.json_logic += (single_tmpl) % {
-                    "fields": x_tuple[1], "asType": data_type_trans[x_tuple[0]]}
-
-    def transport_config_cpp(self, table_name):
+    def transport_config_csharp(self, table_name):
         s = ""
-        with codecs.open("./transtable/table_cpp.tmpl", "r", "utf-8") as f:
+        with codecs.open("./transtable/table_csharp.tmpl", "r", "utf-8") as f:
             s = f.read()
         if not s:
             return
         s = s % {"class_name": table_name,
-                 "row_fields": self.row_fields, "json_logic": self.json_logic}
+                 "row_fields": self.row_fields}
 
-        cpp_file = os.path.join(self.cpp_dir, table_name+'.hpp')
+        cpp_file = os.path.join(self.cpp_dir, table_name+'.cs')
         with codecs.open(cpp_file, "w", "GB2312") as f:
             f.write(s)
             f.flush()
@@ -128,28 +90,28 @@ class TransTable:
                 row_dict[data_type_tuple[1]] = float(row_values[i])
             if "double" == data_type_tuple[0]:
                 row_dict[data_type_tuple[1]] = float(row_values[i])
-            if "std::string" == data_type_tuple[0]:
+            if "string" == data_type_tuple[0]:
                 row_dict[data_type_tuple[1]] = str(row_values[i])
-            if "vector" in data_type_tuple[0] and row_values[i] == "":
+            if "List" in data_type_tuple[0] and row_values[i] == "":
                 row_dict[data_type_tuple[1]] = []
                 continue
-            if "vector" in data_type_tuple[0] and row_values[i] != "":
+            if "List" in data_type_tuple[0] and row_values[i] != "":
                 if isinstance(row_values[i], float):
                     row_dict[data_type_tuple[1]] = [int(row_values[i])]
                     continue
-            if "std::vector<int>" == data_type_tuple[0]:
+            if "List<int>" == data_type_tuple[0]:
                 row_dict[data_type_tuple[1]] = list(
                     map(int, row_values[i].split('|')))
-            if "std::vector<double>" == data_type_tuple[0]:
+            if "List<double>" == data_type_tuple[0]:
                 row_dict[data_type_tuple[1]] = list(
                     map(float, row_values[i].split('|')))
-            if "std::vector<float>" == data_type_tuple[0]:
+            if "List<float>" == data_type_tuple[0]:
                 row_dict[data_type_tuple[1]] = list(
                     map(float, row_values[i].split('|')))
-            if "std::vector<std::string>" == data_type_tuple[0]:
+            if "List<string>" == data_type_tuple[0]:
                 row_dict[data_type_tuple[1]] = list(
                     map(str, row_values[i].split('|')))
-        # print("=============", row_dict)
+        print("=============", row_dict)
         return row_dict
         pass
 
@@ -173,25 +135,28 @@ class TransTable:
 
     def read_excel(self, excel_name, table_name):
         try:
-            excelFile = xlrd.open_workbook(os.path.join(self.excel_dir, excel_name))
+            excelFile = xlrd.open_workbook(
+                os.path.join(self.excel_dir, excel_name))
             excelSheetNames = excelFile.sheet_names()
             sheet = excelFile.sheet_by_name(excelSheetNames[0])
             excel_data_type = sheet.row_values(0)
             self.fields = sheet.row_values(2)
             data_row_type = {}
             data_type = []
+            # 转换成真实数据类型
             for x in excel_data_type:
                 data_type.append(data_type_dic[x])
+            # 构造每行数据类型声明
+            # int id;     // 主键
             data_row_type = list(zip(data_type, self.fields))
             data_desc1 = sheet.row_values(3)
             data_desc2 = sheet.row_values(4)
             data_desc = [a+" "+b for a, b in zip(data_desc1, data_desc2)]
 
             self.gen_row_fields(data_row_type, data_desc)
-            self.gen_json_logic(data_row_type)
-            # 生成cpp 文件及json文件
+            # 生成json文件
             self.transport_json(table_name, data_row_type, sheet)
-            self.transport_config_cpp(table_name)
+            self.transport_config_csharp(table_name)
             self.init_attr()
             print("transport table ok!", excel_name)
         except Exception as e:
@@ -200,8 +165,8 @@ class TransTable:
         pass
 
     @staticmethod
-    def transportTable(excel_dir, json_dir, code_dir):    
-        transTable = TransTable(excel_dir, json_dir, code_dir)
+    def transportTable(excel_dir, json_dir, code_dir):
+        transTable = TransCSharpTable(excel_dir, json_dir, code_dir)
         excels, classes_name = transTable.get_excel()
         if not excels:
             return
@@ -214,4 +179,11 @@ class TransTable:
         # gc pool
         pool.close()
         pool.join()
+    pass
+
+
+if __name__ == '__main__':
+    TransCSharpTable.transportTable('C:\\ProtoTool\\Program\\excels',
+                                    'C:\\ProtoTool\\Program\\jsons', 'C:\\ProtoTool\\Program\\excel_code')
+
     pass
