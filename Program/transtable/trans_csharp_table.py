@@ -81,34 +81,36 @@ class TransCSharpTable:
         for i in range(len(data_row_type)):
             if row_values[i] is None:
                 row_values[i] = ""
-            data_type_tuple = data_row_type[i]
+            data_type = data_row_type[i]  # (int, id)
+            field_type = data_type[0]
+            field_id = data_type[1]
 
-            if "int" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = int(row_values[i])
-            if "float" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = float(row_values[i])
-            if "double" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = float(row_values[i])
-            if "string" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = str(row_values[i])
-            if "List" in data_type_tuple[0] and row_values[i] == "":
-                row_dict[data_type_tuple[1]] = []
+            if "int" == field_type:
+                row_dict[field_id] = int(row_values[i])
+            if "float" == field_type:
+                row_dict[field_id] = float(row_values[i])
+            if "double" == field_type:
+                row_dict[field_id] = float(row_values[i])
+            if "string" == field_type:
+                row_dict[field_id] = str(row_values[i])
+            if "List" in field_type and row_values[i] == "":
+                row_dict[field_id] = []
                 continue
-            if "List" in data_type_tuple[0] and row_values[i] != "":
+            if "List" in field_type and row_values[i] != "":
                 if isinstance(row_values[i], float):
-                    row_dict[data_type_tuple[1]] = [int(row_values[i])]
+                    row_dict[field_id] = [int(row_values[i])]
                     continue
-            if "List<int>" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = list(
+            if "List<int>" == field_type:
+                row_dict[field_id] = list(
                     map(int, row_values[i].split('|')))
-            if "List<double>" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = list(
+            if "List<double>" == field_type:
+                row_dict[field_id] = list(
                     map(float, row_values[i].split('|')))
-            if "List<float>" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = list(
+            if "List<float>" == field_type:
+                row_dict[field_id] = list(
                     map(float, row_values[i].split('|')))
-            if "List<string>" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = list(
+            if "List<string>" == field_type:
+                row_dict[field_id] = list(
                     map(str, row_values[i].split('|')))
         # print("=============", row_dict)
         return row_dict
@@ -154,7 +156,7 @@ class TransCSharpTable:
 
             self.gen_row_fields(data_row_type, data_desc)
             # 生成json文件
-            # self.transport_json(table_name, data_row_type, sheet)
+            self.transport_json(table_name, data_row_type, sheet)
             self.transport_config_csharp(table_name)
             self.init_attr()
             print("transport table ok!", excel_name)

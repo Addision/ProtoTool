@@ -117,37 +117,39 @@ class TransCppTable:
 
     def fix_row_dict(self, data_row_type, row_values):
         row_dict = {}
-        for i in range(len(data_row_type)):
+        for i in range(len(data_row_type)):  # i 代表列
             if row_values[i] is None:
                 row_values[i] = ""
-            data_type_tuple = data_row_type[i]
+            data_type = data_row_type[i]
+            field_type = data_type[0]
+            field_id = data_type[1]
 
-            if "int" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = int(row_values[i])
-            if "float" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = float(row_values[i])
-            if "double" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = float(row_values[i])
-            if "std::string" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = str(row_values[i])
-            if "vector" in data_type_tuple[0] and row_values[i] == "":
-                row_dict[data_type_tuple[1]] = []
+            if "int" == field_type:
+                row_dict[field_id] = int(row_values[i])
+            if "float" == field_type:
+                row_dict[field_id] = float(row_values[i])
+            if "double" == field_type:
+                row_dict[field_id] = float(row_values[i])
+            if "std::string" == field_type:
+                row_dict[field_id] = str(row_values[i])
+            if "vector" in field_type and row_values[i] == "":
+                row_dict[field_id] = []
                 continue
-            if "vector" in data_type_tuple[0] and row_values[i] != "":
+            if "vector" in field_type and row_values[i] != "":
                 if isinstance(row_values[i], float):
-                    row_dict[data_type_tuple[1]] = [int(row_values[i])]
+                    row_dict[field_id] = [int(row_values[i])]
                     continue
-            if "std::vector<int>" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = list(
+            if "std::vector<int>" == field_type:
+                row_dict[field_id] = list(
                     map(int, row_values[i].split('|')))
-            if "std::vector<double>" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = list(
+            if "std::vector<double>" == field_type:
+                row_dict[field_id] = list(
                     map(float, row_values[i].split('|')))
-            if "std::vector<float>" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = list(
+            if "std::vector<float>" == field_type:
+                row_dict[field_id] = list(
                     map(float, row_values[i].split('|')))
-            if "std::vector<std::string>" == data_type_tuple[0]:
-                row_dict[data_type_tuple[1]] = list(
+            if "std::vector<std::string>" == field_type:
+                row_dict[field_id] = list(
                     map(str, row_values[i].split('|')))
         # print("=============", row_dict)
         return row_dict
@@ -173,7 +175,8 @@ class TransCppTable:
 
     def read_excel(self, excel_name, table_name):
         try:
-            excelFile = xlrd.open_workbook(os.path.join(self.excel_dir, excel_name))
+            excelFile = xlrd.open_workbook(
+                os.path.join(self.excel_dir, excel_name))
             excelSheetNames = excelFile.sheet_names()
             sheet = excelFile.sheet_by_name(excelSheetNames[0])
             excel_data_type = sheet.row_values(0)
@@ -200,7 +203,7 @@ class TransCppTable:
         pass
 
     @staticmethod
-    def transportTable(excel_dir, json_dir, code_dir):    
+    def transportTable(excel_dir, json_dir, code_dir):
         transTable = TransCppTable(excel_dir, json_dir, code_dir)
         excels, classes_name = transTable.get_excel()
         if not excels:
