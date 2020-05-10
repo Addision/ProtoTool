@@ -13,49 +13,39 @@ from transtable.trans_csharp import *
 
 
 class TransTable:
-    def __init__(self, excel_dir, json_dir, code_dir):
-        self.excel_dir = excel_dir
-        self.json_dir = json_dir
-        self.cpp_dir = code_dir
+    def __init__(self):
+        pass
 
-    def get_excel(self):
-        files = os.listdir(self.excel_dir)
+    def get_excel(self, excel_dir):
+        files = os.listdir(excel_dir)
         excels = [file for file in files if os.path.splitext(file)[
             1] == ".xlsx" and '~' not in file]
-
+        classes_name = []
         for file in excels:
             tmp_name = os.path.splitext(file)[0]
-            self.classes_name.append(tmp_name.split('_')[0])
-        return excels, self.classes_name
+            classes_name.append(tmp_name.split('_')[0])
+        return excels, classes_name
 
-    def read_excel(self, excel_name, table_name):
+    def read_excel(self, excel_name, table_name, excel_dir, json_dir, code_dir):
         try:
             excelFile = xlrd.open_workbook(
-                os.path.join(self.excel_dir, excel_name))
+                os.path.join(excel_dir, excel_name))
             excelSheetNames = excelFile.sheet_names()
             sheet = excelFile.sheet_by_name(excelSheetNames[0])
-            excel_data_type = sheet.row_values(0)
-            self.fields = sheet.row_values(2)
-            # 构造数据类型
-            data_row_type = {}
-            data_type = []
-            for x in excel_data_type:
-                data_type.append(data_type_dic[x])
-            data_row_type = list(zip(data_type, self.fields))
-
+            if not sheet:
+                return
             # 字段注释
             data_desc1 = sheet.row_values(3)
             data_desc2 = sheet.row_values(4)
             data_desc = [a+" "+b for a, b in zip(data_desc1, data_desc2)]
 
-            trans_cpp = TransCpp(self.json_dir, self.code_dir)
-            trans_csharp = TransCsharp(self.code_dir)
+            trans_cpp = TransCpp(sheet, json_dir, code_dir)
+            trans_csharp = TransCsharp(sheet, code_dir)
 
             # 生成cpp 文件及json文件
-            trans_cpp.transport_json(table_name, data_row_type, sheet)
-            trans_cpp.gen_cpp(table_name)
-
-            trans_csharp.gen_csharp(table_name)
+            trans_cpp.transport_json(table_name)
+            trans_cpp.gen_cpp(table_name, data_desc)
+            trans_csharp.gen_csharp(table_name, data_desc)
 
             print("transport table ok!", excel_name)
         except Exception as e:
@@ -65,8 +55,8 @@ class TransTable:
 
     @staticmethod
     def transportTable(excel_dir, json_dir, code_dir):
-        transTable = TransTable(excel_dir, json_dir, code_dir)
-        excels, classes_name = transTable.get_excel()
+        transTable = TransTable()
+        excels, classes_name = transTable.get_excel(excel_dir)
         if not excels:
             return
         print(excels)
@@ -74,7 +64,7 @@ class TransTable:
         for excel in excels:
             class_name = excel.split('_')[0]
             print(class_name)
-            pool.apply_async(transTable.read_excel, (excel, class_name))
+            pool.apply_async(transTable.read_excel, (excel, class_name, excel_dir, json_dir, code_dir))
         # gc pool
         pool.close()
         pool.join()

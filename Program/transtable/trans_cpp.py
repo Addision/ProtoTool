@@ -21,12 +21,6 @@ data_type_dic = {
     "LS": "std::vector<std::string>"
 }
 
-config_dic = {"class_name": "",
-              "row_fields": "",
-              "json_logic": "",
-              "key_field": ""
-              }
-
 data_type_trans = {
     "int": "asInt()",
     "float": "asFloat()",
@@ -51,75 +45,53 @@ vector_tmpl = '''
 
 
 class TransCpp:
-    def __init__(self, json_dir, code_dir):
+    def __init__(self, sheet, json_dir, code_dir):
+        self.sheet = sheet
         self.json_dir = json_dir
-        self.cpp_dir = code_dir
-        self.init_attr()
+        self.code_dir = code_dir
 
-    def __del__(self):
-        pass
+        self.data_row_type = self.join_field_type()
 
-    def init_attr(self):
-        self.row_fields = ""  # row_fields
-        self.classes_name = []  # 表名
-        self.json_logic = ""
-        self.key_field = ""
-        self.fields = []  # 保存字段信息
-        pass
+    # 生成各自的类型核字段声明(int:id, string:comment...)
+    def join_field_type(self):
+        data_type = []
+        for x in self.sheet.row_values(0):
+            data_type.append(data_type_dic[x])
+        
+        return list(zip(data_type, self.sheet.row_values(2)))   
 
-    def get_excel(self):
-        files = os.listdir(self.excel_dir)
-        excels = [file for file in files if os.path.splitext(file)[
-            1] == ".xlsx" and '~' not in file]
 
-        for file in excels:
-            tmp_name = os.path.splitext(file)[0]
-            self.classes_name.append(tmp_name.split('_')[0])
-        return excels, self.classes_name
-
-    def gen_row_fields(self, data_row_type, data_desc):
-        self.row_fields = "\t"
+    def gen_row_fields(self, data_desc):
+        row_fields = "\t"
         tmp_field = ""
-        for i in range(len(data_row_type)):
-            x = data_row_type[i]
+        for i in range(len(self.data_row_type)):
+            x = self.data_row_type[i]
             tmp_field = x[0]+" " + x[1] + ";"
             strlen = 50
             data_desc[i] = data_desc[i].replace("\n", " ")
-            self.row_fields += (tmp_field + " " *
+            row_fields += (tmp_field + " " *
                                 (strlen-len(tmp_field)) + "// "+data_desc[i])
-            self.row_fields += "\n\t"
+            row_fields += "\n\t"
+        return row_fields
 
-    def gen_json_logic(self, data_row_type):
-        for i in range(len(data_row_type)):
-            x_tuple = data_row_type[i]
+    def gen_json_logic(self):
+        json_logic = ''
+        for i in range(len(self.data_row_type)):
+            x_tuple = self.data_row_type[i]
             if "vector" in x_tuple[0]:
-                self.json_logic += (vector_tmpl) % {
+                json_logic += (vector_tmpl) % {
                     "fields": x_tuple[1], "asType": data_type_trans[x_tuple[0]]}
             elif x_tuple[0] in ["int", "std::string", "float", "double"]:
-                self.json_logic += (single_tmpl) % {
+                json_logic += (single_tmpl) % {
                     "fields": x_tuple[1], "asType": data_type_trans[x_tuple[0]]}
+        return json_logic
 
-    def transport_config_cpp(self, table_name):
-        s = ""
-        with codecs.open("./transtable/table_cpp.tmpl", "r", "utf-8") as f:
-            s = f.read()
-        if not s:
-            return
-        s = s % {"class_name": table_name,
-                 "row_fields": self.row_fields, "json_logic": self.json_logic}
-
-        cpp_file = os.path.join(self.cpp_dir, table_name+'.hpp')
-        with codecs.open(cpp_file, "w", "GB2312") as f:
-            f.write(s)
-            f.flush()
-            pass
-
-    def fix_row_dict(self, data_row_type, row_values):
+    def fix_row_dict(self, row_values):
         row_dict = {}
-        for i in range(len(data_row_type)):  # i 代表列
+        for i in range(len(self.data_row_type)):  # i 代表列
             if row_values[i] is None:
                 row_values[i] = ""
-            data_type = data_row_type[i]
+            data_type = self.data_row_type[i]
             field_type = data_type[0]
             field_id = data_type[1]
 
@@ -152,16 +124,16 @@ class TransCpp:
                     map(str, row_values[i].split('|')))
         # print("=============", row_dict)
         return row_dict
-        pass
 
-    def transport_json(self, table_name, data_row_type, sheet):
+
+    def transport_json(self, table_name):
         rows = 5
-        rowe = sheet.nrows
+        rowe = self.sheet.nrows
         if rowe <= rows:
             return
         all_rows = {}
         while rows < rowe:
-            row_dict = self.fix_row_dict(data_row_type, sheet.row_values(rows))
+            row_dict = self.fix_row_dict(self.sheet.row_values(rows))
             all_rows[row_dict["id"]] = row_dict
             rows = rows+1
 
@@ -172,3 +144,19 @@ class TransCpp:
                 all_rows, indent=4, sort_keys=False, ensure_ascii=False)
             f.write(jsonStr + '\n')
 
+    def gen_cpp(self, table_name, data_desc):
+        row_fields = self.gen_row_fields(data_desc)
+        json_logic = self.gen_json_logic()
+        s = ""
+        with codecs.open("./transtable/table_cpp.tmpl", "r", "utf-8") as f:
+            s = f.read()
+        if not s:
+            return
+        s = s % {"class_name": table_name,
+                 "row_fields": row_fields, "json_logic": json_logic}
+
+        cpp_file = os.path.join(self.code_dir, table_name+'.hpp')
+        with codecs.open(cpp_file, "w", "GB2312") as f:
+            f.write(s)
+            f.flush()
+            pass

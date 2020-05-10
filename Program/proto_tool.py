@@ -23,9 +23,7 @@ from gen_mgr import *
 import configparser
 from subprocess import *
 import time
-import PyQt5.sip
-from transtable.trans_cpp_table import *
-from transtable.trans_csharp_table import *
+from transtable.trans_table import *
 
 class ProtoTool(QMainWindow):
     def __init__(self, parent=None):
@@ -454,7 +452,8 @@ class ProtoTool(QMainWindow):
 
             self.status.showMessage(u'消息协议生成完成')
         except Exception as e:
-                print(now, str(e), file=f)
+                now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                print(now, str(e))
                 print('traceback.print_exc():', traceback.print_exc())
 
     # 导出数据表(cpp\cs 加载表代码)
@@ -463,8 +462,10 @@ class ProtoTool(QMainWindow):
         json_dir = self.config.getConfOne('json_path')
         code_dir = self.config.getConfOne('excel_code_path')
         if os.path.exists(excel_dir) and os.path.exists(json_dir) and os.path.exists(code_dir):
-            TransCppTable.transportTable(excel_dir, json_dir, code_dir)
-            TransCSharpTable.transportTable(excel_dir, json_dir, code_dir)
+            try:
+                TransTable.transportTable(excel_dir, json_dir, code_dir)
+            except Exception as e:
+                print(e)
         pass
 
     # 生成服务器需要的协议代码

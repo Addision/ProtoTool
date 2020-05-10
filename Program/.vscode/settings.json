@@ -1,5 +1,5 @@
 {
-    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\python.exe",
+    "python.pythonPath": "D:\\Anaconda3\\python.exe",
     "pyqt-integration.qtdesigner.path": "C:\\ProgramData\\Anaconda3\\Library\\bin\\designer.exe",
     "python.linting.pylintArgs": [
         "--extension-pkg-whitelist=PyQt5"
