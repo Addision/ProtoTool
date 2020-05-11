@@ -91,8 +91,8 @@ class ModuleBase(object):
             if not msg_req or not msg_reply:
                 return
             if msg_name:
-                msg_req.name = msg_name
-                msg_reply.name = msg_name
+                msg_req.name = msg_name+'Req'
+                msg_reply.name = msg_name+'Reply'
             if msg_comment:
                 msg_req.comment = msg_comment                
                 msg_reply.comment = msg_name
