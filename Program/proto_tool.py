@@ -165,13 +165,15 @@ class ProtoTool(QMainWindow):
                 addMsgAct.triggered.connect(
                     lambda: self.actionHandler('add_msg', item))
             elif item and item.text(3) == ItemType.MSG:
-                updateMsgAct = self.contextMenu.addAction(u'更新消息')
-                delMsgAct = self.contextMenu.addAction(u'删除消息')
+                if 'Req' in item.text(0):
+                    updateMsgAct = self.contextMenu.addAction(u'更新消息')
+                    delMsgAct = self.contextMenu.addAction(u'删除消息')
+                    updateMsgAct.triggered.connect(
+                        lambda: self.actionHandler('update_msg', item))
+                    delMsgAct.triggered.connect(
+                        lambda: self.actionHandler('del_msg', item))
+                    pass
                 addFieldAct = self.contextMenu.addAction(u'添加字段')
-                updateMsgAct.triggered.connect(
-                    lambda: self.actionHandler('update_msg', item))
-                delMsgAct.triggered.connect(
-                    lambda: self.actionHandler('del_msg', item))
                 addFieldAct.triggered.connect(
                     lambda: self.actionHandler('add_field', item))
             elif item and item.text(3) == ItemType.FIELD:
@@ -228,6 +230,10 @@ class ProtoTool(QMainWindow):
 
             self.ui.BtnAdd.setEnabled(False)
             self.ui.FrameField.setEnabled(False)
+
+            msg = self.getMsgByFieldItem(self.selected_item)
+            self.ui.LetMsgName.setText(msg.name[:-3])
+            self.ui.LetMsgCmt.setText(msg.comment)
 
             msg_type = self.getMsgTypeByItemName(item.text(0))
             if msg_type == MsgType.REQ:
@@ -629,7 +635,6 @@ class ProtoTool(QMainWindow):
         self.ui.CbxValueType.addItems(self.value_types)
 
         self.ui.BtnAdd.setEnabled(False)
-        self.ui.BtnSave.setEnabled(False)
         self.ui.BtnUpdate.setEnabled(False)
         self.ui.FrameField.setEnabled(False)
         self.ui.FrameMsg.setEnabled(False)

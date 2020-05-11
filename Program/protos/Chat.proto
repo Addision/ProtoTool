@@ -1,24 +1,14 @@
 syntax = "proto3";
-import "PublicData.proto";
 
-message Chat_ChatToOneReq
+message Chat_TestChatReq
 {
- string name = 1;
+optional int32 FF = 1;
 
 }
 
 
-message Chat_ChatToOneReply
+message Chat_TestChatReply
 {
- string name = 1;
-
-}
-
-
-message Chat_ChatToAllNotify
-{
-repeated string name = 1;
- string haha = 2;
 
 }
 
