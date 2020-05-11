@@ -26,7 +26,7 @@ class TransTable:
             classes_name.append(tmp_name.split('_')[0])
         return excels, classes_name
 
-    def read_excel(self, excel_name, table_name, excel_dir, json_dir, code_dir):
+    def read_excel(self, excel_name, table_name, excel_dir, json_dir, cpp_dir, csharp_dir):
         try:
             excelFile = xlrd.open_workbook(
                 os.path.join(excel_dir, excel_name))
@@ -39,8 +39,8 @@ class TransTable:
             data_desc2 = sheet.row_values(4)
             data_desc = [a+" "+b for a, b in zip(data_desc1, data_desc2)]
 
-            trans_cpp = TransCpp(sheet, json_dir, code_dir)
-            trans_csharp = TransCsharp(sheet, code_dir)
+            trans_cpp = TransCpp(sheet, json_dir, cpp_dir)
+            trans_csharp = TransCsharp(sheet, csharp_dir)
 
             # 生成cpp 文件及json文件
             trans_cpp.transport_json(table_name)
@@ -54,7 +54,7 @@ class TransTable:
         pass
 
     @staticmethod
-    def transportTable(excel_dir, json_dir, code_dir):
+    def transportTable(excel_dir, json_dir, cpp_dir, csharp_dir):
         transTable = TransTable()
         excels, classes_name = transTable.get_excel(excel_dir)
         if not excels:
@@ -64,7 +64,7 @@ class TransTable:
         for excel in excels:
             class_name = excel.split('_')[0]
             print(class_name)
-            pool.apply_async(transTable.read_excel, (excel, class_name, excel_dir, json_dir, code_dir))
+            pool.apply_async(transTable.read_excel, (excel, class_name, excel_dir, json_dir, cpp_dir, csharp_dir))
         # gc pool
         pool.close()
         pool.join()

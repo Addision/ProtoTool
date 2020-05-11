@@ -18,7 +18,8 @@ class Config(object):
                 self.conf.set('project', 'protobuf_path', '')
                 self.conf.set('project', 'excel_path', '')
                 self.conf.set('project', 'json_path', '')
-                self.conf.set('project', 'excel_code_path', '')
+                self.conf.set('project', 'excel_cpp_path', '')
+                self.conf.set('project', 'excel_csharp_path', '')
                 self.conf.write(f)
 
         self.conf.read(self.conf_path, encoding='utf-8-sig')

@@ -25,8 +25,10 @@ class SettingGui(QMainWindow):
             lambda: self.onBtnClicked('excel_path'))
         self.ui.btnJson.clicked.connect(
             lambda: self.onBtnClicked('json_path'))
-        self.ui.btnExcelCode.clicked.connect(
-            lambda: self.onBtnClicked('excel_code_path'))
+        self.ui.btnExcelCpp.clicked.connect(
+            lambda: self.onBtnClicked('excel_cpp_path'))
+        self.ui.btnExcelCsharp.clicked.connect(
+            lambda: self.onBtnClicked('excel_csharp_path'))
 
         self.config = Config()
         self.showConf()
@@ -38,8 +40,10 @@ class SettingGui(QMainWindow):
             self.config.getConfOne('protobuf_path'))
         self.ui.letExcelPath.setText(self.config.getConfOne('excel_path'))
         self.ui.letJsonPath.setText(self.config.getConfOne('json_path'))
-        self.ui.letExcelCodePath.setText(
-            self.config.getConfOne('excel_code_path'))
+        self.ui.letExcelCppPath.setText(
+            self.config.getConfOne('excel_cpp_path'))
+        self.ui.letExcelCsharpPath.setText(
+            self.config.getConfOne('excel_csharp_path'))
 
     def onBtnClicked(self, btn):
         # 打开文件对话框
@@ -57,7 +61,9 @@ class SettingGui(QMainWindow):
             self.ui.letExcelPath.setText(path)
         if btn == 'json_path':
             self.ui.letJsonPath.setText(path)
-        if btn == 'excel_code_path':
-            self.ui.letExcelCodePath.setText(path)
+        if btn == 'excel_cpp_path':
+            self.ui.letExcelCppPath.setText(path)
+        if btn == 'excel_csharp_path':
+            self.ui.letExcelCsharpPath.setText(path)
 
         self.config.updateConfOne(btn, path)

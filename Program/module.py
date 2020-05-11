@@ -76,13 +76,28 @@ class ModuleBase(object):
                 self.reply_msg_dic.pop(msg_id)
 
     def updateMsg(self, msg_id, msg_type, msg_name='', msg_comment=''):
-        msg = self.getMsg(msg_id, msg_type)
-        if not msg:
-            return
-        if msg_name:
-            msg.name = msg_name
-        if msg_comment:
-            msg.comment = msg_comment
+        if msg_type == MsgType.NOTIFY or msg_type == MsgType.PUBLIC:
+            msg = self.getMsg(msg_id, msg_type)
+            if not msg:
+                return            
+            if msg_name:
+                msg.name = msg_name
+            if msg_comment:
+                msg.comment = msg_comment            
+            pass
+        else:
+            msg_req = self.getMsg(msg_id, MsgType.REQ)
+            msg_reply = self.getMsg(msg_id, MsgType.REPLY)
+            if not msg_req or not msg_reply:
+                return
+            if msg_name:
+                msg_req.name = msg_name
+                msg_reply.name = msg_name
+            if msg_comment:
+                msg_req.comment = msg_comment                
+                msg_reply.comment = msg_name
+            pass        
+
 
     def assignField(self, attrib):
         if not attrib:

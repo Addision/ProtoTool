@@ -23,9 +23,9 @@ data_type_dic = {
 
 
 class TransCsharp:
-    def __init__(self, sheet, code_dir):
+    def __init__(self, sheet, csharp_dir):
         self.sheet = sheet
-        self.code_dir = code_dir
+        self.csharp_dir = csharp_dir
 
         self.data_row_type = self.join_field_type()
 
@@ -58,7 +58,7 @@ class TransCsharp:
             return
         s = s % {"class_name": table_name, "row_fields": row_fields}
 
-        cpp_file = os.path.join(self.code_dir, table_name+'.cs')
+        cpp_file = os.path.join(self.csharp_dir, table_name+'.cs')
         with codecs.open(cpp_file, "w", "GB2312") as f:
             f.write(s)
             f.flush()

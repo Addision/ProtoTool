@@ -45,10 +45,10 @@ vector_tmpl = '''
 
 
 class TransCpp:
-    def __init__(self, sheet, json_dir, code_dir):
+    def __init__(self, sheet, json_dir, cpp_dir):
         self.sheet = sheet
         self.json_dir = json_dir
-        self.code_dir = code_dir
+        self.cpp_dir = cpp_dir
 
         self.data_row_type = self.join_field_type()
 
@@ -155,7 +155,7 @@ class TransCpp:
         s = s % {"class_name": table_name,
                  "row_fields": row_fields, "json_logic": json_logic}
 
-        cpp_file = os.path.join(self.code_dir, table_name+'.hpp')
+        cpp_file = os.path.join(self.cpp_dir, table_name+'.hpp')
         with codecs.open(cpp_file, "w", "GB2312") as f:
             f.write(s)
             f.flush()

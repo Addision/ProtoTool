@@ -218,15 +218,17 @@ class ProtoTool(QMainWindow):
         if op_flag == 'add_msg':
             self.ui.FrameMsg.setEnabled(True)
             self.ui.BtnAdd.setEnabled(True)
-            self.ui.BtnSave.setEnabled(False)
-            self.ui.menuSave.setEnabled(False)
+
             self.ui.BtnUpdate.setEnabled(False)
+            self.ui.FrameField.setEnabled(False)
 
         if op_flag == 'update_msg':
             self.ui.FrameMsg.setEnabled(True)
-            self.ui.FrameField.setEnabled(False)
             self.ui.BtnUpdate.setEnabled(True)
+
             self.ui.BtnAdd.setEnabled(False)
+            self.ui.FrameField.setEnabled(False)
+
             msg_type = self.getMsgTypeByItemName(item.text(0))
             if msg_type == MsgType.REQ:
                 self.ui.BtnReq.setChecked(True)
@@ -241,9 +243,15 @@ class ProtoTool(QMainWindow):
             self.ui.BtnAdd.setEnabled(True)
             self.ui.FrameField.setEnabled(True)
 
+            self.ui.FrameMsg.setEnabled(False)
+            self.ui.BtnUpdate.setEnabled(False)
+
         if op_flag == 'update_field':
             self.ui.FrameField.setEnabled(True)
             self.ui.BtnUpdate.setEnabled(True)
+
+            self.ui.BtnAdd.setEnabled(False)
+            self.ui.FrameMsg.setEnabled(False)
 
         if op_flag == 'del_field':
             self.delField()
@@ -463,10 +471,11 @@ class ProtoTool(QMainWindow):
         self.status.showMessage(u'开始导表...')
         excel_dir = self.config.getConfOne('excel_path')
         json_dir = self.config.getConfOne('json_path')
-        code_dir = self.config.getConfOne('excel_code_path')
+        cpp_dir = self.config.getConfOne('excel_cpp_path')
+        csharp_dir = self.config.getConfOne('excel_csharp_path')
         try:
-            if os.path.exists(excel_dir) and os.path.exists(json_dir) and os.path.exists(code_dir):
-                    TransTable.transportTable(excel_dir, json_dir, code_dir)
+            if os.path.exists(excel_dir) and os.path.exists(json_dir) and os.path.exists(cpp_dir) and os.path.exists(csharp_dir):
+                    TransTable.transportTable(excel_dir, json_dir, cpp_dir, csharp_dir)
             self.status.showMessage(u'导表完成...')
         except Exception as e:
             print(e)
@@ -619,6 +628,12 @@ class ProtoTool(QMainWindow):
         self.ui.CbxValueType.clear()
         self.ui.CbxValueType.addItems(self.value_types)
 
+        self.ui.BtnAdd.setEnabled(False)
+        self.ui.BtnSave.setEnabled(False)
+        self.ui.BtnUpdate.setEnabled(False)
+        self.ui.FrameField.setEnabled(False)
+        self.ui.FrameMsg.setEnabled(False)
+
     def saveProtoXml(self):
         self.module_mgr.saveXmls(self.config.getConfOne('msg_path'))
         self.ui.BtnSave.setEnabled(False)
@@ -663,15 +678,16 @@ class ProtoTool(QMainWindow):
                     self.addMsg()
                 else:
                     self.addField()
-                self.ui.FrameMsg.setEnabled(False)
-                self.ui.FrameField.setEnabled(False)
 
             if btn == 'update':
                 if item_type == ItemType.MSG:
                     self.updateMsg()
                 else:
                     self.updateField()
-                self.ui.FrameField.setEnabled(False)
+            self.ui.FrameField.setEnabled(False)
+            self.ui.FrameMsg.setEnabled(False)
+            self.ui.BtnUpdate.setEnabled(False)
+            self.ui.BtnAdd.setEnabled(False)
 
             self.ui.BtnSave.setEnabled(True)
             self.ui.menuSave.setEnabled(True)
