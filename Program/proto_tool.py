@@ -403,7 +403,7 @@ class ProtoTool(QMainWindow):
         self.setting.show()
 
     def menuBarOpen(self):
-        print("start load xml files......")
+        self.status.showMessage(u'开始加载协议...')
         # 打开文件对话框
         msg_path = QFileDialog.getExistingDirectory(
             self, 'open dir', './')
@@ -411,6 +411,7 @@ class ProtoTool(QMainWindow):
             return
         self.config.updateConfOne('msg_path', msg_path)
         self.openProto(msg_path)
+        self.status.showMessage(u'加载协议完成...')
         pass
 
     def menuBarSave(self):
@@ -426,7 +427,7 @@ class ProtoTool(QMainWindow):
         try:
             self.saveProtoXml()
             # 生成proto文件
-            self.status.showMessage(u'开始生成protobuffer')
+            self.status.showMessage(u'开始生成protobuffer', 0)
             xml_dir = self.config.getConfOne('msg_path')
             self.gen_mgr.loadXmls(xml_dir)
             save_proto_dir = self.config.getConfOne('proto_path')
@@ -450,35 +451,43 @@ class ProtoTool(QMainWindow):
                     run(cmd_cpp_str, shell=True)
                     run(cmd_csharp_str, shell=True)
 
-            self.status.showMessage(u'消息协议生成完成')
+            self.status.showMessage(u'消息协议生成完成...')
         except Exception as e:
-                now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-                print(now, str(e))
-                print('traceback.print_exc():', traceback.print_exc())
+            self.status.showMessage(u'消息协议生成错误...')
+            now = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+            print(now, str(e))
+            print('traceback.print_exc():', traceback.print_exc())
 
     # 导出数据表(cpp\cs 加载表代码)
     def menuBarTable(self):
-        excel_dir = self.config.getConfOne('excel_path')
-        json_dir = self.config.getConfOne('json_path')
-        code_dir = self.config.getConfOne('excel_code_path')
-        if os.path.exists(excel_dir) and os.path.exists(json_dir) and os.path.exists(code_dir):
-            try:
-                TransTable.transportTable(excel_dir, json_dir, code_dir)
-            except Exception as e:
-                print(e)
-        pass
+        try:
+            self.status.showMessage(u'开始导表...', 0)
+            excel_dir = self.config.getConfOne('excel_path')
+            json_dir = self.config.getConfOne('json_path')
+            code_dir = self.config.getConfOne('excel_code_path')
+            if os.path.exists(excel_dir) and os.path.exists(json_dir) and os.path.exists(code_dir):
+                    TransTable.transportTable(excel_dir, json_dir, code_dir)
+                    self.status.showMessage(u'导表完成...')
+                    return
+        except Exception as e:
+            print(e)
+        self.status.showMessage(u'导表错误...')
 
     # 生成服务器需要的协议代码
     def menuBarServer(self):
+        self.status.showMessage(u'开始生成服务器协议代码...', 0)
         self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
         self.gen_mgr.genCpp(self.config.getConfOne('proto_path'))
+        self.status.showMessage(u'代码生成完成...')
         pass
 
     # 生成客户端需要协议代码
     def menuBarClient(self):
         # 生成 csharp 协议枚举文件
+        self.status.showMessage(u'开始生成客户端协议代码...', 0)
         self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
         self.gen_mgr.genCsharp(self.config.getConfOne('proto_path'))
+        self.status.showMessage(u'代码生成完成...')
         pass
 
 ###################################################

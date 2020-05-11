@@ -47,7 +47,7 @@ class TransTable:
             trans_cpp.gen_cpp(table_name, data_desc)
             trans_csharp.gen_csharp(table_name, data_desc)
 
-            print("transport table ok!", excel_name)
+            # print("transport table ok!", excel_name)
         except Exception as e:
             print('str(Exception):\t', str(e))
             print('traceback.print_exc():', traceback.print_exc())
