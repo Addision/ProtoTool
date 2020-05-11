@@ -231,7 +231,7 @@ class ProtoTool(QMainWindow):
             self.ui.BtnAdd.setEnabled(False)
             self.ui.FrameField.setEnabled(False)
 
-            msg = self.getMsgByFieldItem(self.selected_item)
+            msg = self.getMsgByMsgItem(self.selected_item)
             self.ui.LetMsgName.setText(msg.name[:-3])
             self.ui.LetMsgCmt.setText(msg.comment)
 
@@ -258,6 +258,9 @@ class ProtoTool(QMainWindow):
 
             self.ui.BtnAdd.setEnabled(False)
             self.ui.FrameMsg.setEnabled(False)
+
+            self.ui.LetFieldName.setText(self.selected_item.text(0))
+            self.ui.LetFieldCmt.setText(self.selected_item.text(1))
 
         if op_flag == 'del_field':
             self.delField()
@@ -668,6 +671,15 @@ class ProtoTool(QMainWindow):
         module = self.module_mgr.getModule(mod_item.text(2))
         msg_type = self.getMsgTypeByItemName(msg_item.text(0))
         msg = module.getMsg(msg_item.text(2), msg_type)
+        return msg
+    
+    def getMsgByMsgItem(self, item):
+        if not item:
+            return None
+        mod_item = item.parent()
+        module = self.module_mgr.getModule(mod_item.text(2))
+        msg_type = self.getMsgTypeByItemName(item.text(0))
+        msg = module.getMsg(item.text(2), msg_type)
         return msg
 
     def onBtnClicked(self, btn):
