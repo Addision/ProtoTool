@@ -427,7 +427,7 @@ class ProtoTool(QMainWindow):
         try:
             self.saveProtoXml()
             # 生成proto文件
-            self.status.showMessage(u'开始生成protobuffer', 0)
+            self.status.showMessage(u'开始生成protobuffer')
             xml_dir = self.config.getConfOne('msg_path')
             self.gen_mgr.loadXmls(xml_dir)
             save_proto_dir = self.config.getConfOne('proto_path')
@@ -460,22 +460,21 @@ class ProtoTool(QMainWindow):
 
     # 导出数据表(cpp\cs 加载表代码)
     def menuBarTable(self):
+        self.status.showMessage(u'开始导表...')
+        excel_dir = self.config.getConfOne('excel_path')
+        json_dir = self.config.getConfOne('json_path')
+        code_dir = self.config.getConfOne('excel_code_path')
         try:
-            self.status.showMessage(u'开始导表...', 0)
-            excel_dir = self.config.getConfOne('excel_path')
-            json_dir = self.config.getConfOne('json_path')
-            code_dir = self.config.getConfOne('excel_code_path')
             if os.path.exists(excel_dir) and os.path.exists(json_dir) and os.path.exists(code_dir):
                     TransTable.transportTable(excel_dir, json_dir, code_dir)
-                    self.status.showMessage(u'导表完成...')
-                    return
+            self.status.showMessage(u'导表完成...')
         except Exception as e:
             print(e)
-        self.status.showMessage(u'导表错误...')
+            self.status.showMessage(u'导表错误...')
 
     # 生成服务器需要的协议代码
     def menuBarServer(self):
-        self.status.showMessage(u'开始生成服务器协议代码...', 0)
+        self.status.showMessage(u'开始生成服务器协议代码...')
         self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
         self.gen_mgr.genCpp(self.config.getConfOne('proto_path'))
         self.status.showMessage(u'代码生成完成...')
@@ -484,7 +483,7 @@ class ProtoTool(QMainWindow):
     # 生成客户端需要协议代码
     def menuBarClient(self):
         # 生成 csharp 协议枚举文件
-        self.status.showMessage(u'开始生成客户端协议代码...', 0)
+        self.status.showMessage(u'开始生成客户端协议代码...')
         self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
         self.gen_mgr.genCsharp(self.config.getConfOne('proto_path'))
         self.status.showMessage(u'代码生成完成...')
@@ -738,5 +737,5 @@ if __name__ == '__main__':
     app.setStyle(QStyleFactory.create("Fusion"))
     app.setAttribute(QtCore.Qt.AA_NativeWindows)
     app.setAttribute(QtCore.Qt.AA_MSWindowsUseDirect3DByDefault)
-
+    multiprocessing.freeze_support()
     sys.exit(app.exec_())

@@ -112,11 +112,6 @@
       </font>
      </property>
     </column>
-    <item>
-     <property name="text">
-      <string>test</string>
-     </property>
-    </item>
    </widget>
    <widget class="QFrame" name="FrameMsg">
     <property name="geometry">

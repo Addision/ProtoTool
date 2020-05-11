@@ -56,7 +56,6 @@ class Ui_MainWindow(object):
         font.setFamily("黑体")
         font.setPointSize(12)
         self.WidMsgTree.headerItem().setFont(3, font)
-        item_0 = QtWidgets.QTreeWidgetItem(self.WidMsgTree)
         self.WidMsgTree.header().setDefaultSectionSize(280)
         self.FrameMsg = QtWidgets.QFrame(self.centralwidget)
         self.FrameMsg.setGeometry(QtCore.QRect(620, 30, 191, 141))
@@ -198,10 +197,6 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "协议工具"))
         self.WidMsgTree.setSortingEnabled(False)
-        __sortingEnabled = self.WidMsgTree.isSortingEnabled()
-        self.WidMsgTree.setSortingEnabled(False)
-        self.WidMsgTree.topLevelItem(0).setText(0, _translate("MainWindow", "test"))
-        self.WidMsgTree.setSortingEnabled(__sortingEnabled)
         self.BtnReq.setText(_translate("MainWindow", "请求消息"))
         self.BtnNotify.setText(_translate("MainWindow", "通知消息"))
         self.label_5.setText(_translate("MainWindow", "消息名称"))
