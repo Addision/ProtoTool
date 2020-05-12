@@ -4,6 +4,7 @@ import os
 import sys
 import codecs
 import xml.etree.ElementTree as ET
+from common import *    
 
 ############################################################################
 rpc_req_id = 'RPC_%(module)s_%(msg_name)s_REQ'
@@ -29,7 +30,8 @@ class GenCpp(object):
         if not self.parse_xml():
             return
         s = ""
-        with codecs.open('./proto_cpp.tmpl', "r", "utf-8") as f:
+        tmpl_file = os.path.join(getRootDir(), 'proto_cpp.tmpl')
+        with codecs.open(tmpl_file, "r", "utf-8") as f:
             s = f.read()
         s = s % {
             "module": self.module,

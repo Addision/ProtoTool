@@ -14,199 +14,151 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-class Chat_ChatToOneReqDefaultTypeInternal {
+class Chat_rfdrRRRReqDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Chat_ChatToOneReq> _instance;
-} _Chat_ChatToOneReq_default_instance_;
-class Chat_ChatToOneReplyDefaultTypeInternal {
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Chat_rfdrRRRReq> _instance;
+} _Chat_rfdrRRRReq_default_instance_;
+class Chat_rfdrRRRReplyDefaultTypeInternal {
  public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Chat_ChatToOneReply> _instance;
-} _Chat_ChatToOneReply_default_instance_;
-class Chat_ChatToAllNotifyDefaultTypeInternal {
- public:
-  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Chat_ChatToAllNotify> _instance;
-} _Chat_ChatToAllNotify_default_instance_;
-static void InitDefaultsscc_info_Chat_ChatToAllNotify_Chat_2eproto() {
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<Chat_rfdrRRRReply> _instance;
+} _Chat_rfdrRRRReply_default_instance_;
+static void InitDefaultsscc_info_Chat_rfdrRRRReply_Chat_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::_Chat_ChatToAllNotify_default_instance_;
-    new (ptr) ::Chat_ChatToAllNotify();
+    void* ptr = &::_Chat_rfdrRRRReply_default_instance_;
+    new (ptr) ::Chat_rfdrRRRReply();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::Chat_ChatToAllNotify::InitAsDefaultInstance();
+  ::Chat_rfdrRRRReply::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Chat_ChatToAllNotify_Chat_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Chat_ChatToAllNotify_Chat_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Chat_rfdrRRRReply_Chat_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Chat_rfdrRRRReply_Chat_2eproto}, {}};
 
-static void InitDefaultsscc_info_Chat_ChatToOneReply_Chat_2eproto() {
+static void InitDefaultsscc_info_Chat_rfdrRRRReq_Chat_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
 
   {
-    void* ptr = &::_Chat_ChatToOneReply_default_instance_;
-    new (ptr) ::Chat_ChatToOneReply();
+    void* ptr = &::_Chat_rfdrRRRReq_default_instance_;
+    new (ptr) ::Chat_rfdrRRRReq();
     ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
   }
-  ::Chat_ChatToOneReply::InitAsDefaultInstance();
+  ::Chat_rfdrRRRReq::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Chat_ChatToOneReply_Chat_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Chat_ChatToOneReply_Chat_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Chat_rfdrRRRReq_Chat_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Chat_rfdrRRRReq_Chat_2eproto}, {}};
 
-static void InitDefaultsscc_info_Chat_ChatToOneReq_Chat_2eproto() {
-  GOOGLE_PROTOBUF_VERIFY_VERSION;
-
-  {
-    void* ptr = &::_Chat_ChatToOneReq_default_instance_;
-    new (ptr) ::Chat_ChatToOneReq();
-    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
-  }
-  ::Chat_ChatToOneReq::InitAsDefaultInstance();
-}
-
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Chat_ChatToOneReq_Chat_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Chat_ChatToOneReq_Chat_2eproto}, {}};
-
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_Chat_2eproto[3];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_Chat_2eproto[2];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_Chat_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_Chat_2eproto = nullptr;
 
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Chat_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::Chat_ChatToOneReq, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::Chat_rfdrRRRReq, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::Chat_ChatToOneReq, name_),
   ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::Chat_ChatToOneReply, _internal_metadata_),
+  PROTOBUF_FIELD_OFFSET(::Chat_rfdrRRRReply, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::Chat_ChatToOneReply, name_),
-  ~0u,  // no _has_bits_
-  PROTOBUF_FIELD_OFFSET(::Chat_ChatToAllNotify, _internal_metadata_),
-  ~0u,  // no _extensions_
-  ~0u,  // no _oneof_case_
-  ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::Chat_ChatToAllNotify, name_),
-  PROTOBUF_FIELD_OFFSET(::Chat_ChatToAllNotify, haha_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
-  { 0, -1, sizeof(::Chat_ChatToOneReq)},
-  { 6, -1, sizeof(::Chat_ChatToOneReply)},
-  { 12, -1, sizeof(::Chat_ChatToAllNotify)},
+  { 0, -1, sizeof(::Chat_rfdrRRRReq)},
+  { 5, -1, sizeof(::Chat_rfdrRRRReply)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_Chat_ChatToOneReq_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_Chat_ChatToOneReply_default_instance_),
-  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_Chat_ChatToAllNotify_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_Chat_rfdrRRRReq_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::_Chat_rfdrRRRReply_default_instance_),
 };
 
 const char descriptor_table_protodef_Chat_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\nChat.proto\032\020PublicData.proto\"!\n\021Chat_C"
-  "hatToOneReq\022\014\n\004name\030\001 \001(\t\"#\n\023Chat_ChatTo"
-  "OneReply\022\014\n\004name\030\001 \001(\t\"2\n\024Chat_ChatToAll"
-  "Notify\022\014\n\004name\030\001 \003(\t\022\014\n\004haha\030\002 \001(\tb\006prot"
-  "o3"
+  "\n\nChat.proto\032\020PublicChat.proto\032\020PublicDa"
+  "ta.proto\032\020PublicHaha.proto\"\021\n\017Chat_rfdrR"
+  "RRReq\"\023\n\021Chat_rfdrRRRReplyb\006proto3"
   ;
-static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Chat_2eproto_deps[1] = {
+static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Chat_2eproto_deps[3] = {
+  &::descriptor_table_PublicChat_2eproto,
   &::descriptor_table_PublicData_2eproto,
+  &::descriptor_table_PublicHaha_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Chat_2eproto_sccs[3] = {
-  &scc_info_Chat_ChatToAllNotify_Chat_2eproto.base,
-  &scc_info_Chat_ChatToOneReply_Chat_2eproto.base,
-  &scc_info_Chat_ChatToOneReq_Chat_2eproto.base,
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_Chat_2eproto_sccs[2] = {
+  &scc_info_Chat_rfdrRRRReply_Chat_2eproto.base,
+  &scc_info_Chat_rfdrRRRReq_Chat_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Chat_2eproto_once;
 static bool descriptor_table_Chat_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Chat_2eproto = {
-  &descriptor_table_Chat_2eproto_initialized, descriptor_table_protodef_Chat_2eproto, "Chat.proto", 162,
-  &descriptor_table_Chat_2eproto_once, descriptor_table_Chat_2eproto_sccs, descriptor_table_Chat_2eproto_deps, 3, 1,
+  &descriptor_table_Chat_2eproto_initialized, descriptor_table_protodef_Chat_2eproto, "Chat.proto", 114,
+  &descriptor_table_Chat_2eproto_once, descriptor_table_Chat_2eproto_sccs, descriptor_table_Chat_2eproto_deps, 2, 3,
   schemas, file_default_instances, TableStruct_Chat_2eproto::offsets,
-  file_level_metadata_Chat_2eproto, 3, file_level_enum_descriptors_Chat_2eproto, file_level_service_descriptors_Chat_2eproto,
+  file_level_metadata_Chat_2eproto, 2, file_level_enum_descriptors_Chat_2eproto, file_level_service_descriptors_Chat_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
-static bool dynamic_init_dummy_Chat_2eproto = (static_cast<void>(::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_Chat_2eproto)), true);
+static bool dynamic_init_dummy_Chat_2eproto = (  ::PROTOBUF_NAMESPACE_ID::internal::AddDescriptors(&descriptor_table_Chat_2eproto), true);
 
 // ===================================================================
 
-void Chat_ChatToOneReq::InitAsDefaultInstance() {
+void Chat_rfdrRRRReq::InitAsDefaultInstance() {
 }
-class Chat_ChatToOneReq::_Internal {
+class Chat_rfdrRRRReq::_Internal {
  public:
 };
 
-Chat_ChatToOneReq::Chat_ChatToOneReq()
+Chat_rfdrRRRReq::Chat_rfdrRRRReq()
   : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Chat_ChatToOneReq)
+  // @@protoc_insertion_point(constructor:Chat_rfdrRRRReq)
 }
-Chat_ChatToOneReq::Chat_ChatToOneReq(const Chat_ChatToOneReq& from)
+Chat_rfdrRRRReq::Chat_rfdrRRRReq(const Chat_rfdrRRRReq& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_name().empty()) {
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
-  }
-  // @@protoc_insertion_point(copy_constructor:Chat_ChatToOneReq)
+  // @@protoc_insertion_point(copy_constructor:Chat_rfdrRRRReq)
 }
 
-void Chat_ChatToOneReq::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Chat_ChatToOneReq_Chat_2eproto.base);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+void Chat_rfdrRRRReq::SharedCtor() {
 }
 
-Chat_ChatToOneReq::~Chat_ChatToOneReq() {
-  // @@protoc_insertion_point(destructor:Chat_ChatToOneReq)
+Chat_rfdrRRRReq::~Chat_rfdrRRRReq() {
+  // @@protoc_insertion_point(destructor:Chat_rfdrRRRReq)
   SharedDtor();
 }
 
-void Chat_ChatToOneReq::SharedDtor() {
-  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+void Chat_rfdrRRRReq::SharedDtor() {
 }
 
-void Chat_ChatToOneReq::SetCachedSize(int size) const {
+void Chat_rfdrRRRReq::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Chat_ChatToOneReq& Chat_ChatToOneReq::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Chat_ChatToOneReq_Chat_2eproto.base);
+const Chat_rfdrRRRReq& Chat_rfdrRRRReq::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Chat_rfdrRRRReq_Chat_2eproto.base);
   return *internal_default_instance();
 }
 
 
-void Chat_ChatToOneReq::Clear() {
-// @@protoc_insertion_point(message_clear_start:Chat_ChatToOneReq)
+void Chat_rfdrRRRReq::Clear() {
+// @@protoc_insertion_point(message_clear_start:Chat_rfdrRRRReq)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
-const char* Chat_ChatToOneReq::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* Chat_rfdrRRRReq::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string name = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_name();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Chat_ChatToOneReq.name"));
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
       default: {
-      handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -225,44 +177,27 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Chat_ChatToOneReq::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* Chat_rfdrRRRReq::InternalSerializeWithCachedSizesToArray(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Chat_ChatToOneReq)
+  // @@protoc_insertion_point(serialize_to_array_start:Chat_rfdrRRRReq)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
-
-  // string name = 1;
-  if (this->name().size() > 0) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "Chat_ChatToOneReq.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
-  }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Chat_ChatToOneReq)
+  // @@protoc_insertion_point(serialize_to_array_end:Chat_rfdrRRRReq)
   return target;
 }
 
-size_t Chat_ChatToOneReq::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Chat_ChatToOneReq)
+size_t Chat_rfdrRRRReq::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Chat_rfdrRRRReq)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
-
-  // string name = 1;
-  if (this->name().size() > 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
-  }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
@@ -273,139 +208,115 @@ size_t Chat_ChatToOneReq::ByteSizeLong() const {
   return total_size;
 }
 
-void Chat_ChatToOneReq::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:Chat_ChatToOneReq)
+void Chat_rfdrRRRReq::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Chat_rfdrRRRReq)
   GOOGLE_DCHECK_NE(&from, this);
-  const Chat_ChatToOneReq* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Chat_ChatToOneReq>(
+  const Chat_rfdrRRRReq* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Chat_rfdrRRRReq>(
           &from);
   if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Chat_ChatToOneReq)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Chat_rfdrRRRReq)
     ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:Chat_ChatToOneReq)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Chat_rfdrRRRReq)
     MergeFrom(*source);
   }
 }
 
-void Chat_ChatToOneReq::MergeFrom(const Chat_ChatToOneReq& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Chat_ChatToOneReq)
+void Chat_rfdrRRRReq::MergeFrom(const Chat_rfdrRRRReq& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Chat_rfdrRRRReq)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.name().size() > 0) {
-
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
-  }
 }
 
-void Chat_ChatToOneReq::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:Chat_ChatToOneReq)
+void Chat_rfdrRRRReq::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Chat_rfdrRRRReq)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Chat_ChatToOneReq::CopyFrom(const Chat_ChatToOneReq& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Chat_ChatToOneReq)
+void Chat_rfdrRRRReq::CopyFrom(const Chat_rfdrRRRReq& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Chat_rfdrRRRReq)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Chat_ChatToOneReq::IsInitialized() const {
+bool Chat_rfdrRRRReq::IsInitialized() const {
   return true;
 }
 
-void Chat_ChatToOneReq::InternalSwap(Chat_ChatToOneReq* other) {
+void Chat_rfdrRRRReq::InternalSwap(Chat_rfdrRRRReq* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Chat_ChatToOneReq::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata Chat_rfdrRRRReq::GetMetadata() const {
   return GetMetadataStatic();
 }
 
 
 // ===================================================================
 
-void Chat_ChatToOneReply::InitAsDefaultInstance() {
+void Chat_rfdrRRRReply::InitAsDefaultInstance() {
 }
-class Chat_ChatToOneReply::_Internal {
+class Chat_rfdrRRRReply::_Internal {
  public:
 };
 
-Chat_ChatToOneReply::Chat_ChatToOneReply()
+Chat_rfdrRRRReply::Chat_rfdrRRRReply()
   : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
-  // @@protoc_insertion_point(constructor:Chat_ChatToOneReply)
+  // @@protoc_insertion_point(constructor:Chat_rfdrRRRReply)
 }
-Chat_ChatToOneReply::Chat_ChatToOneReply(const Chat_ChatToOneReply& from)
+Chat_rfdrRRRReply::Chat_rfdrRRRReply(const Chat_rfdrRRRReply& from)
   : ::PROTOBUF_NAMESPACE_ID::Message(),
       _internal_metadata_(nullptr) {
   _internal_metadata_.MergeFrom(from._internal_metadata_);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_name().empty()) {
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
-  }
-  // @@protoc_insertion_point(copy_constructor:Chat_ChatToOneReply)
+  // @@protoc_insertion_point(copy_constructor:Chat_rfdrRRRReply)
 }
 
-void Chat_ChatToOneReply::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Chat_ChatToOneReply_Chat_2eproto.base);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+void Chat_rfdrRRRReply::SharedCtor() {
 }
 
-Chat_ChatToOneReply::~Chat_ChatToOneReply() {
-  // @@protoc_insertion_point(destructor:Chat_ChatToOneReply)
+Chat_rfdrRRRReply::~Chat_rfdrRRRReply() {
+  // @@protoc_insertion_point(destructor:Chat_rfdrRRRReply)
   SharedDtor();
 }
 
-void Chat_ChatToOneReply::SharedDtor() {
-  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+void Chat_rfdrRRRReply::SharedDtor() {
 }
 
-void Chat_ChatToOneReply::SetCachedSize(int size) const {
+void Chat_rfdrRRRReply::SetCachedSize(int size) const {
   _cached_size_.Set(size);
 }
-const Chat_ChatToOneReply& Chat_ChatToOneReply::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Chat_ChatToOneReply_Chat_2eproto.base);
+const Chat_rfdrRRRReply& Chat_rfdrRRRReply::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Chat_rfdrRRRReply_Chat_2eproto.base);
   return *internal_default_instance();
 }
 
 
-void Chat_ChatToOneReply::Clear() {
-// @@protoc_insertion_point(message_clear_start:Chat_ChatToOneReply)
+void Chat_rfdrRRRReply::Clear() {
+// @@protoc_insertion_point(message_clear_start:Chat_rfdrRRRReply)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   _internal_metadata_.Clear();
 }
 
-const char* Chat_ChatToOneReply::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+const char* Chat_rfdrRRRReply::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
 #define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
   while (!ctx->Done(&ptr)) {
     ::PROTOBUF_NAMESPACE_ID::uint32 tag;
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string name = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_name();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Chat_ChatToOneReply.name"));
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
       default: {
-      handle_unusual:
         if ((tag & 7) == 4 || tag == 0) {
           ctx->SetLastTag(tag);
           goto success;
@@ -424,44 +335,27 @@ failure:
 #undef CHK_
 }
 
-::PROTOBUF_NAMESPACE_ID::uint8* Chat_ChatToOneReply::_InternalSerialize(
+::PROTOBUF_NAMESPACE_ID::uint8* Chat_rfdrRRRReply::InternalSerializeWithCachedSizesToArray(
     ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Chat_ChatToOneReply)
+  // @@protoc_insertion_point(serialize_to_array_start:Chat_rfdrRRRReply)
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
-
-  // string name = 1;
-  if (this->name().size() > 0) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "Chat_ChatToOneReply.name");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_name(), target);
-  }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields(), target, stream);
   }
-  // @@protoc_insertion_point(serialize_to_array_end:Chat_ChatToOneReply)
+  // @@protoc_insertion_point(serialize_to_array_end:Chat_rfdrRRRReply)
   return target;
 }
 
-size_t Chat_ChatToOneReply::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Chat_ChatToOneReply)
+size_t Chat_rfdrRRRReply::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:Chat_rfdrRRRReply)
   size_t total_size = 0;
 
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
-
-  // string name = 1;
-  if (this->name().size() > 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
-  }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
@@ -472,309 +366,65 @@ size_t Chat_ChatToOneReply::ByteSizeLong() const {
   return total_size;
 }
 
-void Chat_ChatToOneReply::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:Chat_ChatToOneReply)
+void Chat_rfdrRRRReply::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:Chat_rfdrRRRReply)
   GOOGLE_DCHECK_NE(&from, this);
-  const Chat_ChatToOneReply* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Chat_ChatToOneReply>(
+  const Chat_rfdrRRRReply* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Chat_rfdrRRRReply>(
           &from);
   if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Chat_ChatToOneReply)
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Chat_rfdrRRRReply)
     ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
   } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:Chat_ChatToOneReply)
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:Chat_rfdrRRRReply)
     MergeFrom(*source);
   }
 }
 
-void Chat_ChatToOneReply::MergeFrom(const Chat_ChatToOneReply& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Chat_ChatToOneReply)
+void Chat_rfdrRRRReply::MergeFrom(const Chat_rfdrRRRReply& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:Chat_rfdrRRRReply)
   GOOGLE_DCHECK_NE(&from, this);
   _internal_metadata_.MergeFrom(from._internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.name().size() > 0) {
-
-    name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.name_);
-  }
 }
 
-void Chat_ChatToOneReply::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:Chat_ChatToOneReply)
+void Chat_rfdrRRRReply::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:Chat_rfdrRRRReply)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-void Chat_ChatToOneReply::CopyFrom(const Chat_ChatToOneReply& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Chat_ChatToOneReply)
+void Chat_rfdrRRRReply::CopyFrom(const Chat_rfdrRRRReply& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:Chat_rfdrRRRReply)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
-bool Chat_ChatToOneReply::IsInitialized() const {
+bool Chat_rfdrRRRReply::IsInitialized() const {
   return true;
 }
 
-void Chat_ChatToOneReply::InternalSwap(Chat_ChatToOneReply* other) {
+void Chat_rfdrRRRReply::InternalSwap(Chat_rfdrRRRReply* other) {
   using std::swap;
   _internal_metadata_.Swap(&other->_internal_metadata_);
-  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
 }
 
-::PROTOBUF_NAMESPACE_ID::Metadata Chat_ChatToOneReply::GetMetadata() const {
-  return GetMetadataStatic();
-}
-
-
-// ===================================================================
-
-void Chat_ChatToAllNotify::InitAsDefaultInstance() {
-}
-class Chat_ChatToAllNotify::_Internal {
- public:
-};
-
-Chat_ChatToAllNotify::Chat_ChatToAllNotify()
-  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
-  SharedCtor();
-  // @@protoc_insertion_point(constructor:Chat_ChatToAllNotify)
-}
-Chat_ChatToAllNotify::Chat_ChatToAllNotify(const Chat_ChatToAllNotify& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      _internal_metadata_(nullptr),
-      name_(from.name_) {
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  haha_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_haha().empty()) {
-    haha_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.haha_);
-  }
-  // @@protoc_insertion_point(copy_constructor:Chat_ChatToAllNotify)
-}
-
-void Chat_ChatToAllNotify::SharedCtor() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Chat_ChatToAllNotify_Chat_2eproto.base);
-  haha_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-
-Chat_ChatToAllNotify::~Chat_ChatToAllNotify() {
-  // @@protoc_insertion_point(destructor:Chat_ChatToAllNotify)
-  SharedDtor();
-}
-
-void Chat_ChatToAllNotify::SharedDtor() {
-  haha_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-}
-
-void Chat_ChatToAllNotify::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
-}
-const Chat_ChatToAllNotify& Chat_ChatToAllNotify::default_instance() {
-  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_Chat_ChatToAllNotify_Chat_2eproto.base);
-  return *internal_default_instance();
-}
-
-
-void Chat_ChatToAllNotify::Clear() {
-// @@protoc_insertion_point(message_clear_start:Chat_ChatToAllNotify)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  name_.Clear();
-  haha_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  _internal_metadata_.Clear();
-}
-
-const char* Chat_ChatToAllNotify::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
-#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
-  while (!ctx->Done(&ptr)) {
-    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
-    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
-    CHK_(ptr);
-    switch (tag >> 3) {
-      // repeated string name = 1;
-      case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          ptr -= 1;
-          do {
-            ptr += 1;
-            auto str = _internal_add_name();
-            ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-            CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Chat_ChatToAllNotify.name"));
-            CHK_(ptr);
-            if (!ctx->DataAvailable(ptr)) break;
-          } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<10>(ptr));
-        } else goto handle_unusual;
-        continue;
-      // string haha = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          auto str = _internal_mutable_haha();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Chat_ChatToAllNotify.haha"));
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      default: {
-      handle_unusual:
-        if ((tag & 7) == 4 || tag == 0) {
-          ctx->SetLastTag(tag);
-          goto success;
-        }
-        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
-        CHK_(ptr != nullptr);
-        continue;
-      }
-    }  // switch
-  }  // while
-success:
-  return ptr;
-failure:
-  ptr = nullptr;
-  goto success;
-#undef CHK_
-}
-
-::PROTOBUF_NAMESPACE_ID::uint8* Chat_ChatToAllNotify::_InternalSerialize(
-    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
-  // @@protoc_insertion_point(serialize_to_array_start:Chat_ChatToAllNotify)
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  // repeated string name = 1;
-  for (int i = 0, n = this->_internal_name_size(); i < n; i++) {
-    const auto& s = this->_internal_name(i);
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      s.data(), static_cast<int>(s.length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "Chat_ChatToAllNotify.name");
-    target = stream->WriteString(1, s, target);
-  }
-
-  // string haha = 2;
-  if (this->haha().size() > 0) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_haha().data(), static_cast<int>(this->_internal_haha().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "Chat_ChatToAllNotify.haha");
-    target = stream->WriteStringMaybeAliased(
-        2, this->_internal_haha(), target);
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
-        _internal_metadata_.unknown_fields(), target, stream);
-  }
-  // @@protoc_insertion_point(serialize_to_array_end:Chat_ChatToAllNotify)
-  return target;
-}
-
-size_t Chat_ChatToAllNotify::ByteSizeLong() const {
-// @@protoc_insertion_point(message_byte_size_start:Chat_ChatToAllNotify)
-  size_t total_size = 0;
-
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  // Prevent compiler warnings about cached_has_bits being unused
-  (void) cached_has_bits;
-
-  // repeated string name = 1;
-  total_size += 1 *
-      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(name_.size());
-  for (int i = 0, n = name_.size(); i < n; i++) {
-    total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-      name_.Get(i));
-  }
-
-  // string haha = 2;
-  if (this->haha().size() > 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_haha());
-  }
-
-  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
-    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
-        _internal_metadata_, total_size, &_cached_size_);
-  }
-  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
-  SetCachedSize(cached_size);
-  return total_size;
-}
-
-void Chat_ChatToAllNotify::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_merge_from_start:Chat_ChatToAllNotify)
-  GOOGLE_DCHECK_NE(&from, this);
-  const Chat_ChatToAllNotify* source =
-      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<Chat_ChatToAllNotify>(
-          &from);
-  if (source == nullptr) {
-  // @@protoc_insertion_point(generalized_merge_from_cast_fail:Chat_ChatToAllNotify)
-    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
-  } else {
-  // @@protoc_insertion_point(generalized_merge_from_cast_success:Chat_ChatToAllNotify)
-    MergeFrom(*source);
-  }
-}
-
-void Chat_ChatToAllNotify::MergeFrom(const Chat_ChatToAllNotify& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Chat_ChatToAllNotify)
-  GOOGLE_DCHECK_NE(&from, this);
-  _internal_metadata_.MergeFrom(from._internal_metadata_);
-  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
-  (void) cached_has_bits;
-
-  name_.MergeFrom(from.name_);
-  if (from.haha().size() > 0) {
-
-    haha_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.haha_);
-  }
-}
-
-void Chat_ChatToAllNotify::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-// @@protoc_insertion_point(generalized_copy_from_start:Chat_ChatToAllNotify)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-void Chat_ChatToAllNotify::CopyFrom(const Chat_ChatToAllNotify& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:Chat_ChatToAllNotify)
-  if (&from == this) return;
-  Clear();
-  MergeFrom(from);
-}
-
-bool Chat_ChatToAllNotify::IsInitialized() const {
-  return true;
-}
-
-void Chat_ChatToAllNotify::InternalSwap(Chat_ChatToAllNotify* other) {
-  using std::swap;
-  _internal_metadata_.Swap(&other->_internal_metadata_);
-  name_.InternalSwap(&other->name_);
-  haha_.Swap(&other->haha_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-    GetArenaNoVirtual());
-}
-
-::PROTOBUF_NAMESPACE_ID::Metadata Chat_ChatToAllNotify::GetMetadata() const {
+::PROTOBUF_NAMESPACE_ID::Metadata Chat_rfdrRRRReply::GetMetadata() const {
   return GetMetadataStatic();
 }
 
 
 // @@protoc_insertion_point(namespace_scope)
 PROTOBUF_NAMESPACE_OPEN
-template<> PROTOBUF_NOINLINE ::Chat_ChatToOneReq* Arena::CreateMaybeMessage< ::Chat_ChatToOneReq >(Arena* arena) {
-  return Arena::CreateInternal< ::Chat_ChatToOneReq >(arena);
+template<> PROTOBUF_NOINLINE ::Chat_rfdrRRRReq* Arena::CreateMaybeMessage< ::Chat_rfdrRRRReq >(Arena* arena) {
+  return Arena::CreateInternal< ::Chat_rfdrRRRReq >(arena);
 }
-template<> PROTOBUF_NOINLINE ::Chat_ChatToOneReply* Arena::CreateMaybeMessage< ::Chat_ChatToOneReply >(Arena* arena) {
-  return Arena::CreateInternal< ::Chat_ChatToOneReply >(arena);
-}
-template<> PROTOBUF_NOINLINE ::Chat_ChatToAllNotify* Arena::CreateMaybeMessage< ::Chat_ChatToAllNotify >(Arena* arena) {
-  return Arena::CreateInternal< ::Chat_ChatToAllNotify >(arena);
+template<> PROTOBUF_NOINLINE ::Chat_rfdrRRRReply* Arena::CreateMaybeMessage< ::Chat_rfdrRRRReply >(Arena* arena) {
+  return Arena::CreateInternal< ::Chat_rfdrRRRReply >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 

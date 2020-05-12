@@ -25,6 +25,7 @@ from subprocess import *
 import time
 from transtable.trans_table import *
 
+
 class ProtoTool(QMainWindow):
     def __init__(self, parent=None):
         super(ProtoTool, self).__init__()
@@ -165,7 +166,7 @@ class ProtoTool(QMainWindow):
                 addMsgAct.triggered.connect(
                     lambda: self.actionHandler('add_msg', item))
             elif item and item.text(3) == ItemType.MSG:
-                if 'Req' in item.text(0):
+                if 'Reply' not in item.text(0):
                     updateMsgAct = self.contextMenu.addAction(u'更新消息')
                     delMsgAct = self.contextMenu.addAction(u'删除消息')
                     updateMsgAct.triggered.connect(
@@ -232,7 +233,10 @@ class ProtoTool(QMainWindow):
             self.ui.FrameField.setEnabled(False)
 
             msg = self.getMsgByMsgItem(self.selected_item)
-            self.ui.LetMsgName.setText(msg.name[:-3])
+            if 'Req' in msg.name:
+                self.ui.LetMsgName.setText(msg.name[:-3])
+            else:
+                self.ui.LetMsgName.setText(msg.name)
             self.ui.LetMsgCmt.setText(msg.comment)
 
             msg_type = self.getMsgTypeByItemName(item.text(0))
@@ -484,7 +488,8 @@ class ProtoTool(QMainWindow):
         csharp_dir = self.config.getConfOne('excel_csharp_path')
         try:
             if os.path.exists(excel_dir) and os.path.exists(json_dir) and os.path.exists(cpp_dir) and os.path.exists(csharp_dir):
-                    TransTable.transportTable(excel_dir, json_dir, cpp_dir, csharp_dir)
+                TransTable.transportTable(
+                    excel_dir, json_dir, cpp_dir, csharp_dir)
             self.status.showMessage(u'导表完成...')
         except Exception as e:
             print(e)
@@ -492,19 +497,25 @@ class ProtoTool(QMainWindow):
 
     # 生成服务器需要的协议代码
     def menuBarServer(self):
-        self.status.showMessage(u'开始生成服务器协议代码...')
-        self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
-        self.gen_mgr.genCpp(self.config.getConfOne('proto_path'))
-        self.status.showMessage(u'代码生成完成...')
+        try:
+            self.status.showMessage(u'开始生成服务器协议代码...')
+            self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
+            self.gen_mgr.genCpp(self.config.getConfOne('proto_path'))
+            self.status.showMessage(u'代码生成完成...')
+        except Exception as e:
+            print(e)
         pass
 
     # 生成客户端需要协议代码
     def menuBarClient(self):
         # 生成 csharp 协议枚举文件
-        self.status.showMessage(u'开始生成客户端协议代码...')
-        self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
-        self.gen_mgr.genCsharp(self.config.getConfOne('proto_path'))
-        self.status.showMessage(u'代码生成完成...')
+        try:
+            self.status.showMessage(u'开始生成客户端协议代码...')
+            self.gen_mgr.loadXmls(self.config.getConfOne('msg_path'))
+            self.gen_mgr.genCsharp(self.config.getConfOne('proto_path'))
+            self.status.showMessage(u'代码生成完成...')
+        except Exception as e:
+            print(e)
         pass
 
 ###################################################
@@ -672,7 +683,7 @@ class ProtoTool(QMainWindow):
         msg_type = self.getMsgTypeByItemName(msg_item.text(0))
         msg = module.getMsg(msg_item.text(2), msg_type)
         return msg
-    
+
     def getMsgByMsgItem(self, item):
         if not item:
             return None
@@ -770,5 +781,6 @@ if __name__ == '__main__':
     app.setStyle(QStyleFactory.create("Fusion"))
     app.setAttribute(QtCore.Qt.AA_NativeWindows)
     app.setAttribute(QtCore.Qt.AA_MSWindowsUseDirect3DByDefault)
+    # 多进程pyinstaller会报错，需要加上此句
     multiprocessing.freeze_support()
     sys.exit(app.exec_())

@@ -8,6 +8,7 @@ import os
 import codecs
 import datetime
 import traceback
+from common import *
 
 # 数据类型字典
 data_type_dic = {
@@ -52,7 +53,8 @@ class TransCsharp:
     def gen_csharp(self, table_name, data_desc):
         row_fields = self.gen_row_fields(data_desc)
         s = ""
-        with codecs.open("./transtable/table_csharp.tmpl", "r", "utf-8") as f:
+        tmpl_file = os.path.join(getRootDir(), 'transtable/table_csharp.tmpl').replace('\\', '/')
+        with codecs.open(tmpl_file, "r", "utf-8") as f:
             s = f.read()
         if not s:
             return

@@ -1,13 +1,15 @@
 syntax = "proto3";
+import "PublicChat.proto";
+import "PublicData.proto";
+import "PublicHaha.proto";
 
-message Chat_TestChatReq
+message Chat_rfdrRRRReq
 {
-optional int32 FF = 1;
 
 }
 
 
-message Chat_TestChatReply
+message Chat_rfdrRRRReply
 {
 
 }

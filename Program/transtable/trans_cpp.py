@@ -8,6 +8,7 @@ import os
 import codecs
 import datetime
 import traceback
+from common import *
 
 # 数据类型字典
 data_type_dic = {
@@ -148,7 +149,8 @@ class TransCpp:
         row_fields = self.gen_row_fields(data_desc)
         json_logic = self.gen_json_logic()
         s = ""
-        with codecs.open("./transtable/table_cpp.tmpl", "r", "utf-8") as f:
+        tmpl_file = os.path.join(getRootDir(), 'transtable/table_cpp.tmpl')
+        with codecs.open(tmpl_file, "r", "utf-8") as f:
             s = f.read()
         if not s:
             return

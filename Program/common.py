@@ -1,5 +1,7 @@
 
 from enum import Enum
+import os
+import sys
 
 
 class MsgType(Enum):
@@ -19,3 +21,14 @@ class ModType(Enum):
     VOID = 0
     PUBLIC = 1
     CLIENT = 2
+
+
+def getRootDir():
+    if getattr(sys, 'frozen', False):
+        root_path = os.path.dirname(sys.executable)
+    elif __file__:
+        root_path = os.path.dirname(__file__)
+    return root_path
+
+if __name__ == '__main__':
+    print(getRootDir())

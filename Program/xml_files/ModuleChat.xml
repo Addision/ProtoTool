@@ -1,2 +1,2 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Module comment="ddd" id="11" name="Chat"><Import>PublicData.proto;</Import><Message><ReqReplyMsg comment="ddd" id="1102" name="TestChat"><Req /><Reply /></ReqReplyMsg></Message></Module>
+<Module comment="sss" id="11" name="Chat"><Import>PublicChat.proto;PublicData.proto;PublicHaha.proto;</Import><Message><ReqReplyMsg comment="sedwf" id="1101" name="rfdrRRR"><Req /><Reply /></ReqReplyMsg></Message></Module>

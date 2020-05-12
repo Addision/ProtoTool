@@ -1,5 +1,7 @@
 syntax = "proto3";
+import "PublicChat.proto";
 import "PublicData.proto";
+import "PublicHaha.proto";
 
 message Rank_RankFightReq
 {
